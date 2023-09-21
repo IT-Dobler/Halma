@@ -10,6 +10,8 @@ function App() {
           Hello World!
           <br/>
           I am Halma42
+          <br/>
+          Help me become awesome: https://github.com/dobler-it/Halma
         </p>
       </header>
     </div>
