@@ -4,9 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Init nx workspace">
+    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Added UI lib">
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/.babelrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/project.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.spec.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/tsconfig.lib.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/tsconfig.spec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/home/vite.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/.babelrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/project.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.spec.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.lib.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.spec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/solo-play/vite.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.base.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,27 +63,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "D:\\Halma\\frontend\\node_modules\\prettier",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "show.migrate.to.gradle.popup": "false",
-    "ts.external.directory.path": "D:\\Halma\\frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Halma/frontend/libs/ui&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\Halma\\frontend\\node_modules\\prettier&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Halma\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Halma\frontend\libs\ui" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -63,6 +99,8 @@
       <option name="presentableId" value="Default" />
       <updated>1695306438122</updated>
       <workItem from="1695306439285" duration="3882000" />
+      <workItem from="1695575193537" duration="3621000" />
+      <workItem from="1695580648277" duration="832000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -80,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695574144492</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added UI lib">
+      <option name="closed" value="true" />
+      <created>1695575823382</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1695575823382</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -89,6 +135,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added documentation for setup and deployment of react app." />
     <MESSAGE value="Init nx workspace" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init nx workspace" />
+    <MESSAGE value="Added UI lib" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added UI lib" />
   </component>
 </project>

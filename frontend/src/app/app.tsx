@@ -1,12 +1,24 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Link, Route } from 'wouter';
+import { Home } from 'home';
+import { SoloPlay } from 'solo-play';
 import styles from './app.module.scss';
-
-import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="frontend" />
+      <Link href={'/'}>
+        <a className={styles.spacing}>Home</a>
+      </Link>
+      <Link href={'/solo-play'}>
+        <a>Play</a>
+      </Link>
+
+      <Route path={'/'}>
+        <Home />
+      </Route>
+      <Route path={'/solo-play'}>
+        <SoloPlay />
+      </Route>
     </div>
   );
 }
