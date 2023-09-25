@@ -8,7 +8,7 @@
     "test": "nx test",
     "lint": "eslint . --fix",
     "prettify": "prettier --write .",
-    "postinstall": "husky install"
+    "prepare": "cd.. && husky install frontend/.husky"
   },
   "private": true,
   "dependencies": {
@@ -73,6 +73,6 @@
   "engines": {
     "npm": "please-use-yarn",
     "yarn": ">= 1.22.19",
-    "node": ">= 18.18.0"
+    "node": ">= 18.17.0"
   }
 }
