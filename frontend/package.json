@@ -60,7 +60,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run prettify"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
