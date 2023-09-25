@@ -4,75 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11f01f8d-60cd-4856-b7d7-ad3e788b7d9c" name="Changes" comment="build(nx-workspace): added @reduxjs/toolkit">
-      <change afterPath="$PROJECT_DIR$/frontend/.npmrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.eslintrc.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.eslintrc.base.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.prettierrc" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.prettierrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.vscode/extensions.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.vscode/extensions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/cypress.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/cypress.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/src/e2e/app.cy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/src/e2e/app.cy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/src/fixtures/example.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/src/fixtures/example.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/src/support/app.po.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/src/support/app.po.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/src/support/commands.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/src/support/commands.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/src/support/e2e.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/src/support/e2e.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/e2e/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/e2e/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/.babelrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.spec.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.spec.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/tsconfig.lib.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/tsconfig.lib.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/tsconfig.spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/tsconfig.spec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/.babelrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.spec.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.spec.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.lib.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.lib.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/tsconfig.spec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/.babelrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/src/lib/ui.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/ui.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/src/lib/ui.spec.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/ui.spec.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/src/lib/ui.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/ui.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/tsconfig.lib.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/tsconfig.lib.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/tsconfig.spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/tsconfig.spec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/nx.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/nx.json" afterDir="false" />
+    <list default="true" id="11f01f8d-60cd-4856-b7d7-ad3e788b7d9c" name="Changes" comment="build(nx-workspace): added Eslint, Prettify, Husky">
       <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.spec.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.spec.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.base.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.spec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +102,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695657784844</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="build(nx-workspace): added Eslint, Prettify, Husky">
+      <created>1695669558786</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1695669558786</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +131,7 @@
     <MESSAGE value="Init nx workspace" />
     <MESSAGE value="Added UI lib" />
     <MESSAGE value="build(nx-workspace): added @reduxjs/toolkit" />
-    <option name="LAST_COMMIT_MESSAGE" value="build(nx-workspace): added @reduxjs/toolkit" />
+    <MESSAGE value="build(nx-workspace): added Eslint, Prettify, Husky" />
+    <option name="LAST_COMMIT_MESSAGE" value="build(nx-workspace): added Eslint, Prettify, Husky" />
   </component>
 </project>
