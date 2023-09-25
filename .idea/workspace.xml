@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="11f01f8d-60cd-4856-b7d7-ad3e788b7d9c" name="Changes" comment="build(nx-workspace): added Eslint, Prettify, Husky">
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Fixed husky install &amp; oryx compatible node version">
+      <change beforePath="$PROJECT_DIR$/.idea/Halma.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Halma.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +40,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/nx-workspace&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Halma/frontend/libs/ui&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -69,7 +71,9 @@
       <updated>1695306438122</updated>
       <workItem from="1695306439285" duration="3882000" />
       <workItem from="1695575193537" duration="3621000" />
-      <workItem from="1695580648277" duration="832000" />
+      <workItem from="1695580648277" duration="2608000" />
+      <workItem from="1695660345740" duration="7000" />
+      <workItem from="1695670490205" duration="2473000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -95,21 +99,39 @@
       <option name="project" value="LOCAL" />
       <updated>1695575823382</updated>
     </task>
-    <task id="LOCAL-00004" summary="build(nx-workspace): added @reduxjs/toolkit">
-      <created>1695657784844</created>
+    <task id="LOCAL-00004" summary="Basic routing and libs for the two pages.">
+      <option name="closed" value="true" />
+      <created>1695584025739</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1695657784844</updated>
+      <updated>1695584025739</updated>
     </task>
-    <task id="LOCAL-00005" summary="build(nx-workspace): added Eslint, Prettify, Husky">
-      <created>1695669558786</created>
+    <task id="LOCAL-00005" summary="Fix CI/CD with new project structure">
+      <option name="closed" value="true" />
+      <created>1695584369449</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1695669558786</updated>
+      <updated>1695584369449</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fix CI/CD with new project structure">
+      <option name="closed" value="true" />
+      <created>1695584576142</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1695584576142</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixed husky install &amp; oryx compatible node version">
+      <option name="closed" value="true" />
+      <created>1695673977198</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1695673977198</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,8 +152,9 @@
     <MESSAGE value="Added documentation for setup and deployment of react app." />
     <MESSAGE value="Init nx workspace" />
     <MESSAGE value="Added UI lib" />
-    <MESSAGE value="build(nx-workspace): added @reduxjs/toolkit" />
-    <MESSAGE value="build(nx-workspace): added Eslint, Prettify, Husky" />
-    <option name="LAST_COMMIT_MESSAGE" value="build(nx-workspace): added Eslint, Prettify, Husky" />
+    <MESSAGE value="Basic routing and libs for the two pages." />
+    <MESSAGE value="Fix CI/CD with new project structure" />
+    <MESSAGE value="Fixed husky install &amp; oryx compatible node version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed husky install &amp; oryx compatible node version" />
   </component>
 </project>

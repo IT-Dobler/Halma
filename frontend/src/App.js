@@ -8,10 +8,16 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Hello World!
-          <br/>
+          <br />
           I am Halma42
-          <br/>
-          Help me become awesome: <a target="_blank" rel="noreferrer" href="https://github.com/dobler-it/Halma" className="App-white-link">
+          <br />
+          Help me become awesome:{' '}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/dobler-it/Halma"
+            className="App-white-link"
+          >
             GitHub
           </a>
         </p>
