@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Linting">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/home/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Linting" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -75,6 +71,7 @@
       <workItem from="1695580648277" duration="2608000" />
       <workItem from="1695660345740" duration="7000" />
       <workItem from="1695670490205" duration="3128000" />
+      <workItem from="1695674674855" duration="369000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -180,7 +177,39 @@
       <option name="project" value="LOCAL" />
       <updated>1695674473656</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674722782</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674722783</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674795130</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674795130</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674838141</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674838141</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695675043352</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1695675043352</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

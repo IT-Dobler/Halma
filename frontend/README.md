@@ -11,3 +11,7 @@ coding!
 
 Generate code using `yarn nx generate [lib|component|redux] [name]`, check the documentation for more details and
 options.
+
+## Husky
+
+Be sure to run the husky-install script `yarn install-husky`
