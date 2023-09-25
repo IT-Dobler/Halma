@@ -12,6 +12,17 @@ coding!
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 ## Generate code
 
 Generate code using `yarn nx generate [lib|component|redux] [name]`, check the documentation for more details and
