@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Fixed husky install &amp; oryx compatible node version">
-      <change beforePath="$PROJECT_DIR$/.idea/Halma.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Halma.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Linting">
+      <change beforePath="$PROJECT_DIR$/frontend/libs/home/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +72,7 @@
       <workItem from="1695575193537" duration="3621000" />
       <workItem from="1695580648277" duration="2608000" />
       <workItem from="1695660345740" duration="7000" />
-      <workItem from="1695670490205" duration="2473000" />
+      <workItem from="1695670490205" duration="2895000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -131,18 +130,85 @@
       <option name="project" value="LOCAL" />
       <updated>1695673977198</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674166279</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674166279</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674194096</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674194096</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674309266</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674309266</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674339028</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674339028</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1695674362699</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1695674362699</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/feature/nx-workspace" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/feature/nx-workspace" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -155,6 +221,7 @@
     <MESSAGE value="Basic routing and libs for the two pages." />
     <MESSAGE value="Fix CI/CD with new project structure" />
     <MESSAGE value="Fixed husky install &amp; oryx compatible node version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed husky install &amp; oryx compatible node version" />
+    <MESSAGE value="Linting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Linting" />
   </component>
 </project>
