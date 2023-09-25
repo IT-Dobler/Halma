@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Linting" />
+    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Gitignore more stuff" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +71,7 @@
       <workItem from="1695580648277" duration="2608000" />
       <workItem from="1695660345740" duration="7000" />
       <workItem from="1695670490205" duration="3128000" />
-      <workItem from="1695674674855" duration="369000" />
+      <workItem from="1695674674855" duration="700000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -209,7 +209,23 @@
       <option name="project" value="LOCAL" />
       <updated>1695675043352</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Gitignore more stuff, take husky out of ci/cd">
+      <option name="closed" value="true" />
+      <created>1695675316492</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1695675316492</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Gitignore more stuff">
+      <option name="closed" value="true" />
+      <created>1695675364138</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1695675364138</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,6 +277,8 @@
     <MESSAGE value="Fix CI/CD with new project structure" />
     <MESSAGE value="Fixed husky install &amp; oryx compatible node version" />
     <MESSAGE value="Linting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Linting" />
+    <MESSAGE value="Gitignore more stuff, take husky out of ci/cd" />
+    <MESSAGE value="Gitignore more stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gitignore more stuff" />
   </component>
 </project>
