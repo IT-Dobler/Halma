@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "types": ["vite/client", "vitest"]
+  },
+  "files": [],
+  "include": [
+    "e2e/cypress.config.ts",
+    "e2e/src/e2e/app.cy.ts",
+    "e2e/src/support/app.po.ts",
+    "e2e/src/support/commands.ts",
+    "e2e/src/support/e2e.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "extends": "./tsconfig.base.json"
+}
