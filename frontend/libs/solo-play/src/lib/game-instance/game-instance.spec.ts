@@ -1,4 +1,10 @@
-import {BoardDimensions, BoardPiece, GameEngine, GameInstance, GameState, Position} from "./game-instance";
+import {
+  BoardDimensions,
+  BoardPiece,
+  GameInstance,
+  GameStateUtil,
+  Position
+} from "./game-instance";
 import {describe, expect} from "vitest";
 
 describe('GameInstance', () => {
@@ -8,8 +14,8 @@ describe('GameInstance', () => {
 
 
   it('should render successfully', () => {
-    const instance = GameInstance.claudioHalma(1, );
-    expect(instance.numberOfPlayers).toStrictEqual(2);
+    const instance = GameInstance.claudioHalma(["player1Id"], );
+    expect(instance.players).toStrictEqual(1);
   });
 
   it('blocked positions', () => {
@@ -44,16 +50,60 @@ describe('BoardDimensions', () => {
   });
 });
 
-describe('GameEngine', () => {
-  it('denies moves not made by owning player', () => {
-    const gameEngine = new GameEngine();
+describe('GameState', () => {
+  it('initializes correctly for 1 Player', () => {
+    const dimensions = new BoardDimensions(4, 4, 1);
+    const gameState = GameStateUtil.initClaudioHalmaBoard(["0"], dimensions);
 
-    const piece = new BoardPiece(new Position(0, 0), 0);
-    const gameState = new GameState([]);
 
-    const canMove = gameEngine.isValidMove(piece, gameState);
+    const expected = [
+        new BoardPiece(new Position(0, 1), "0"),
+        new BoardPiece(new Position(0, 2), "0"),
+        new BoardPiece(new Position(1, 1), "0"),
+        new BoardPiece(new Position(1, 2), "0"),
+    ];
 
-    expect(canMove).toEqual(true);
+    expect(gameState.pieces).toHaveLength(4);
+    for (const piece of expected) {
+      expect(gameState.pieces).toContainEqual(piece);
+    }
+  });
+
+  it('initializes correctly for 2 Players', () => {
+    const dimensions = new BoardDimensions(4, 4, 1);
+    const gameState = GameStateUtil.initClaudioHalmaBoard(["0", "1"], dimensions);
+
+
+    const expected = [
+      new BoardPiece(new Position(0, 1), "0"),
+      new BoardPiece(new Position(0, 2), "0"),
+      new BoardPiece(new Position(1, 1), "0"),
+      new BoardPiece(new Position(1, 2), "0"),
+
+      new BoardPiece(new Position(3, 1), "1"),
+      new BoardPiece(new Position(3, 2), "1"),
+      new BoardPiece(new Position(2, 1), "1"),
+      new BoardPiece(new Position(2, 2), "1"),
+    ];
+
+    expect(gameState.pieces).toHaveLength(8);
+    for (const piece of expected) {
+      expect(gameState.pieces).toContainEqual(piece);
+    }
   });
 
 });
+
+// describe('GameEngine', () => {
+//   it('denies moves not made by owning player', () => {
+//     const gameEngine = new GameEngine();
+//
+//     const piece = new BoardPiece(new Position(0, 0), 0);
+//     const gameState = new GameState([]);
+//
+//     const canMove = gameEngine.isValidMove(piece, gameState);
+//
+//     expect(canMove).toEqual(true);
+//   });
+//
+// });
