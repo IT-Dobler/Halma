@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "game-logic": ["libs/game-logic/src/index.ts"],
       "home": ["libs/home/src/index.ts"],
       "solo-play": ["libs/solo-play/src/index.ts"],
       "ui": ["libs/ui/src/index.ts"]
