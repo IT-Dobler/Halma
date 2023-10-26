@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import GameLogic from './game-logic';
+import GameCell from './game-cell';
 
-describe('GameLogic', () => {
+describe('GameCell', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<GameLogic />);
+    const { baseElement } = render(<GameCell />);
     expect(baseElement).toBeTruthy();
   });
 });

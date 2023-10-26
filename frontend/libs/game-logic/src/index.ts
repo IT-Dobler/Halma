@@ -1,1 +1,1 @@
-export * from './lib/game-logic';
+export * from './lib/store/game-instance.slice';
