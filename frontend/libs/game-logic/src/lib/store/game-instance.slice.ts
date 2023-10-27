@@ -40,6 +40,14 @@ export interface NodeEntity {
 
 export interface PlayerEntity {
   id: string;
+  color: string;
+}
+
+enum PlayerColor {
+  YELLOW,
+  RED,
+  BLUE,
+  GREEN,
 }
 
 export interface GameInstanceState {
@@ -82,9 +90,11 @@ export const fetchGameInstance = createAsyncThunk(
      */
 
     const players: PlayerEntity[] = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < config.playersId.length; i++) {
+      const id = config.playersId[i];
       players.push({
-        id: `playerid-${i}`,
+        id: id,
+        color: PlayerColor[i],
       });
     }
 
@@ -292,9 +302,9 @@ export const selectAllGameStateIds = createSelector(
   selectIds,
 );
 export const selectNodeById = (id: EntityId) =>
-  createSelector([getGameStateState], (state) => selectById(state, id));
+    createSelector([getGameStateState], (state) => selectById(state, id));
 
 export const selectGameInstanceEntities = createSelector(
-  getGameStateState,
-  selectEntities,
+    getGameStateState,
+    selectEntities,
 );

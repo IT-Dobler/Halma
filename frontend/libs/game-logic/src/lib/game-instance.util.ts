@@ -265,8 +265,6 @@ export function isMovePossible(state: GameInstanceState, nodeId: string, dest: P
     return false;
   }
 
-  // const node = getNodeByPosition(dest);
-  
   // Check if the destination is occupied already
   if (isPiece(dest)) {
     return false;

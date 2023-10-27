@@ -1,6 +1,16 @@
 # Welcome to Project: Halma
 
-For more information about the background and motivation for this project, check out the Wiki.
+Do you ever find yourself wanting to play a game of (Star-)Halma? Or perhaps the awefully similar "Chinese Checkers"
+that is indeed identical and solely called differently for marketing purposes? So you load up your app / play store /
+browser and type in "Halma". What you will find are a few very brightly colored apps, most of which focus more on
+gamifying an otherwise below average user experience instead of providing actually useful features.
+
+This is where this project comes in, heavily inspired by the tried and tested application lichess and the standard that
+we've come used to through the various chess resources. For example quickly and easily jumping into games, puzzles and
+analysis boards to hone your skills as well as a plathora of statistics, various game modes, rating and time controls.
+
+Step by step, completely opensource from the start this project aims to provide the Halma world with a user friendly,
+professional application to play, practice, analyze and improve your Halma.
 
 ## Setup
 
