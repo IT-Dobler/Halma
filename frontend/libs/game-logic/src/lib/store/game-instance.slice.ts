@@ -7,54 +7,34 @@ import {
   EntityState,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { NodeTypeTS } from '../node-type';
-import { GameTypeTS } from '../game-type';
+import { GameInitUtil } from '../game-init.util';
 import {
-  getValidNodesId,
-  initBlockedPositions,
-  initBoard,
-  initPieces,
-} from '../game-instance.util';
+  directionOfInit,
+  directionsOfPlay,
+  PlayDirection,
+} from '../model/play-direction';
+import { playerColors } from '../model/player-color';
+import { gameInstanceReducers } from './game-instance.reducers';
+import { GameConfig, GameConfigUtil } from '../model/game-config';
+import { CurrentMove } from '../model/current-move';
+import { NodeEntity } from '../model/node-entity';
+import { PlayerEntity } from '../model/player-entity';
+import { GameInstanceTS } from '../model/game-instance';
+import {
+  getCurrentMoveState,
+  getGameConfigState,
+  getGameStateState,
+  getPlayersState,
+} from './game-instance.states';
 
 export const GAME_INSTANCE_FEATURE_KEY = 'gameInstance';
-
-export interface GameConfig {
-  playersId: string[];
-  gameType: GameTypeTS;
-  width: number;
-  height: number;
-  cornerSize: number;
-}
-
-export interface GameInstanceDTO {
-  nodes: Record<EntityId, NodeEntity>;
-  players: PlayerEntity[];
-  config: GameConfig;
-}
-
-export interface NodeEntity {
-  id: string;
-  type: NodeTypeTS;
-  owningPlayerId?: string;
-}
-
-export interface PlayerEntity {
-  id: string;
-  color: string;
-}
-
-enum PlayerColor {
-  YELLOW,
-  RED,
-  BLUE,
-  GREEN,
-}
 
 export interface GameInstanceState {
   gameState: EntityState<NodeEntity>;
   players: EntityState<PlayerEntity>;
   config: GameConfig;
   possibleMovesId: string[];
+  currentMove: CurrentMove;
 
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error';
   error?: string | null;
@@ -94,7 +74,8 @@ export const fetchGameInstance = createAsyncThunk(
       const id = config.playersId[i];
       players.push({
         id: id,
-        color: PlayerColor[i],
+        color: playerColors[i],
+        playDirection: directionOfInit[i],
       });
     }
 
@@ -102,14 +83,20 @@ export const fetchGameInstance = createAsyncThunk(
      * One day we will load the game from server side under certain conditions.
      * For now, we just receive some basic parameters and pass on something
      */
-    const nodes: Record<EntityId, NodeEntity> = initBoard(config);
-    initBlockedPositions(nodes, config);
-    initPieces(nodes, players, config);
+    const nodes: Record<EntityId, NodeEntity> = GameInitUtil.initBoard(config);
+    GameInitUtil.initBlockedPositions(nodes, config);
+    GameInitUtil.initPieces(nodes, players, config);
+
+    const currentMove: CurrentMove = {
+      playerIdToMove: players[0].id,
+      playDirection: directionsOfPlay[0],
+    };
 
     return Promise.resolve({
       players,
       nodes,
       config,
+      currentMove,
     });
   },
 );
@@ -117,14 +104,12 @@ export const fetchGameInstance = createAsyncThunk(
 export const initialGameInstanceState: GameInstanceState = {
   gameState: gameStateAdapter.getInitialState(),
   players: playersAdapter.getInitialState(),
-  config: {
-    playersId: [],
-    gameType: GameTypeTS.CLAUDIO,
-    width: 0,
-    height: 0,
-    cornerSize: 0,
-  },
+  config: GameConfigUtil.getInitialState(),
   possibleMovesId: [],
+  currentMove: {
+    playerIdToMove: '',
+    playDirection: PlayDirection.BOTTOM_TO_TOP,
+  },
   loadingStatus: 'not loaded',
   error: null,
 };
@@ -135,91 +120,9 @@ export const gameInstanceSlice = createSlice({
   reducers: {
     // init: gameStateAdapter.addOne
     // ...
-    clickPiece: (state, action: PayloadAction<string>) => {
-      const node = state.gameState.entities[action.payload]!;
-      // node.type = NodeTypeTS.PIECE;
-      // gameStateAdapter.setOne(state.gameState, node);
-
-      // Check if we are allowed to select this node
-      // if (state.currentMove.playerIdToMove !== action.payload.owningPlayerId) {
-      //   return;
-      // }
-
-      // If we haven't selected a node, just select it.
-      // if (node.type) {
-      //   state.currentMove.selectedPiece = action.payload;
-      //   return;
-      // }
-
-      // Clear possible moves
-      for (const id of state.possibleMovesId) {
-        state.gameState.entities[id]!.type = NodeTypeTS.EMPTY;
-      }
-
-      // Check whether we are clicking on the same node, deselect
-      if (node.type === NodeTypeTS.SELECTED) {
-        node.type = NodeTypeTS.PIECE;
-      } else {
-        // Deselect potentially other selected piece
-        const selectedNode = Object.values(state.gameState.entities).find(
-          (value) => value?.type === NodeTypeTS.SELECTED,
-        );
-
-        if (selectedNode) {
-          selectedNode.type = NodeTypeTS.PIECE;
-        }
-
-        // Select the clicked node
-        node.type = NodeTypeTS.SELECTED;
-
-        const validNodesId = getValidNodesId(node.id, state);
-        state.possibleMovesId = validNodesId;
-
-        for (const id of validNodesId) {
-          state.gameState.entities[id]!.type = NodeTypeTS.POSSIBLE_MOVE;
-        }
-      }
-
-      // gameStateAdapter.setOne(state.gameState, node);
-
-      // Otherwise just select the new node
-      // state.currentMove.selectedPiece = action.payload;
-    },
-    clickDestination: (state, action: PayloadAction<string>) => {
-      // Deselect selected piece
-      const selectedNode = Object.values(state.gameState.entities).find(
-        (value) => value?.type === NodeTypeTS.SELECTED,
-      );
-
-      if (selectedNode) {
-        gameStateAdapter.updateOne(state.gameState, {
-          id: selectedNode.id,
-          changes: { type: NodeTypeTS.EMPTY },
-        });
-      }
-
-      // Clear possible moves
-      for (const id of state.possibleMovesId) {
-        state.gameState.entities[id]!.type = NodeTypeTS.EMPTY;
-      }
-
-      // Select new piece
-      gameStateAdapter.updateOne(state.gameState, {
-        id: action.payload,
-        changes: { type: NodeTypeTS.SELECTED },
-      });
-
-      const validNodesId = getValidNodesId(action.payload, state);
-      state.possibleMovesId = validNodesId;
-
-      gameStateAdapter.updateMany(
-        state.gameState,
-        validNodesId.map((id) => ({
-          id: id,
-          changes: { type: NodeTypeTS.POSSIBLE_MOVE },
-        })),
-      );
-    },
+    clickPiece: gameInstanceReducers.clickPiece,
+    clickDestination: gameInstanceReducers.clickDestination,
+    nextTurn: gameInstanceReducers.nextTurn,
   },
   extraReducers: (builder) => {
     builder
@@ -228,10 +131,11 @@ export const gameInstanceSlice = createSlice({
       })
       .addCase(
         fetchGameInstance.fulfilled,
-        (state: GameInstanceState, action: PayloadAction<GameInstanceDTO>) => {
+        (state: GameInstanceState, action: PayloadAction<GameInstanceTS>) => {
           gameStateAdapter.setAll(state.gameState, action.payload.nodes);
           playersAdapter.setAll(state.players, action.payload.players);
           state.config = action.payload.config;
+          state.currentMove = action.payload.currentMove;
           state.loadingStatus = 'loaded';
         },
       )
@@ -284,27 +188,28 @@ export const gameInstanceActions = gameInstanceSlice.actions;
  *
  * See: https://react-redux.js.org/next/api/hooks#useselector
  */
-const { selectAll, selectEntities, selectIds, selectById } =
-  gameStateAdapter.getSelectors(); // Non memoized selectors
+// Non memoized selectors
+const { selectIds, selectById } = gameStateAdapter.getSelectors();
 
-export const getGameInstanceState = (rootState: {
-  [GAME_INSTANCE_FEATURE_KEY]: GameInstanceState;
-}): GameInstanceState => rootState[GAME_INSTANCE_FEATURE_KEY];
+const _selectPlayerById = playersAdapter.getSelectors().selectById;
 
-export const getGameStateState = (rootState: {
-  [GAME_INSTANCE_FEATURE_KEY]: GameInstanceState;
-}): EntityState<NodeEntity> => rootState[GAME_INSTANCE_FEATURE_KEY].gameState;
-
-export const selectAllGameState = createSelector(getGameStateState, selectAll);
-
+// Memoized selectors
 export const selectAllGameStateIds = createSelector(
   getGameStateState,
   selectIds,
 );
 export const selectNodeById = (id: EntityId) =>
-    createSelector([getGameStateState], (state) => selectById(state, id));
+  createSelector([getGameStateState], (state) => selectById(state, id));
 
-export const selectGameInstanceEntities = createSelector(
-    getGameStateState,
-    selectEntities,
+export const selectPlayerById = (id: EntityId | undefined) =>
+  createSelector([getPlayersState], (state) =>
+    id ? _selectPlayerById(state, id) : undefined,
+  );
+export const selectCurrentMove = createSelector(
+  [getCurrentMoveState],
+  (state) => state,
+);
+export const selectGameConfig = createSelector(
+  [getGameConfigState],
+  (state) => state,
 );

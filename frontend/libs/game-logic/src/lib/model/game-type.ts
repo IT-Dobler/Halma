@@ -1,3 +1,3 @@
 export enum GameTypeTS {
-  CLAUDIO = "CLAUDIO"
+  CLAUDIO = 'CLAUDIO',
 }

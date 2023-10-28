@@ -1,1 +1,2 @@
-export * from './lib/store/game-instance.slice';
+export * from './lib/store';
+export * from './lib/model';

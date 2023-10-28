@@ -1,10 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  gameInstanceActions,
-  selectNodeById,
-} from 'game-logic';
-import { EntityId } from '@reduxjs/toolkit';
-import { NodeTypeTS } from '../../../../game-logic/src/lib/node-type';
+import {useDispatch, useSelector} from 'react-redux';
+import {gameInstanceActions, selectCurrentMove, selectNodeById, selectPlayerById,} from 'game-logic';
+import {EntityId} from '@reduxjs/toolkit';
+import {NodeTypeTS} from '../../../../game-logic/src/lib/model/node-type';
 
 /* eslint-disable-next-line */
 export interface GameCellProps {
@@ -12,8 +9,10 @@ export interface GameCellProps {
 }
 
 export function GameCell(props: GameCellProps) {
-  const node = useSelector(selectNodeById(props.id))!;
   const dispatch = useDispatch();
+  const node = useSelector(selectNodeById(props.id))!;
+  const player = useSelector(selectPlayerById(node.owningPlayerId));
+  const currentMove = useSelector(selectCurrentMove);
 
   function onPieceClick() {
     dispatch(gameInstanceActions.clickPiece(node.id));
@@ -31,18 +30,22 @@ export function GameCell(props: GameCellProps) {
     case NodeTypeTS.BLOCKED:
       break;
     case NodeTypeTS.PIECE:
-      content = (
-        <h1 onClick={() => onPieceClick()} className="text-yellow-900">
-          {node?.id}
-        </h1>
-      );
-      break;
     case NodeTypeTS.SELECTED:
-      content = (
-        <h1 onClick={() => onPieceClick()} className="text-red-700">
-          {node?.id}
-        </h1>
-      );
+      if (player) {
+        let color = player.color;
+        if (node.type === NodeTypeTS.SELECTED) {
+          color = "text-red-700";
+        }
+        let border = '';
+        if (player.id === currentMove.playerIdToMove) {
+          border = `border-2 border-${color}-300`;
+        }
+        content = (
+            <h1 onClick={() => onPieceClick()} className={`${color} ${border}`}>
+              {node?.id}
+            </h1>
+        );
+      }
       break;
     case NodeTypeTS.POSSIBLE_MOVE:
       content = (

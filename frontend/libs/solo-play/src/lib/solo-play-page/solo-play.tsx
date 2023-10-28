@@ -1,10 +1,10 @@
 /* eslint-disable-next-line */
 
-import {GameBoard} from 'ui';
-import {useDispatch} from 'react-redux';
-import {fetchGameInstance} from 'game-logic';
-import {AppDispatch} from '../../../../../src/main';
-import {GameTypeTS} from "../../../../game-logic/src/lib/game-type";
+import { GameBoard } from 'ui';
+import { useDispatch } from 'react-redux';
+import { fetchGameInstance, gameInstanceActions } from 'game-logic';
+import { AppDispatch } from '../../../../../src/main';
+import { GameTypeTS } from '../../../../game-logic/src/lib/model/game-type';
 
 export interface SoloPlayProps {}
 
@@ -13,13 +13,15 @@ export function SoloPlay(props: SoloPlayProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   const onCreateGame = async () => {
-    await dispatch(fetchGameInstance({
-      cornerSize: 2,
-      height: 8,
-      width: 8,
-      gameType: GameTypeTS.CLAUDIO,
-      playersId: ["1"]
-    }));
+    await dispatch(
+      fetchGameInstance({
+        cornerSize: 2,
+        height: 5,
+        width: 5,
+        gameType: GameTypeTS.CLAUDIO,
+        playersId: ['1', '2'],
+      }),
+    );
   };
 
   return (
@@ -35,7 +37,12 @@ export function SoloPlay(props: SoloPlayProps) {
           Create Game
         </button>
         {/*<button className="mb-4" onClick={() => dispatch(initializeBoard({players: ["1", "2", "3"], gameType: GameType.CLAUDIO}))}>Create Game</button>*/}
-        {/*<button className="mb-4" onClick={() => dispatch(nextTurn())}>Next turn</button>*/}
+        <button
+          className="mb-4"
+          onClick={() => dispatch(gameInstanceActions.nextTurn())}
+        >
+          Next turn
+        </button>
       </div>
     </div>
   );

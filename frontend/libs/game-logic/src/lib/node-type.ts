@@ -1,7 +1,0 @@
-export enum NodeTypeTS {
-  EMPTY = "EMPTY",
-  BLOCKED = "BLOCKED",
-  PIECE = "PIECE",
-  SELECTED = "SELECTED",
-  POSSIBLE_MOVE = "POSSIBLE_MOVE",
-}
