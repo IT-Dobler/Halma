@@ -1,12 +1,18 @@
 /* eslint-disable-next-line */
-export interface HomeProps {}
+import {Footer, Header} from 'ui';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface HomeProps {
+}
 
 export function Home(props: HomeProps) {
-  return (
-    <div>
-      <h1>Welcome to Home!</h1>
-    </div>
-  );
+    return (
+        <div>
+            <Header/>
+            <h1>Welcome to Home!</h1>
+            <Footer/>
+        </div>
+    );
 }
 
 export default Home;

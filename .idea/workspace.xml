@@ -4,23 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="Gitignore more stuff">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/header/header.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/postcss.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/halma-header/halma-header.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/halma-header/halma-header.spec.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/halma-header/halma-header.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="feat(layout-and-basic-styling): added header(not responsive) and footer">
+      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/footer/footer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/header/header.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/header/header.spec.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/header/header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/standart-page-layout/page-layout.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/standart-page-layout/page-layout.spec.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/standart-page-layout/page-layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.base.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tsconfig.base.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,8 +58,8 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/nx-workspace&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Halma/frontend/libs/ui&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/layout-and-basic-styling&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/myan/IdeaProjects/Halma/frontend/libs/ui/src/lib/layout&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -79,9 +79,13 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\myan\IdeaProjects\Halma\frontend\libs\ui\src\lib\layout" />
+      <recent name="C:\Users\myan\IdeaProjects\Halma\frontend\libs\ui\src" />
       <recent name="D:\Halma\frontend\libs\ui" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\myan\IdeaProjects\Halma\frontend\libs\ui\src\lib\layout\standart-page-layout" />
+      <recent name="C:\Users\myan\IdeaProjects\Halma\frontend\libs\ui\src\lib\layout\header" />
       <recent name="C:\Users\myan\IdeaProjects\Halma\frontend\libs" />
     </key>
   </component>
@@ -105,6 +109,9 @@
       <workItem from="1696598503616" duration="599000" />
       <workItem from="1696600496224" duration="1789000" />
       <workItem from="1696868666346" duration="299000" />
+      <workItem from="1697209896381" duration="12862000" />
+      <workItem from="1697475268644" duration="3233000" />
+      <workItem from="1698604108281" duration="2476000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -290,7 +297,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/feature/nx-workspace" />
+                        <option value="feature/layout-and-basic-styling" />
                       </list>
                     </value>
                   </entry>
@@ -313,6 +320,7 @@
     <MESSAGE value="Linting" />
     <MESSAGE value="Gitignore more stuff, take husky out of ci/cd" />
     <MESSAGE value="Gitignore more stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gitignore more stuff" />
+    <MESSAGE value="feat(layout-and-basic-styling): added header(not responsive) and footer" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(layout-and-basic-styling): added header(not responsive) and footer" />
   </component>
 </project>
