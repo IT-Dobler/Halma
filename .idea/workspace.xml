@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="50afffd5-e2f0-45c3-8791-d29fa08a17c3" name="Changes" comment="feat(layout-and-basic-styling): added header(not responsive) and footer">
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/footer/footer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/header/header.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/header/header.spec.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/header/header.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/standart-page-layout/page-layout.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/standart-page-layout/page-layout.spec.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/libs/ui/src/lib/layout/standart-page-layout/page-layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/home/src/lib/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/solo-play/src/lib/solo-play.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/libs/ui/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/libs/ui/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,7 +98,7 @@
       <workItem from="1696868666346" duration="299000" />
       <workItem from="1697209896381" duration="12862000" />
       <workItem from="1697475268644" duration="3233000" />
-      <workItem from="1698604108281" duration="2476000" />
+      <workItem from="1698604108281" duration="6491000" />
     </task>
     <task id="LOCAL-00001" summary="Added documentation for setup and deployment of react app.">
       <option name="closed" value="true" />
@@ -265,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695675364138</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="feat(layout-and-basic-styling): added header(not responsive) and footer">
+      <option name="closed" value="true" />
+      <created>1698606671458</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1698606671458</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,7 +292,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="feature/layout-and-basic-styling" />
+                        <option value="feature/nx-workspace" />
                       </list>
                     </value>
                   </entry>
