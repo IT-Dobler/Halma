@@ -14,4 +14,4 @@ options.
 
 ## Husky
 
-Be sure to run the husky-install script `yarn install-husky`
+Be sure to run the husky-install script `yarn install-husky`.
