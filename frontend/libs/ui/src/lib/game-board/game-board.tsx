@@ -19,6 +19,9 @@ export function GameBoard(props: GameBoardProps) {
 
   // We can toggle this based on board rotation 
   function getSortedNodes() {
+    if (!gameConfig.hasRotatingBoard) {
+      return nodes;
+    }
     switch (currentMove.playDirection) {
       case PlayDirection.BOTTOM_TO_TOP:
         return nodes;
@@ -31,7 +34,7 @@ export function GameBoard(props: GameBoardProps) {
     }
   }
 
-  for (const id of nodes) {
+  for (const id of getSortedNodes()) {
     tiles.push(<GameCell key={id} id={id} />);
   }
 

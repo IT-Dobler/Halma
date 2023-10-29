@@ -5,7 +5,7 @@ import styles from './app.module.scss';
 
 export function App() {
   return (
-    <div className="bg-blue-900 h-screen">
+    <div className="bg-base-100 h-screen">
       <Link href={'/'}>
         <a className={styles.spacing}>Home</a>
       </Link>

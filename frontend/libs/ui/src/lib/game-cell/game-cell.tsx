@@ -25,7 +25,7 @@ export function GameCell(props: GameCellProps) {
   let content;
   switch (node.type) {
     case NodeTypeTS.EMPTY:
-      content = <h1>{node?.id}</h1>;
+      content = <div className="rounded-full h-8 w-8 bg-gray-500"></div>;
       break;
     case NodeTypeTS.BLOCKED:
       break;
@@ -34,24 +34,22 @@ export function GameCell(props: GameCellProps) {
       if (player) {
         let color = player.color;
         if (node.type === NodeTypeTS.SELECTED) {
-          color = "text-red-700";
+          color = "bg-red-700";
         }
         let border = '';
         if (player.id === currentMove.playerIdToMove) {
-          border = `border-2 border-${color}-300`;
+          border = `shadow-[0px_0px_5px_2px_#FFFFFF]`;
+
+
         }
         content = (
-            <h1 onClick={() => onPieceClick()} className={`${color} ${border}`}>
-              {node?.id}
-            </h1>
+            <div onClick={() => onPieceClick()} className={`${color} ${border} rounded-full h-8 w-8 cursor-pointer`}></div>
         );
       }
       break;
     case NodeTypeTS.POSSIBLE_MOVE:
       content = (
-        <h1 onClick={() => onDestinationClick()} className="text-white">
-          {node?.id}
-        </h1>
+        <div onClick={() => onDestinationClick()} className="rounded-full h-8 w-8 bg-white cursor-pointer"></div>
       );
       break;
   }

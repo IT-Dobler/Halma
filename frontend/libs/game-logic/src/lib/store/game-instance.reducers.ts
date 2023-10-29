@@ -10,6 +10,7 @@ import { NodeTypeTS } from '../model/node-type';
 import { PositionUtil } from '../model/position';
 import { NodeEntity } from '../model/node-entity';
 import { getValidMoves } from '../move-logic.util';
+import { GameInitUtil } from '../game-init.util';
 
 const nextTurn = (state: GameInstanceState) => {
   const player = playersAdapter
@@ -18,9 +19,10 @@ const nextTurn = (state: GameInstanceState) => {
 
   deselectAnyPiece(state);
   clearPossibleMoves(state);
+  incrementStepCounter(state);
 
   const indexOf = directionsOfPlay.indexOf(player?.playDirection);
-  for (let i = 1; i < directionsOfPlay.length; i++) {
+  for (let i = 1; i <= directionsOfPlay.length; i++) {
     const nextPlayDirection =
       directionsOfPlay[(indexOf + i) % directionsOfPlay.length];
     const nextPlayer = Object.values(state.players.entities).find(
@@ -84,8 +86,51 @@ const clickDestination = (
 
   setCurrentMove(selectedNode.id, action.payload, state);
 
+  // TODO Refactor this...
+  if (hasWon(selectedNode.owningPlayerId!, state)) {
+    deselectAnyPiece(state);
+    clearPossibleMoves(state);
+    state.isWon = true;
+    incrementStepCounter(state);
+    return;
+  }
+
   setPossibleMovesOrNextTurn(action.payload, state);
 };
+
+function incrementStepCounter(state: GameInstanceState) {
+  state.stepCounter++;
+}
+
+function hasWon(playerId: string, state: GameInstanceState): boolean {
+  const player = playersAdapter
+    .getSelectors()
+    .selectById(state.players, playerId)!;
+
+  const victoryPositions = GameInitUtil.getVictoryPositions(
+    state.config,
+    player.playDirection,
+  );
+
+  console.log(victoryPositions);
+  for (const nodeId of victoryPositions) {
+    const node = state.gameState.entities[nodeId]!;
+
+    if (node.owningPlayerId === undefined) {
+      return false;
+    }
+
+    if (node.owningPlayerId !== playerId) {
+      return false;
+    }
+
+    if (node.type !== NodeTypeTS.PIECE && node.type !== NodeTypeTS.SELECTED) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 function deselectAnyPiece(state: GameInstanceState) {
   const selectedNode = getSelectedNode(state);

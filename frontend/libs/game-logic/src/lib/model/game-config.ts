@@ -6,6 +6,7 @@ export interface GameConfig {
   width: number;
   height: number;
   cornerSize: number;
+  hasRotatingBoard: boolean;
 }
 
 export class GameConfigUtil {
@@ -16,6 +17,7 @@ export class GameConfigUtil {
       height: 0,
       width: 0,
       playersId: [],
+      hasRotatingBoard: false,
     };
   }
 }
