@@ -1,12 +1,9 @@
-import {GameBoard, StepCounter, VictoryDialog} from 'ui';
+import { StandardPageLayout, GameBoard, StepCounter, VictoryDialog } from 'ui';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchGameInstance,
-  gameInstanceActions,
-  selectIsWon,
-} from 'game-logic';
+import { fetchGameInstance, selectIsWon } from 'game-logic';
 import { AppDispatch } from '../../../../../src/main';
 import { useEffect, useRef } from 'react';
+import EndTurnButton from '../end-turn-button/end-turn-button';
 
 export interface SoloPlayProps {}
 
@@ -16,7 +13,6 @@ export function SoloPlay(props: SoloPlayProps) {
   const isWon = useSelector(selectIsWon);
 
   const modal = useRef<HTMLDialogElement>(null);
-  // const stepCounter = useSelector(selectStepCounter);
 
   useEffect(() => {
     if (isWon) {
@@ -30,37 +26,32 @@ export function SoloPlay(props: SoloPlayProps) {
   }, []);
 
   const onCreateGame = async () => {
-    await dispatch(
-      fetchGameInstance(),
-    );
+    await dispatch(fetchGameInstance());
   };
 
   return (
-    <div>
-      <VictoryDialog modal={modal}/>
-      <div className="grid grid-cols-3 mt-10 items-center">
-        <div></div>
-        <div className="grid justify-center text-center">
-          <h1 className="mb-10 font-bold text-2xl">Welcome to SoloPlay!</h1>
-          <GameBoard />
-        </div>
-        <div className="flex flex-wrap items-center justify-center flex-col p-4">
-          <button
-            className="btn mb-4 btn-outline"
-            onClick={() => onCreateGame()}
-          >
-            Reset
-          </button>
-          <button
-            className="btn btn-outline"
-            onClick={() => dispatch(gameInstanceActions.nextTurn())}
-          >
-            End Turn
-          </button>
-          <StepCounter />
+    <StandardPageLayout>
+      <div>
+        <VictoryDialog modal={modal} />
+        <div className="grid grid-cols-3 mt-10 items-center">
+          <div></div>
+          <div className="grid justify-center text-center">
+            <h1 className="mb-10 font-bold text-2xl">Welcome to SoloPlay!</h1>
+            <GameBoard />
+          </div>
+          <div className="flex flex-wrap items-center justify-center flex-col p-4">
+            <button
+              className="btn mb-4 btn-outline"
+              onClick={() => onCreateGame()}
+            >
+              Reset
+            </button>
+            <EndTurnButton />
+            <StepCounter />
+          </div>
         </div>
       </div>
-    </div>
+    </StandardPageLayout>
   );
 }
 

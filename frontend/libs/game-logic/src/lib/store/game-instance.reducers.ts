@@ -13,6 +13,11 @@ import { getValidMoves } from '../move-logic.util';
 import { GameInitUtil } from '../game-init.util';
 
 const nextTurn = (state: GameInstanceState) => {
+  // Ensure we moved before going to the next turn
+  if (state.currentMove.lastMovedNodeId === undefined) {
+    return;
+  }
+
   const player = playersAdapter
     .getSelectors()
     .selectById(state.players, state.currentMove.playerIdToMove)!;
@@ -58,6 +63,16 @@ const clickPiece = (
   } else {
     // Deselect potentially previously selected piece
     deselectAnyPiece(state);
+
+    // If we have moved in this turn and click on a different piece, end the turn
+    if (state.currentMove.lastMovedNodeId !== undefined && state.currentMove.lastMovedNodeId !== node.id) {
+      nextTurn(state);
+
+      // If it's not our turn, exit out, otherwise select the clicked node
+      if (state.currentMove.playerIdToMove !== node.owningPlayerId) {
+        return;
+      }
+    }
 
     // Select the clicked node
     setNodeAsSelected(node.id, node.owningPlayerId, state);
