@@ -14,6 +14,7 @@ export function Home(props: HomeProps) {
               <h2 className="mt-40 text-center">
                 Halma42 is a free, open source Halma platform.
               </h2>
+              <span>Constributions welcome: </span><a target={"_blank"} href="https://github.com/dobler-it/Halma">GitHub</a>
             </div>
             <button
               className="btn btn-outline btn-block max-w-lg mt-40"
