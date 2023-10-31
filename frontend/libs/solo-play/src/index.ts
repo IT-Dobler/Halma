@@ -1,1 +1,1 @@
-export * from './lib/solo-play';
+export * from './lib/solo-play-page/solo-play';
