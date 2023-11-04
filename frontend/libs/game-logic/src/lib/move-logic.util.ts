@@ -4,10 +4,11 @@ import {
   MoveType,
   playersAdapter,
 } from 'game-logic';
-import { PositionTS, PositionUtil } from './model/position';
+import { PositionTS } from './model/position';
 import { PlayDirection } from './model/play-direction';
 import { NodeEntity } from './model/node-entity';
 import { NodeTypeTS } from './model/node-type';
+import { PositionUtil } from './position-util';
 
 export function getValidMoves(nodeId: string, state: GameInstanceState) {
   // If we had previously shifted, no more moves are allowed
@@ -62,17 +63,25 @@ export function getValidMoves(nodeId: string, state: GameInstanceState) {
     .selectById(state.players, node.owningPlayerId!)!;
 
   switch (player.playDirection) {
-    case PlayDirection.BOTTOM_TO_TOP: // No "down" moves allowed
-      possibleDestinations = possibleDestinations.filter((p) => p.row >= row);
+    case PlayDirection.BOTTOM_TO_TOP: // No "down shift" allowed
+      possibleDestinations = possibleDestinations.filter(
+        (p) => p.row !== row - 1,
+      );
       break;
-    case PlayDirection.TOP_TO_BOTTOM: // No "up" moves allowed
-      possibleDestinations = possibleDestinations.filter((p) => p.row <= row);
+    case PlayDirection.TOP_TO_BOTTOM: // No "up shift" moves allowed
+      possibleDestinations = possibleDestinations.filter(
+        (p) => p.row !== row + 1,
+      );
       break;
-    case PlayDirection.RIGHT_TO_LEFT: // No "right" moves allowed
-      possibleDestinations = possibleDestinations.filter((p) => p.col <= col);
+    case PlayDirection.RIGHT_TO_LEFT: // No "right shift" allowed
+      possibleDestinations = possibleDestinations.filter(
+        (p) => p.col !== col + 1,
+      );
       break;
-    case PlayDirection.LEFT_TO_RIGHT: // No "left" moves allowed
-      possibleDestinations = possibleDestinations.filter((p) => p.col >= col);
+    case PlayDirection.LEFT_TO_RIGHT: // No "left shift" allowed
+      possibleDestinations = possibleDestinations.filter(
+        (p) => p.col !== col - 1,
+      );
       break;
   }
 
@@ -141,7 +150,16 @@ export function isMovePossible(
       PositionUtil.toPosition(nodeId),
       dest,
     );
-    return isPiece(inBetweenPosition);
+
+    if (isPiece(inBetweenPosition)) {
+      // It is not allowed to jump across the "safe" corners. Since the positions in the corners of the starting positions
+      // are still reachable from different angles, we cannot filter the target node straight away, but need to do it here
+      // where we know that it's a jumping move, across a piece in the "safe" corner.
+
+      // So, if it's a jump over a safe corner, deny it. Otherwise, ok.
+      return PositionUtil.isCornerPosition(state.config, inBetweenPosition);
+    }
+    return false;
   }
 
   // Otherwise we did an unblocked orthogonal shift (not jump!) within bounds, hence valid.

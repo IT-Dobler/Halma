@@ -27,7 +27,8 @@ import {
   getGameStateState,
   getPlayersState,
 } from './game-instance.states';
-import {GameTypeTS} from "../model/game-type";
+import { GameTypeTS } from '../model/game-type';
+import { PositionUtil } from '../position-util';
 
 export const GAME_INSTANCE_FEATURE_KEY = 'gameInstance';
 
@@ -75,10 +76,9 @@ export const fetchGameInstance = createAsyncThunk(
       // width has a max of 26, otherwise we run out of Alphabet. SHOULD never be relevant.
       width: 11,
       gameType: GameTypeTS.CLAUDIO,
-      playersId: ['1'],
+      playersId: ['1', '2', '3', '4'],
       hasRotatingBoard: false,
     };
-
 
     /**
      * Replace this with your custom fetch call.
@@ -232,6 +232,17 @@ export const selectCurrentMove = createSelector(
   [getCurrentMoveState],
   (state) => state,
 );
+
+export const selectCanEndTurn = createSelector(
+  [getGameInstanceState],
+  (state) =>
+    state.currentMove.lastMovedNodeId !== undefined &&
+    !PositionUtil.getNoParkingNodeIds(
+      state.config,
+      state.currentMove.playDirection,
+    ).includes(state.currentMove.lastMovedNodeId),
+);
+
 export const selectGameConfig = createSelector(
   [getGameConfigState],
   (state) => state,

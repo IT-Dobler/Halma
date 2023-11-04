@@ -1,10 +1,9 @@
 import { NodeTypeTS } from './model/node-type';
-import { PositionUtil } from './model/position';
 import { EntityId } from '@reduxjs/toolkit';
 import { GameConfig } from './model/game-config';
 import { NodeEntity } from './model/node-entity';
 import { PlayerEntity } from './model/player-entity';
-import {directionsOfPlay, PlayDirection} from "./model/play-direction";
+import {PositionUtil} from "./position-util";
 
 export class GameInitUtil {
   public static initBoard(config: GameConfig): Record<EntityId, NodeEntity> {
@@ -136,45 +135,6 @@ export class GameInitUtil {
         setPlayerNode(nodes[id2], players[3]);
       }
     }
-  }
-
-  private static getStartingPositions(config: GameConfig, playDirection: PlayDirection): string[] {
-    const positions = [];
-    switch (playDirection) {
-      case PlayDirection.BOTTOM_TO_TOP:
-        for (
-          let col = config.cornerSize;
-          col < config.width - config.cornerSize;
-          col++
-        ) {
-          const id1 = PositionUtil.toString({ row: 0, col });
-          positions.push(id1);
-
-          const id2 = PositionUtil.toString({ row: 1, col });
-          positions.push(id2);
-        }
-        return positions;
-      case PlayDirection.TOP_TO_BOTTOM:
-        const zeroAdjustedHeight = config.height - 1;
-        for (
-            let col = config.cornerSize;
-            col < config.width - config.cornerSize;
-            col++
-        ) {
-          const id1 = PositionUtil.toString({ row: zeroAdjustedHeight, col });
-          positions.push(id1);
-
-          const id2 = PositionUtil.toString({ row: zeroAdjustedHeight - 1, col });
-          positions.push(id2);
-        }
-        return positions;
-    }
-    return [];
-  }
-
-  public static getVictoryPositions(config: GameConfig, playDirection: PlayDirection): string[] {
-    const indexOf = directionsOfPlay.indexOf(playDirection);
-    return GameInitUtil.getStartingPositions(config, directionsOfPlay[(indexOf + 2) % directionsOfPlay.length]);
   }
 }
 

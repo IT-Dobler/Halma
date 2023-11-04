@@ -1,4 +1,4 @@
-import { gameInstanceActions, selectCurrentMove } from 'game-logic';
+import { gameInstanceActions, selectCanEndTurn } from 'game-logic';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../../../../src/main';
 
@@ -7,10 +7,10 @@ export interface EndTurnButtonProps {}
 
 export function EndTurnButton(props: EndTurnButtonProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const currentMove = useSelector(selectCurrentMove);
+  const canEndTurn = useSelector(selectCanEndTurn);
   return (
     <button
-      disabled={currentMove.lastMovedNodeId === undefined}
+      disabled={!canEndTurn}
       className="btn btn-outline"
       onClick={() => dispatch(gameInstanceActions.nextTurn())}
     >

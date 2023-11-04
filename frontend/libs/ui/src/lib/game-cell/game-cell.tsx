@@ -25,7 +25,7 @@ export function GameCell(props: GameCellProps) {
   let content;
   switch (node.type) {
     case NodeTypeTS.EMPTY:
-      content = <div className="rounded-full h-8 w-8 bg-gray-500"></div>;
+      content = <div className="rounded-full h-4 w-4 bg-gray-500"></div>;
       break;
     case NodeTypeTS.BLOCKED:
       break;
