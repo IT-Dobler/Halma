@@ -76,7 +76,7 @@ export const fetchGameInstance = createAsyncThunk(
       // width has a max of 26, otherwise we run out of Alphabet. SHOULD never be relevant.
       width: 11,
       gameType: GameTypeTS.CLAUDIO,
-      playersId: ['1', '2', '3', '4'],
+      playersId: ['1'],
       hasRotatingBoard: false,
     };
 
@@ -215,12 +215,15 @@ export const gameInstanceActions = gameInstanceSlice.actions;
 const { selectIds, selectById } = gameStateAdapter.getSelectors();
 
 const _selectPlayerById = playersAdapter.getSelectors().selectById;
-
 // Memoized selectors
 export const selectAllGameStateIds = createSelector(
   getGameStateState,
   selectIds,
 );
+export const selectAllPlayerIds = createSelector(
+    getPlayersState,
+    playersAdapter.getSelectors().selectIds
+)
 export const selectNodeById = (id: EntityId) =>
   createSelector([getGameStateState], (state) => selectById(state, id));
 
@@ -240,7 +243,9 @@ export const selectCanEndTurn = createSelector(
     !PositionUtil.getNoParkingNodeIds(
       state.config,
       state.currentMove.playDirection,
-    ).includes(state.currentMove.lastMovedNodeId),
+    ).includes(state.currentMove.lastMovedNodeId) &&
+    state.currentMove.initiallySelectedNodeId !==
+      state.currentMove.lastMovedNodeId,
 );
 
 export const selectGameConfig = createSelector(

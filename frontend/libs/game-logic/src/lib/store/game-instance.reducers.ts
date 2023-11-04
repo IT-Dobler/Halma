@@ -10,6 +10,7 @@ import { NodeTypeTS } from '../model/node-type';
 import { NodeEntity } from '../model/node-entity';
 import { getValidMoves } from '../move-logic.util';
 import { PositionUtil } from '../position-util';
+import { CurrentMoveUtil } from '../current-move-util';
 
 /**
  * Like most functions, it assumes "honest" input.
@@ -19,8 +20,7 @@ const nextTurn = (state: GameInstanceState) => {
     .getSelectors()
     .selectById(state.players, state.currentMove.playerIdToMove)!;
 
-  deselectAnyPiece(state);
-  clearPossibleMoves(state);
+  clearSelectionAndPossibleMoves(state);
   incrementStepCounter(state);
 
   const indexOf = directionsOfPlay.indexOf(player?.playDirection);
@@ -53,52 +53,46 @@ const clickPiece = (
     return;
   }
 
-  // Check whether we are clicking on already selected node, deselect
+  // Check whether we are clicking on already selected node
   if (node.type === NodeTypeTS.SELECTED) {
-    deselectPiece(node, state);
-    clearPossibleMoves(state);
-  } else {
-    // If we have moved in this turn and click on a different piece, end the turn
-    if (
-      state.currentMove.lastMovedNodeId !== undefined &&
-      state.currentMove.lastMovedNodeId !== node.id
-    ) {
-      // It is not allowed to end ones turn in the starting positions of the perpendicular players
-      if (isInParkingPosition(node, state)) {
-        return;
-      }
-
-      clearPossibleMoves(state);
-      // Deselect potentially previously selected piece
-      deselectAnyPiece(state);
-
-      // TODO Also check that we actually changed something in our position.
-      if (state.currentMove.lastMovedNodeId !== state.currentMove.initiallySelectedNodeId) {
-        nextTurn(state);
-
-        // If it's not our turn, exit out, otherwise select the clicked node
-        if (state.currentMove.playerIdToMove !== node.owningPlayerId) {
-          return;
-        }
-      }
-
-      // We moved back to where we started, reset current move.
-      state.currentMove.moveType = undefined;
-      state.currentMove.lastMovedNodeId = undefined;
-
+    // Prevent de-select if there has been movement
+    if (state.currentMove.initiallySelectedNodeId !== node.id) {
+      return;
     }
 
-    clearPossibleMoves(state);
-    // Deselect potentially previously selected piece
-    deselectAnyPiece(state);
-
-    // Select the clicked node
-    setNodeAsSelected(node.id, node.owningPlayerId, state);
-
-    state.currentMove.initiallySelectedNodeId = node.id;
-
-    getAndSetPossibleMoves(node.id, state);
+    clearSelectionAndPossibleMoves(state);
+    return;
   }
+
+  // If we have moved in this turn and click on a different piece, end the turn
+  if (CurrentMoveUtil.hasMoved(state.currentMove)) {
+    // It is not allowed to end the turn in the starting positions of the perpendicular players
+    if (isInParkingPosition(node, state)) {
+      return;
+    }
+
+    // Check that we actually changed something in our position.
+    if (CurrentMoveUtil.hasProgressed(state.currentMove)) {
+      nextTurn(state);
+
+      // If it's not our turn, exit out, otherwise select the clicked node
+      if (state.currentMove.playerIdToMove !== node.owningPlayerId) {
+        return;
+      }
+    }
+
+    // No progress: Reset current move type
+    state.currentMove.moveType = undefined;
+    state.currentMove.lastMovedNodeId = undefined;
+  }
+
+  clearSelectionAndPossibleMoves(state);
+
+  setNodeAsSelected(node.id, node.owningPlayerId, state);
+
+  state.currentMove.initiallySelectedNodeId = node.id;
+
+  getAndSetPossibleMoves(node.id, state);
 };
 
 const clickDestination = (
@@ -113,7 +107,6 @@ const clickDestination = (
 
   // Clear our previously selected piece
   resetNode(selectedNode, state);
-
   clearPossibleMoves(state);
 
   // Select new piece
@@ -121,12 +114,15 @@ const clickDestination = (
 
   setCurrentMove(selectedNode.id, action.payload, state);
 
-  // TODO Refactor this...
+  // If we returned to the initial starting position, consider it an "undone" move and allow all options again.
+  if (state.currentMove.initiallySelectedNodeId === action.payload) {
+    state.currentMove.moveType = undefined;
+  }
+
   if (hasWon(selectedNode.owningPlayerId!, state)) {
-    deselectAnyPiece(state);
-    clearPossibleMoves(state);
-    state.isWon = true;
+    clearSelectionAndPossibleMoves(state);
     incrementStepCounter(state);
+    state.isWon = true;
     return;
   }
 
@@ -176,6 +172,11 @@ function hasWon(playerId: string, state: GameInstanceState): boolean {
   return true;
 }
 
+function clearSelectionAndPossibleMoves(state: GameInstanceState) {
+  clearPossibleMoves(state);
+  deselectAnyPiece(state);
+}
+
 function deselectAnyPiece(state: GameInstanceState) {
   const selectedNode = getSelectedNode(state);
 
@@ -187,10 +188,10 @@ function deselectAnyPiece(state: GameInstanceState) {
 function setPossibleMovesOrNextTurn(startId: string, state: GameInstanceState) {
   const validNodesId = getValidMoves(startId, state);
 
-  // We've moved with a piece and ran out of possible moves -> Next turn
+  // If we have shifted -> next turn.
   if (
     state.currentMove.lastMovedNodeId !== undefined &&
-    validNodesId.length === 0
+    state.currentMove.moveType === MoveType.SHIFT
   ) {
     nextTurn(state);
   } else {

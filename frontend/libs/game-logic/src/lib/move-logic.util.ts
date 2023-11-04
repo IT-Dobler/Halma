@@ -11,11 +11,6 @@ import { NodeTypeTS } from './model/node-type';
 import { PositionUtil } from './position-util';
 
 export function getValidMoves(nodeId: string, state: GameInstanceState) {
-  // If we had previously shifted, no more moves are allowed
-  if (state.currentMove.moveType === MoveType.SHIFT) {
-    return [];
-  }
-
   const { row, col } = PositionUtil.toPosition(nodeId);
 
   // Valid jumps
@@ -45,12 +40,11 @@ export function getValidMoves(nodeId: string, state: GameInstanceState) {
   let possibleDestinations: PositionTS[] = [];
 
   // If this node has previously moved, only allow further movement with this node
-  if (
-    state.currentMove.moveType === MoveType.JUMP &&
-    state.currentMove.lastMovedNodeId === nodeId
-  ) {
+  if (state.currentMove.moveType === MoveType.JUMP) {
     possibleDestinations.push(...JUMP_DESTINATIONS);
-  } else if (state.currentMove.lastMovedNodeId === undefined) {
+  } else if (state.currentMove.moveType === MoveType.SHIFT) {
+    possibleDestinations.push(...SHIFT_DESTINATIONS);
+  } else if (state.currentMove.moveType === undefined) {
     // No move made yet, all options available
     possibleDestinations.push(...JUMP_DESTINATIONS, ...SHIFT_DESTINATIONS);
   }
