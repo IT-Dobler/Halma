@@ -118,7 +118,7 @@ export function SettingsDialog(props: SettingsDialogProps) {
                 Board size
               </option>
               <option value={5}>2 Pieces (EXPERIMENTAL)</option>
-              <option value={8}>4 Pieces</option>
+              <option value={8}>8 Pieces</option>
               <option value={9}>10 Pieces</option>
               <option value={11}>14 Pieces</option>
             </select>
