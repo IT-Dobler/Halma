@@ -136,6 +136,16 @@ export class GameInitUtil {
       }
     }
   }
+
+  public static getPlayerName(index: number): string {
+    const PLAYER_NAMES = [
+        "Yellow",
+        "Red",
+        "Blue",
+        "Green"
+    ];
+    return PLAYER_NAMES[index];
+  }
 }
 
 function setPlayerNode(node: NodeEntity, player: PlayerEntity) {

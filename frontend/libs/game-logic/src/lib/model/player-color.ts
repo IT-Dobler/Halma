@@ -1,8 +1,8 @@
 export enum PlayerColor {
-  YELLOW = 'bg-yellow-400',
-  RED = 'bg-red-400',
-  BLUE = 'bg-blue-400',
-  GREEN = 'bg-green-400',
+  YELLOW = 'bg-[#F9CA24]',
+  RED = 'bg-[#EB4D4B]',
+  BLUE = 'bg-[#4834D4]',
+  GREEN = 'bg-[#6AB04C]',
 }
 
 export const playerColors: PlayerColor[] = [

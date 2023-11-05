@@ -2,9 +2,7 @@
 import { StandardPageLayout } from 'ui';
 import { Link } from 'wouter';
 
-export interface HomeProps {}
-
-export function Home(props: HomeProps) {
+export function Home() {
   return (
     <StandardPageLayout>
       <div>
@@ -14,14 +12,22 @@ export function Home(props: HomeProps) {
               <h2 className="mt-40 text-center">
                 Halma42 is a free, open source Halma platform.
               </h2>
-              <span>Constributions welcome: </span><a target={"_blank"} href="https://github.com/dobler-it/Halma">GitHub</a>
+              <span>Contributions welcome: </span>
+              <a target={'_blank'} href="https://github.com/dobler-it/Halma">
+                GitHub
+              </a>
             </div>
-            <button
-              className="btn btn-outline btn-block max-w-lg mt-40"
-              disabled={true}
+            <div
+              className="tooltip btn-block max-w-lg mt-40"
+              data-tip="Coming Soon!"
             >
-              DONATE
-            </button>
+              <button
+                className="btn btn-outline btn-block max-w-lg"
+                disabled={true}
+              >
+                DONATE
+              </button>
+            </div>
           </div>
           <div className="flex items-center flex-col justify-between">
             <Link href={'/solo-play'}>
@@ -29,18 +35,28 @@ export function Home(props: HomeProps) {
                 PLAY
               </button>
             </Link>
-            <button
-              className="btn btn-outline btn-block max-w-lg"
-              disabled={true}
+            <div
+              className="tooltip btn-block max-w-lg"
+              data-tip="Coming Soon(TM)!"
             >
-              PLAY WITH A FRIEND
-            </button>
-            <button
-              className="btn btn-outline btn-block max-w-lg"
-              disabled={true}
+              <button
+                className="btn btn-outline btn-block max-w-lg"
+                disabled={true}
+              >
+                PLAY WITH A FRIEND
+              </button>
+            </div>
+            <div
+              className="tooltip btn-block max-w-lg"
+              data-tip="Hopefully one day..."
             >
-              PLAY WITH THE COMPUTER
-            </button>
+              <button
+                className="btn btn-outline btn-block max-w-lg"
+                disabled={true}
+              >
+                PLAY WITH THE COMPUTER
+              </button>
+            </div>
           </div>
         </div>
       </div>

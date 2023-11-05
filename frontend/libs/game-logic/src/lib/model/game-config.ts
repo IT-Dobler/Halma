@@ -7,17 +7,19 @@ export interface GameConfig {
   height: number;
   cornerSize: number;
   hasRotatingBoard: boolean;
+  showPossibleMoves: boolean
 }
 
 export class GameConfigUtil {
   public static getInitialState(): GameConfig {
     return {
+      cornerSize: 2,
+      height: 11,
+      width: 11,
       gameType: GameTypeTS.CLAUDIO,
-      cornerSize: 0,
-      height: 0,
-      width: 0,
-      playersId: [],
+      playersId: ['1'],
       hasRotatingBoard: false,
+      showPossibleMoves: true
     };
   }
 }

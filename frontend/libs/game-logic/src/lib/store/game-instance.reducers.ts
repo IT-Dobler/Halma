@@ -129,6 +129,10 @@ const clickDestination = (
   setPossibleMovesOrNextTurn(action.payload, state);
 };
 
+const instructionsShown = (state: GameInstanceState) => {
+  state.showInstructions = false;
+}
+
 function isInParkingPosition(
   node: NodeEntity,
   state: GameInstanceState,
@@ -288,4 +292,5 @@ export const gameInstanceReducers = {
   nextTurn,
   clickPiece,
   clickDestination,
+  instructionsShown,
 };

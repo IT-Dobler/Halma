@@ -27,7 +27,6 @@ import {
   getGameStateState,
   getPlayersState,
 } from './game-instance.states';
-import { GameTypeTS } from '../model/game-type';
 import { PositionUtil } from '../position-util';
 
 export const GAME_INSTANCE_FEATURE_KEY = 'gameInstance';
@@ -41,6 +40,7 @@ export interface GameInstanceState {
 
   isWon: boolean;
   stepCounter: number; // TODO Only a rudimentary first "stat", big overhaul coming
+  showInstructions: boolean;
 
   loadingStatus: 'not loaded' | 'loading' | 'loaded' | 'error';
   error?: string | null;
@@ -68,18 +68,7 @@ export const playersAdapter = createEntityAdapter<PlayerEntity>();
  */
 export const fetchGameInstance = createAsyncThunk(
   'gameInstance/fetchStatus',
-  async () => {
-    // Default settings TODO obviously needs work :)
-    const config: GameConfig = {
-      cornerSize: 2,
-      height: 11,
-      // width has a max of 26, otherwise we run out of Alphabet. SHOULD never be relevant.
-      width: 11,
-      gameType: GameTypeTS.CLAUDIO,
-      playersId: ['1'],
-      hasRotatingBoard: false,
-    };
-
+  async (config: GameConfig) => {
     /**
      * Replace this with your custom fetch call.
      * For example, `return myApi.getGameInstances()`;
@@ -93,6 +82,7 @@ export const fetchGameInstance = createAsyncThunk(
         id: id,
         color: playerColors[i],
         playDirection: directionOfInit[i],
+        displayName: id,
       });
     }
 
@@ -130,6 +120,9 @@ export const initialGameInstanceState: GameInstanceState = {
 
   isWon: false,
   stepCounter: 0,
+  // TODO Eventually we would probably want this to be saved as a user setting or remove it all together once the
+  //  "learn" tab is available
+  showInstructions: true,
 
   loadingStatus: 'not loaded',
   error: null,
@@ -144,6 +137,7 @@ export const gameInstanceSlice = createSlice({
     clickPiece: gameInstanceReducers.clickPiece,
     clickDestination: gameInstanceReducers.clickDestination,
     nextTurn: gameInstanceReducers.nextTurn,
+    instructionsShown: gameInstanceReducers.instructionsShown,
   },
   extraReducers: (builder) => {
     builder
@@ -221,9 +215,15 @@ export const selectAllGameStateIds = createSelector(
   selectIds,
 );
 export const selectAllPlayerIds = createSelector(
-    getPlayersState,
-    playersAdapter.getSelectors().selectIds
-)
+  getPlayersState,
+  playersAdapter.getSelectors().selectIds,
+);
+
+export const selectAllPlayerEntities = createSelector(
+  getPlayersState,
+  playersAdapter.getSelectors().selectEntities,
+);
+
 export const selectNodeById = (id: EntityId) =>
   createSelector([getGameStateState], (state) => selectById(state, id));
 
@@ -240,10 +240,10 @@ export const selectCanEndTurn = createSelector(
   [getGameInstanceState],
   (state) =>
     state.currentMove.lastMovedNodeId !== undefined &&
-    !PositionUtil.getNoParkingNodeIds(
+      (!PositionUtil.getNoParkingNodeIds(
       state.config,
       state.currentMove.playDirection,
-    ).includes(state.currentMove.lastMovedNodeId) &&
+    ).includes(state.currentMove.lastMovedNodeId) || state.config.width === 5) &&
     state.currentMove.initiallySelectedNodeId !==
       state.currentMove.lastMovedNodeId,
 );
@@ -256,6 +256,11 @@ export const selectGameConfig = createSelector(
 export const selectIsWon = createSelector(
   getGameInstanceState,
   (state) => state.isWon,
+);
+
+export const selectShowInstructions = createSelector(
+  getGameInstanceState,
+  (state) => state.showInstructions,
 );
 
 export const selectStepCounter = createSelector(

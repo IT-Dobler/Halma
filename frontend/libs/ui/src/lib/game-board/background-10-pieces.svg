@@ -1,0 +1,53 @@
+<svg width="450" height="450" viewBox="0 0 450 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <polygon points="100,0 350,0 350,50 400,50 400,100 450,100 450,350 400,350 400,400 350,400 350,450 100,450 100,400 50,400 50,350 0,350 0,100 50,100 50,50 100,50" fill="#7ED6DF" />
+
+    <!-- Vertical lines left to right -->
+    <line x1="25" y1="125" x2="25" y2="325" stroke="#95AFC0" />
+    <line x1="75" y1="75" x2="75" y2="375" stroke="#95AFC0" />
+    <line x1="125" y1="25" x2="125" y2="425" stroke="#95AFC0" />
+    <line x1="175" y1="25" x2="175" y2="425" stroke="#95AFC0" />
+    <line x1="225" y1="25" x2="225" y2="425" stroke="#95AFC0" />
+    <line x1="275" y1="25" x2="275" y2="425" stroke="#95AFC0" />
+    <line x1="325" y1="25" x2="325" y2="425" stroke="#95AFC0" />
+    <line x1="375" y1="75" x2="375" y2="375" stroke="#95AFC0" />
+    <line x1="425" y1="125" x2="425" y2="325" stroke="#95AFC0" />
+
+    <!-- Horizontal lines, top to bottom -->
+    <line x1="125" y1="25" x2="325" y2="25" stroke="#95AFC0" />
+    <line x1="75" y1="75" x2="375" y2="75" stroke="#95AFC0" />
+    <line x1="25" y1="125" x2="425" y2="125" stroke="#95AFC0" />
+    <line x1="25" y1="175" x2="425" y2="175" stroke="#95AFC0" />
+    <line x1="25" y1="225" x2="425" y2="225" stroke="#95AFC0" />
+    <line x1="25" y1="275" x2="425" y2="275" stroke="#95AFC0" />
+    <line x1="25" y1="325" x2="425" y2="325" stroke="#95AFC0" />
+    <line x1="75" y1="375" x2="375" y2="375" stroke="#95AFC0" />
+    <line x1="125" y1="425" x2="325" y2="425" stroke="#95AFC0" />
+
+    <!-- Diagonal lines left to right, bottom to top-->
+    <line x1="25" y1="275" x2="175" y2="425" stroke="#95AFC0"/>
+    <line x1="25" y1="225" x2="225" y2="425" stroke="#95AFC0"/>
+    <line x1="25" y1="175" x2="275" y2="425" stroke="#95AFC0"/>
+    <line x1="25" y1="125" x2="325" y2="425" stroke="#95AFC0"/>
+    <line x1="75" y1="125" x2="325" y2="375" stroke="#95AFC0"/>
+    <line x1="75" y1="75" x2="375" y2="375" stroke="#95AFC0"/>
+    <line x1="125" y1="75" x2="375" y2="325" stroke="#95AFC0"/>
+    <line x1="125" y1="25" x2="425" y2="325" stroke="#95AFC0"/>
+    <line x1="175" y1="25" x2="425" y2="275" stroke="#95AFC0"/>
+    <line x1="225" y1="25" x2="425" y2="225" stroke="#95AFC0"/>
+    <line x1="275" y1="25" x2="425" y2="175" stroke="#95AFC0"/>
+
+    <!-- Diagonal lines right to left, bottom to top-->
+
+    <line x1="425" y1="275" x2="275" y2="425" stroke="#95AFC0"/>
+    <line x1="425" y1="225" x2="225" y2="425" stroke="#95AFC0"/>
+    <line x1="425" y1="175" x2="175" y2="425" stroke="#95AFC0"/>
+    <line x1="425" y1="125" x2="125" y2="425" stroke="#95AFC0"/>
+    <line x1="375" y1="125" x2="125" y2="375" stroke="#95AFC0"/>
+    <line x1="375" y1="75" x2="75" y2="375" stroke="#95AFC0"/>
+    <line x1="325" y1="75" x2="75" y2="325" stroke="#95AFC0"/>
+    <line x1="325" y1="25" x2="25" y2="325" stroke="#95AFC0"/>
+    <line x1="275" y1="25" x2="25" y2="275" stroke="#95AFC0"/>
+    <line x1="225" y1="25" x2="25" y2="225" stroke="#95AFC0"/>
+    <line x1="175" y1="25" x2="25" y2="175" stroke="#95AFC0"/>
+</svg>

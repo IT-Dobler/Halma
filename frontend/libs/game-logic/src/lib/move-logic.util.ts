@@ -55,27 +55,108 @@ export function getValidMoves(nodeId: string, state: GameInstanceState) {
   const player = playersAdapter
     .getSelectors()
     .selectById(state.players, node.owningPlayerId!)!;
-
+  const config = state.config;
   switch (player.playDirection) {
-    case PlayDirection.BOTTOM_TO_TOP: // No "down shift" allowed
+    case PlayDirection.BOTTOM_TO_TOP:
+      // No "down shift" allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.row !== row - 1,
       );
+
+      // TODO refactor and think about this again...
+      // Filters out moves that would shift the node into no parking zones.
+      if (config.width === 5) {
+        break; // Exit early for the smallest map
+      }
+      possibleDestinations = possibleDestinations.filter((p) => {
+        if (p.col === col + 1 || p.col === col - 1 || p.row === row + 1) {
+          if (
+            PositionUtil.getNoParkingNodeIds(
+              config,
+              PlayDirection.BOTTOM_TO_TOP,
+            ).includes(PositionUtil.toString(p))
+          ) {
+            return false;
+          }
+        }
+        return true;
+      });
+
       break;
     case PlayDirection.TOP_TO_BOTTOM: // No "up shift" moves allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.row !== row + 1,
       );
+
+      // TODO refactor and think about this again...
+      // Filters out moves that would shift the node into no parking zones.
+      if (config.width === 5) {
+        break; // Exit early for the smallest map
+      }
+      possibleDestinations = possibleDestinations.filter((p) => {
+        if (p.col === col + 1 || p.col === col - 1 || p.row === row - 1) {
+          if (
+            PositionUtil.getNoParkingNodeIds(
+              config,
+              PlayDirection.TOP_TO_BOTTOM,
+            ).includes(PositionUtil.toString(p))
+          ) {
+            return false;
+          }
+        }
+        return true;
+      });
+
       break;
     case PlayDirection.RIGHT_TO_LEFT: // No "right shift" allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.col !== col + 1,
       );
+
+      // TODO refactor and think about this again...
+      // Filters out moves that would shift the node into no parking zones.
+      if (config.width === 5) {
+        break; // Exit early for the smallest map
+      }
+      possibleDestinations = possibleDestinations.filter((p) => {
+        if (p.row === row + 1 || p.row === row - 1 || p.col === col - 1) {
+          if (
+            PositionUtil.getNoParkingNodeIds(
+              config,
+              PlayDirection.RIGHT_TO_LEFT,
+            ).includes(PositionUtil.toString(p))
+          ) {
+            return false;
+          }
+        }
+        return true;
+      });
+
       break;
     case PlayDirection.LEFT_TO_RIGHT: // No "left shift" allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.col !== col - 1,
       );
+
+      // TODO refactor and think about this again...
+      // Filters out moves that would shift the node into no parking zones.
+      if (config.width === 5) {
+        break; // Exit early for the smallest map
+      }
+      possibleDestinations = possibleDestinations.filter((p) => {
+        if (p.row === row + 1 || p.row === row - 1 || p.col === col + 1) {
+          if (
+            PositionUtil.getNoParkingNodeIds(
+              config,
+              PlayDirection.LEFT_TO_RIGHT,
+            ).includes(PositionUtil.toString(p))
+          ) {
+            return false;
+          }
+        }
+        return true;
+      });
+
       break;
   }
 
@@ -146,6 +227,10 @@ export function isMovePossible(
     );
 
     if (isPiece(inBetweenPosition)) {
+      if (state.config.width === 5) {
+        return true; // Exit early for the smallest map
+      }
+
       // It is not allowed to jump across the "safe" corners. Since the positions in the corners of the starting positions
       // are still reachable from different angles, we cannot filter the target node straight away, but need to do it here
       // where we know that it's a jumping move, across a piece in the "safe" corner.
