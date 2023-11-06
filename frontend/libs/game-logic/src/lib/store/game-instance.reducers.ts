@@ -32,6 +32,16 @@ const nextTurn = (state: GameInstanceState) => {
     );
 
     if (nextPlayer) {
+      /**
+       * If the next player has already won, we want to skip him, but not before incrementing the stepCounter
+       * In the current system this is needed to ensure correct display of the steps for the remaining players.
+       * This will fail with end-game statistics or generally anything that needs per player stats
+       */
+      if (nextPlayer.hasWon) {
+        incrementStepCounter(state);
+        continue;
+      }
+
       state.currentMove.playerIdToMove = nextPlayer.id;
       state.currentMove.playDirection = nextPlayer.playDirection; // TODO This is redundant I think, could remove..
       state.currentMove.moveType = undefined;
@@ -122,7 +132,7 @@ const clickDestination = (
   if (hasWon(selectedNode.owningPlayerId!, state)) {
     clearSelectionAndPossibleMoves(state);
     incrementStepCounter(state);
-    state.isWon = true;
+    setWonAndVictoryDialogState(selectedNode.owningPlayerId!, state);
     return;
   }
 
@@ -131,6 +141,30 @@ const clickDestination = (
 
 const instructionsShown = (state: GameInstanceState) => {
   state.showInstructions = false;
+};
+
+const continuePlay = (state: GameInstanceState) => {
+  state.victoryDialog.text = undefined;
+  nextTurn(state);
+};
+
+function setWonAndVictoryDialogState(
+  winningPlayerId: string,
+  state: GameInstanceState,
+) {
+  const playerEntity = state.players.entities[winningPlayerId]!;
+  playerEntity.hasWon = true;
+
+  const numberOfPlayers = state.config.playersId.length;
+  const numberOfVictoriousPlayers = Object.values(
+    state.players.entities,
+  ).filter((player) => player!.hasWon).length;
+  const playerLabel = numberOfPlayers === 1 ? 'You' : playerEntity.displayName;
+
+  state.victoryDialog.text = `${playerLabel} won in ${Math.ceil(
+    state.stepCounter / numberOfPlayers,
+  ).toString()} moves`;
+  state.victoryDialog.showContinuePlay = numberOfPlayers !== numberOfVictoriousPlayers;
 }
 
 function isInParkingPosition(
@@ -293,4 +327,5 @@ export const gameInstanceReducers = {
   clickPiece,
   clickDestination,
   instructionsShown,
+  continuePlay,
 };

@@ -38,7 +38,10 @@ export interface GameInstanceState {
   possibleMovesId: string[];
   currentMove: CurrentMove;
 
-  isWon: boolean;
+  victoryDialog: {
+    text: string | undefined,
+    showContinuePlay: boolean,
+  },
   stepCounter: number; // TODO Only a rudimentary first "stat", big overhaul coming
   showInstructions: boolean;
 
@@ -83,6 +86,7 @@ export const fetchGameInstance = createAsyncThunk(
         color: playerColors[i],
         playDirection: directionOfInit[i],
         displayName: id,
+        hasWon: false,
       });
     }
 
@@ -118,7 +122,10 @@ export const initialGameInstanceState: GameInstanceState = {
     playDirection: PlayDirection.BOTTOM_TO_TOP,
   },
 
-  isWon: false,
+  victoryDialog: {
+    text: undefined,
+    showContinuePlay: true,
+  },
   stepCounter: 0,
   // TODO Eventually we would probably want this to be saved as a user setting or remove it all together once the
   //  "learn" tab is available
@@ -138,6 +145,7 @@ export const gameInstanceSlice = createSlice({
     clickDestination: gameInstanceReducers.clickDestination,
     nextTurn: gameInstanceReducers.nextTurn,
     instructionsShown: gameInstanceReducers.instructionsShown,
+    continuePlay: gameInstanceReducers.continuePlay,
   },
   extraReducers: (builder) => {
     builder
@@ -151,9 +159,10 @@ export const gameInstanceSlice = createSlice({
           playersAdapter.setAll(state.players, action.payload.players);
           state.config = action.payload.config;
           state.currentMove = action.payload.currentMove;
-          state.isWon = false;
           state.stepCounter = 0;
           state.loadingStatus = 'loaded';
+          state.victoryDialog.text = undefined;
+          state.victoryDialog.showContinuePlay = true;
         },
       )
       .addCase(
@@ -240,10 +249,11 @@ export const selectCanEndTurn = createSelector(
   [getGameInstanceState],
   (state) =>
     state.currentMove.lastMovedNodeId !== undefined &&
-      (!PositionUtil.getNoParkingNodeIds(
+    (!PositionUtil.getNoParkingNodeIds(
       state.config,
       state.currentMove.playDirection,
-    ).includes(state.currentMove.lastMovedNodeId) || state.config.width === 5) &&
+    ).includes(state.currentMove.lastMovedNodeId) ||
+      state.config.width === 5) &&
     state.currentMove.initiallySelectedNodeId !==
       state.currentMove.lastMovedNodeId,
 );
@@ -253,9 +263,9 @@ export const selectGameConfig = createSelector(
   (state) => state,
 );
 
-export const selectIsWon = createSelector(
+export const selectVictoryDialogConfig = createSelector(
   getGameInstanceState,
-  (state) => state.isWon,
+  (state) => state.victoryDialog,
 );
 
 export const selectShowInstructions = createSelector(

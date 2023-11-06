@@ -7,7 +7,12 @@ import {
   InstructionsDialog,
 } from 'ui';
 import { useDispatch, useSelector } from 'react-redux';
-import {fetchGameInstance, selectGameConfig, selectIsWon, selectShowInstructions} from 'game-logic';
+import {
+  fetchGameInstance,
+  selectGameConfig,
+  selectShowInstructions,
+  selectVictoryDialogConfig
+} from 'game-logic';
 import { AppDispatch } from '../../../../../src/main';
 import { useEffect, useRef } from 'react';
 import EndTurnButton from '../end-turn-button/end-turn-button';
@@ -15,7 +20,7 @@ import EndTurnButton from '../end-turn-button/end-turn-button';
 // TODO this tutorial seems rather complete :) https://redux.js.org/tutorials/essentials/part-5-async-logic#example-rest-api-and-client
 export function SoloPlay() {
   const dispatch = useDispatch<AppDispatch>();
-  const isWon = useSelector(selectIsWon);
+  const victoryDialogConfig = useSelector(selectVictoryDialogConfig);
   const showInstructions = useSelector(selectShowInstructions);
   const gameConfig = useSelector(selectGameConfig);
 
@@ -24,10 +29,10 @@ export function SoloPlay() {
   const instructionModal = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    if (isWon) {
+    if (victoryDialogConfig.text) {
       victoryModal.current?.showModal();
     }
-  }, [isWon]);
+  }, [victoryDialogConfig]);
 
   useEffect(() => {
     if (showInstructions) {

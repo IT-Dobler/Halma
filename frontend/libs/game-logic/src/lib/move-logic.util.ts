@@ -62,102 +62,39 @@ export function getValidMoves(nodeId: string, state: GameInstanceState) {
       possibleDestinations = possibleDestinations.filter(
         (p) => p.row !== row - 1,
       );
-
-      // TODO refactor and think about this again...
-      // Filters out moves that would shift the node into no parking zones.
-      if (config.width === 5) {
-        break; // Exit early for the smallest map
-      }
-      possibleDestinations = possibleDestinations.filter((p) => {
-        if (p.col === col + 1 || p.col === col - 1 || p.row === row + 1) {
-          if (
-            PositionUtil.getNoParkingNodeIds(
-              config,
-              PlayDirection.BOTTOM_TO_TOP,
-            ).includes(PositionUtil.toString(p))
-          ) {
-            return false;
-          }
-        }
-        return true;
-      });
-
       break;
     case PlayDirection.TOP_TO_BOTTOM: // No "up shift" moves allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.row !== row + 1,
       );
-
-      // TODO refactor and think about this again...
-      // Filters out moves that would shift the node into no parking zones.
-      if (config.width === 5) {
-        break; // Exit early for the smallest map
-      }
-      possibleDestinations = possibleDestinations.filter((p) => {
-        if (p.col === col + 1 || p.col === col - 1 || p.row === row - 1) {
-          if (
-            PositionUtil.getNoParkingNodeIds(
-              config,
-              PlayDirection.TOP_TO_BOTTOM,
-            ).includes(PositionUtil.toString(p))
-          ) {
-            return false;
-          }
-        }
-        return true;
-      });
-
       break;
     case PlayDirection.RIGHT_TO_LEFT: // No "right shift" allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.col !== col + 1,
       );
-
-      // TODO refactor and think about this again...
-      // Filters out moves that would shift the node into no parking zones.
-      if (config.width === 5) {
-        break; // Exit early for the smallest map
-      }
-      possibleDestinations = possibleDestinations.filter((p) => {
-        if (p.row === row + 1 || p.row === row - 1 || p.col === col - 1) {
-          if (
-            PositionUtil.getNoParkingNodeIds(
-              config,
-              PlayDirection.RIGHT_TO_LEFT,
-            ).includes(PositionUtil.toString(p))
-          ) {
-            return false;
-          }
-        }
-        return true;
-      });
-
       break;
     case PlayDirection.LEFT_TO_RIGHT: // No "left shift" allowed
       possibleDestinations = possibleDestinations.filter(
         (p) => p.col !== col - 1,
       );
-
-      // TODO refactor and think about this again...
-      // Filters out moves that would shift the node into no parking zones.
-      if (config.width === 5) {
-        break; // Exit early for the smallest map
-      }
-      possibleDestinations = possibleDestinations.filter((p) => {
-        if (p.row === row + 1 || p.row === row - 1 || p.col === col + 1) {
-          if (
-            PositionUtil.getNoParkingNodeIds(
-              config,
-              PlayDirection.LEFT_TO_RIGHT,
-            ).includes(PositionUtil.toString(p))
-          ) {
-            return false;
-          }
-        }
-        return true;
-      });
-
       break;
+  }
+
+  // For the bigger game modes, filters out moves that would shift the node into no parking zones.
+  if (config.width > 5) {
+    /**
+     * Filters out moves that would shift the node into no parking zones. Note Jumping into a parking zone is still
+     * allowed temporarily, so only filter out shift possibleDestinations.
+     */
+
+    possibleDestinations = possibleDestinations.filter(
+      (p) =>
+        (Math.abs(p.col - col) > 1 || Math.abs(p.row - row) > 1) ||
+        !PositionUtil.getNoParkingNodeIds(
+          config,
+          player.playDirection,
+        ).includes(PositionUtil.toString(p)),
+    );
   }
 
   const validNodesId: string[] = [];
