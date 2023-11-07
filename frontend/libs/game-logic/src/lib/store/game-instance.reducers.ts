@@ -7,23 +7,20 @@ import {
 import { directionsOfPlay } from '../model/play-direction';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { NodeTypeTS } from '../model/node-type';
-import { PositionUtil } from '../model/position';
 import { NodeEntity } from '../model/node-entity';
 import { getValidMoves } from '../move-logic.util';
-import { GameInitUtil } from '../game-init.util';
+import { PositionUtil } from '../position-util';
+import { CurrentMoveUtil } from '../current-move-util';
 
+/**
+ * Like most functions, it assumes "honest" input.
+ */
 const nextTurn = (state: GameInstanceState) => {
-  // Ensure we moved before going to the next turn
-  if (state.currentMove.lastMovedNodeId === undefined) {
-    return;
-  }
-
   const player = playersAdapter
     .getSelectors()
     .selectById(state.players, state.currentMove.playerIdToMove)!;
 
-  deselectAnyPiece(state);
-  clearPossibleMoves(state);
+  clearSelectionAndPossibleMoves(state);
   incrementStepCounter(state);
 
   const indexOf = directionsOfPlay.indexOf(player?.playDirection);
@@ -35,10 +32,21 @@ const nextTurn = (state: GameInstanceState) => {
     );
 
     if (nextPlayer) {
+      /**
+       * If the next player has already won, we want to skip him, but not before incrementing the stepCounter
+       * In the current system this is needed to ensure correct display of the steps for the remaining players.
+       * This will fail with end-game statistics or generally anything that needs per player stats
+       */
+      if (nextPlayer.hasWon) {
+        incrementStepCounter(state);
+        continue;
+      }
+
       state.currentMove.playerIdToMove = nextPlayer.id;
       state.currentMove.playDirection = nextPlayer.playDirection; // TODO This is redundant I think, could remove..
       state.currentMove.moveType = undefined;
       state.currentMove.lastMovedNodeId = undefined;
+      state.currentMove.initiallySelectedNodeId = undefined;
       break;
     }
   }
@@ -55,17 +63,26 @@ const clickPiece = (
     return;
   }
 
-  clearPossibleMoves(state);
-
-  // Check whether we are clicking on already selected node, deselect
+  // Check whether we are clicking on already selected node
   if (node.type === NodeTypeTS.SELECTED) {
-    deselectPiece(node, state);
-  } else {
-    // Deselect potentially previously selected piece
-    deselectAnyPiece(state);
+    // Prevent de-select if there has been movement
+    if (state.currentMove.initiallySelectedNodeId !== node.id) {
+      return;
+    }
 
-    // If we have moved in this turn and click on a different piece, end the turn
-    if (state.currentMove.lastMovedNodeId !== undefined && state.currentMove.lastMovedNodeId !== node.id) {
+    clearSelectionAndPossibleMoves(state);
+    return;
+  }
+
+  // If we have moved in this turn and click on a different piece, end the turn
+  if (CurrentMoveUtil.hasMoved(state.currentMove)) {
+    // It is not allowed to end the turn in the starting positions of the perpendicular players
+    if (isInParkingPosition(node, state)) {
+      return;
+    }
+
+    // Check that we actually changed something in our position.
+    if (CurrentMoveUtil.hasProgressed(state.currentMove)) {
       nextTurn(state);
 
       // If it's not our turn, exit out, otherwise select the clicked node
@@ -74,11 +91,18 @@ const clickPiece = (
       }
     }
 
-    // Select the clicked node
-    setNodeAsSelected(node.id, node.owningPlayerId, state);
-
-    getAndSetPossibleMoves(node.id, state);
+    // No progress: Reset current move type
+    state.currentMove.moveType = undefined;
+    state.currentMove.lastMovedNodeId = undefined;
   }
+
+  clearSelectionAndPossibleMoves(state);
+
+  setNodeAsSelected(node.id, node.owningPlayerId, state);
+
+  state.currentMove.initiallySelectedNodeId = node.id;
+
+  getAndSetPossibleMoves(node.id, state);
 };
 
 const clickDestination = (
@@ -93,7 +117,6 @@ const clickDestination = (
 
   // Clear our previously selected piece
   resetNode(selectedNode, state);
-
   clearPossibleMoves(state);
 
   // Select new piece
@@ -101,17 +124,58 @@ const clickDestination = (
 
   setCurrentMove(selectedNode.id, action.payload, state);
 
-  // TODO Refactor this...
+  // If we returned to the initial starting position, consider it an "undone" move and allow all options again.
+  if (state.currentMove.initiallySelectedNodeId === action.payload) {
+    state.currentMove.moveType = undefined;
+  }
+
   if (hasWon(selectedNode.owningPlayerId!, state)) {
-    deselectAnyPiece(state);
-    clearPossibleMoves(state);
-    state.isWon = true;
+    clearSelectionAndPossibleMoves(state);
     incrementStepCounter(state);
+    setWonAndVictoryDialogState(selectedNode.owningPlayerId!, state);
     return;
   }
 
   setPossibleMovesOrNextTurn(action.payload, state);
 };
+
+const instructionsShown = (state: GameInstanceState) => {
+  state.showInstructions = false;
+};
+
+const continuePlay = (state: GameInstanceState) => {
+  state.victoryDialog.text = undefined;
+  nextTurn(state);
+};
+
+function setWonAndVictoryDialogState(
+  winningPlayerId: string,
+  state: GameInstanceState,
+) {
+  const playerEntity = state.players.entities[winningPlayerId]!;
+  playerEntity.hasWon = true;
+
+  const numberOfPlayers = state.config.playersId.length;
+  const numberOfVictoriousPlayers = Object.values(
+    state.players.entities,
+  ).filter((player) => player!.hasWon).length;
+  const playerLabel = numberOfPlayers === 1 ? 'You' : playerEntity.displayName;
+
+  state.victoryDialog.text = `${playerLabel} won in ${Math.ceil(
+    state.stepCounter / numberOfPlayers,
+  ).toString()} moves`;
+  state.victoryDialog.showContinuePlay = numberOfPlayers !== numberOfVictoriousPlayers;
+}
+
+function isInParkingPosition(
+  node: NodeEntity,
+  state: GameInstanceState,
+): boolean {
+  return PositionUtil.getNoParkingNodeIds(
+    state.config,
+    state.currentMove.playDirection,
+  ).includes(state.currentMove.lastMovedNodeId!);
+}
 
 function incrementStepCounter(state: GameInstanceState) {
   state.stepCounter++;
@@ -122,12 +186,11 @@ function hasWon(playerId: string, state: GameInstanceState): boolean {
     .getSelectors()
     .selectById(state.players, playerId)!;
 
-  const victoryPositions = GameInitUtil.getVictoryPositions(
+  const victoryPositions = PositionUtil.getVictoryNodeIds(
     state.config,
     player.playDirection,
   );
 
-  console.log(victoryPositions);
   for (const nodeId of victoryPositions) {
     const node = state.gameState.entities[nodeId]!;
 
@@ -147,6 +210,11 @@ function hasWon(playerId: string, state: GameInstanceState): boolean {
   return true;
 }
 
+function clearSelectionAndPossibleMoves(state: GameInstanceState) {
+  clearPossibleMoves(state);
+  deselectAnyPiece(state);
+}
+
 function deselectAnyPiece(state: GameInstanceState) {
   const selectedNode = getSelectedNode(state);
 
@@ -158,10 +226,10 @@ function deselectAnyPiece(state: GameInstanceState) {
 function setPossibleMovesOrNextTurn(startId: string, state: GameInstanceState) {
   const validNodesId = getValidMoves(startId, state);
 
-  // We've moved with a piece and ran out of possible moves -> Next turn
+  // If we have shifted -> next turn.
   if (
     state.currentMove.lastMovedNodeId !== undefined &&
-    validNodesId.length === 0
+    state.currentMove.moveType === MoveType.SHIFT
   ) {
     nextTurn(state);
   } else {
@@ -258,4 +326,6 @@ export const gameInstanceReducers = {
   nextTurn,
   clickPiece,
   clickDestination,
+  instructionsShown,
+  continuePlay,
 };

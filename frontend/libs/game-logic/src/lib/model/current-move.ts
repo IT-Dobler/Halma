@@ -7,4 +7,5 @@ export interface CurrentMove {
   playDirection: PlayDirection;
   moveType?: MoveType;
   lastMovedNodeId?: string;
+  initiallySelectedNodeId?: string;
 }

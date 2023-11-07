@@ -1,3 +1,5 @@
+export * from './lib/instructions-dialog/instructions-dialog';
+export * from './lib/settings-dialog/settings-dialog';
 export * from './lib/basic-page-layout/standard-page-layout';
 export * from './lib/nav-bar/nav-bar';
 export * from './lib/victory-dialog/victory-dialog';

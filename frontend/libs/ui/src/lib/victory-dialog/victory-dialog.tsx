@@ -1,6 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGameInstance, selectStepCounter } from 'game-logic';
+import {
+  fetchGameInstance,
+  gameInstanceActions,
+  selectGameConfig,
+  selectVictoryDialogConfig,
+} from 'game-logic';
 import { AppDispatch } from '../../../../../src/main';
 
 export interface VictoryDialogProps {
@@ -9,23 +14,38 @@ export interface VictoryDialogProps {
 
 export function VictoryDialog(props: VictoryDialogProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const stepCounter = useSelector(selectStepCounter);
+  const config = useSelector(selectGameConfig);
+
+  const victoryDialogConfig = useSelector(selectVictoryDialogConfig);
+
+  function continuePlaying() {
+    dispatch(gameInstanceActions.continuePlay());
+    props.modal.current?.close();
+  }
+
+  function playAgain() {
+    dispatch(fetchGameInstance(config));
+    props.modal.current?.close();
+  }
 
   return (
     <dialog id="my_modal_1" className="modal" ref={props.modal}>
       <div className="modal-box">
         <h3 className="font-bold text-lg">Victory!</h3>
-        <p className="py-4">You won in {stepCounter} moves!</p>
+        <p className="py-4">{victoryDialogConfig.text}</p>
         <div className="modal-action">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
+          {victoryDialogConfig.showContinuePlay && (
             <button
               className="btn"
-              onClick={() => dispatch(fetchGameInstance())}
+              onClick={() => continuePlaying()}
             >
-              Play again
+              Continue playing
             </button>
-          </form>
+          )}
+
+          <button className="btn" onClick={() => playAgain()}>
+            Play again
+          </button>
         </div>
       </div>
     </dialog>

@@ -1,17 +1,14 @@
-import { gameInstanceActions, selectCurrentMove } from 'game-logic';
+import { gameInstanceActions, selectCanEndTurn } from 'game-logic';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../../../../src/main';
 
-/* eslint-disable-next-line */
-export interface EndTurnButtonProps {}
-
-export function EndTurnButton(props: EndTurnButtonProps) {
+export function EndTurnButton() {
   const dispatch = useDispatch<AppDispatch>();
-  const currentMove = useSelector(selectCurrentMove);
+  const canEndTurn = useSelector(selectCanEndTurn);
   return (
     <button
-      disabled={currentMove.lastMovedNodeId === undefined}
-      className="btn btn-outline"
+      disabled={!canEndTurn}
+      className="btn btn-outline w-72"
       onClick={() => dispatch(gameInstanceActions.nextTurn())}
     >
       End Turn

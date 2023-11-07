@@ -4,4 +4,6 @@ export interface PlayerEntity {
   id: string;
   color: string;
   playDirection: PlayDirection;
+  displayName: string;
+  hasWon: boolean;
 }

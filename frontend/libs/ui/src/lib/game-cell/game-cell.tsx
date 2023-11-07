@@ -1,7 +1,13 @@
-import {useDispatch, useSelector} from 'react-redux';
-import {gameInstanceActions, selectCurrentMove, selectNodeById, selectPlayerById,} from 'game-logic';
-import {EntityId} from '@reduxjs/toolkit';
-import {NodeTypeTS} from '../../../../game-logic/src/lib/model/node-type';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  gameInstanceActions,
+  selectCurrentMove,
+  selectGameConfig,
+  selectNodeById,
+  selectPlayerById,
+} from 'game-logic';
+import { EntityId } from '@reduxjs/toolkit';
+import { NodeTypeTS } from '../../../../game-logic/src/lib/model/node-type';
 
 /* eslint-disable-next-line */
 export interface GameCellProps {
@@ -13,6 +19,7 @@ export function GameCell(props: GameCellProps) {
   const node = useSelector(selectNodeById(props.id))!;
   const player = useSelector(selectPlayerById(node.owningPlayerId));
   const currentMove = useSelector(selectCurrentMove);
+  const config = useSelector(selectGameConfig);
 
   function onPieceClick() {
     dispatch(gameInstanceActions.clickPiece(node.id));
@@ -25,7 +32,7 @@ export function GameCell(props: GameCellProps) {
   let content;
   switch (node.type) {
     case NodeTypeTS.EMPTY:
-      content = <div className="rounded-full h-8 w-8 bg-gray-500"></div>;
+      content = <div className="rounded-full h-[0.75vw] w-[0.75vw] bg-gray-500"></div>;
       break;
     case NodeTypeTS.BLOCKED:
       break;
@@ -34,28 +41,43 @@ export function GameCell(props: GameCellProps) {
       if (player) {
         let color = player.color;
         if (node.type === NodeTypeTS.SELECTED) {
-          color = "bg-red-700";
+          color = 'bg-[#BE2EDD]';
         }
         let border = '';
         if (player.id === currentMove.playerIdToMove) {
           border = `shadow-[0px_0px_5px_2px_#FFFFFF]`;
-
-
         }
         content = (
-            <div onClick={() => onPieceClick()} className={`${color} ${border} rounded-full h-8 w-8 cursor-pointer`}></div>
+          <div
+            onClick={() => onPieceClick()}
+            className={`${color} ${border} rounded-full h-[1.5vw] w-[1.5vw] cursor-pointer`}
+          ></div>
         );
       }
       break;
     case NodeTypeTS.POSSIBLE_MOVE:
-      content = (
-        <div onClick={() => onDestinationClick()} className="rounded-full h-8 w-8 bg-white cursor-pointer"></div>
-      );
+      if (config.showPossibleMoves) {
+        content = (
+          <div
+            onClick={() => onDestinationClick()}
+            className="rounded-full h-[1.10vw] w-[1.10vw] bg-[#E056FD] cursor-pointer"
+          ></div>
+        );
+      } else {
+        content = (
+          <div
+            onClick={() => onDestinationClick()}
+            className="flex justify-center items-center h-12 w-12"
+          >
+            <div className="rounded-full h-[0.75vw] w-[0.75vw] bg-gray-500"></div>
+          </div>
+        );
+      }
       break;
   }
 
   return (
-    <div className="flex justify-center items-center h-16 w-16">{content}</div>
+    <div className="flex justify-center items-center h-[3vw] w-[3vw]">{content}</div>
   );
 }
 
