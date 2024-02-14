@@ -32,7 +32,9 @@ export function GameCell(props: GameCellProps) {
   let content;
   switch (node.type) {
     case NodeTypeTS.EMPTY:
-      content = <div className="rounded-full h-[0.75vw] w-[0.75vw] bg-gray-500"></div>;
+      content = (
+        <div className="rounded-full h-[1vw] w-[1vw] lg:h-[0.75vw] lg:w-[0.75vw] bg-gray-500"></div>
+      );
       break;
     case NodeTypeTS.BLOCKED:
       break;
@@ -50,7 +52,7 @@ export function GameCell(props: GameCellProps) {
         content = (
           <div
             onClick={() => onPieceClick()}
-            className={`${color} ${border} rounded-full h-[1.5vw] w-[1.5vw] cursor-pointer`}
+            className={`${color} ${border} rounded-full h-[2vw] w-[2vw] lg:h-[1.5vw] lg:w-[1.5vw] cursor-pointer`}
           ></div>
         );
       }
@@ -60,7 +62,7 @@ export function GameCell(props: GameCellProps) {
         content = (
           <div
             onClick={() => onDestinationClick()}
-            className="rounded-full h-[1.10vw] w-[1.10vw] bg-[#E056FD] cursor-pointer"
+            className="rounded-full h-[1.5vw] w-[1.5vw] lg:h-[1.10vw] lg:w-[1.10vw] bg-[#E056FD] cursor-pointer"
           ></div>
         );
       } else {
@@ -69,7 +71,7 @@ export function GameCell(props: GameCellProps) {
             onClick={() => onDestinationClick()}
             className="flex justify-center items-center h-12 w-12"
           >
-            <div className="rounded-full h-[0.75vw] w-[0.75vw] bg-gray-500"></div>
+            <div className="rounded-full h-[1.5vw] w-[1.5vw] lg:h-[0.75vw] lg:w-[0.75vw] bg-gray-500"></div>
           </div>
         );
       }
@@ -77,7 +79,11 @@ export function GameCell(props: GameCellProps) {
   }
 
   return (
-    <div className="flex justify-center items-center h-[3vw] w-[3vw]">{content}</div>
+    <div
+      className={`flex justify-center items-center h-[8vw] w-[8vw] sm:h-[7vw] sm:w-[7vw] md:h-[6vw] md:w-[6vw] lg:h-[5vw] lg:w-[5vw] xl:h-[4vw] xl:w-[4vw] 2xl:h-[3vw] 2xl:w-[3vw]`}
+    >
+      {content}
+    </div>
   );
 }
 

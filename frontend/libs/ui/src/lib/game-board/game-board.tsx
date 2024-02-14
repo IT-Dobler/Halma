@@ -70,10 +70,9 @@ export function GameBoard() {
       }}
     >
       <div
-        className="flex flex-wrap content-start"
+        className="grid"
         style={{
-          minWidth: `${width * 3}vw`,
-          maxWidth: `${width * 3}vw`,
+          gridTemplateColumns: `repeat(${width}, 1fr)`,
         }}
       >
         {tiles}
