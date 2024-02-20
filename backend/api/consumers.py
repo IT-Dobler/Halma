@@ -10,6 +10,6 @@ class ChatConsumer(WebsocketConsumer):
         print("server says disconnected")
         pass
 
-    def receive(self, text_data):
+    def receive(self, text_data=None, bytes_data=None):
         print("server says client message received: ", text_data)
         self.send("Server sends Welcome")

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +78,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Halma.wsgi.application'
 ASGI_APPLICATION = 'Halma.asgi.application'
 
 # Database

@@ -3,6 +3,18 @@ import { StandardPageLayout } from 'ui';
 import { Link } from 'wouter';
 
 export function Home() {
+
+  const webSocket = new WebSocket('ws://localhost:8080/');
+
+  webSocket.onerror = function (event) {
+    console.log(event);
+  }
+
+  webSocket.onopen = function (event) {
+    console.log('opened');
+  }
+
+
   return (
     <StandardPageLayout>
       <div>
