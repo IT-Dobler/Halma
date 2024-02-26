@@ -1,0 +1,9 @@
+{
+  "name": "play",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/play/src",
+  "prefix": "ng-frontend",
+  "tags": [],
+  "projectType": "library",
+  "targets": {}
+}
