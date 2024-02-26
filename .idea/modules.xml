@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Halma.iml" filepath="$PROJECT_DIR$/Halma.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ng-frontend/ng-frontend.iml" filepath="$PROJECT_DIR$/ng-frontend/ng-frontend.iml" />
     </modules>
   </component>
 </project>
