@@ -1,1 +1,3 @@
-export * from './lib/play/play.component';
+export * from './lib/play-routes';
+
+export * from './lib/play-page/play-page.component';

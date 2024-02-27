@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'ng-frontend-play',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './play.component.html',
-  styleUrl: './play.component.css',
+  templateUrl: './play-page.component.html',
+  styleUrl: './play-page.component.css',
 })
-export class PlayComponent {}
+export class PlayPageComponent {}

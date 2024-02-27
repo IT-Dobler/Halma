@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ng-frontend/home": ["libs/home/src/index.ts"],
       "@ng-frontend/play": ["libs/play/src/index.ts"]
     }
   },

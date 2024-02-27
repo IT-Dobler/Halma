@@ -1,0 +1,9 @@
+{
+  "name": "home",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/home/src",
+  "prefix": "ng-frontend",
+  "tags": [],
+  "projectType": "library",
+  "targets": {}
+}
