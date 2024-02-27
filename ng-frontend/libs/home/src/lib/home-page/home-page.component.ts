@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'ng-frontend-home',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  templateUrl: './home-page.component.html',
+  styleUrl: './home-page.component.css',
 })
-export class HomeComponent {}
+export class HomePageComponent {}

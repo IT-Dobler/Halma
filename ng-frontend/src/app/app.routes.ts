@@ -3,9 +3,10 @@ import { Route } from '@angular/router';
 export const appRoutes: Route[] = [
   {
     path: '',
-    loadChildren: () => import('@ng-frontend/play').then((m) => m.playRoutes),
+    loadChildren: () => import('@ng-frontend/home').then((m) => m.homeRoutes),
   },
   {
-    path:
+    path: '',
+    loadChildren: () => import('@ng-frontend/play').then((m) => m.playRoutes),
   }
 ];
