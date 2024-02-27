@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@ng-frontend/home": ["libs/home/src/index.ts"],
-      "@ng-frontend/play": ["libs/play/src/index.ts"]
+      "@ng-frontend/play": ["libs/play/src/index.ts"],
+      "@ng-frontend/shared-angular": ["libs/shared-angular/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
