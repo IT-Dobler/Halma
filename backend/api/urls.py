@@ -1,10 +1,11 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from api.views import GameListApiView
+from api.views import GameListApiView, GameDetailApiView
 
 urlpatterns = [
-    path('games/', GameListApiView.as_view())
+    path('games/', GameListApiView.as_view()),
+    path('games/<str:code>', GameDetailApiView.as_view())
 ]
 
 # Makes it so that the suffix of the url doesn't interfere.
