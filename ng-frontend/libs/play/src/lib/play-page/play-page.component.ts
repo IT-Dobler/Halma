@@ -6,6 +6,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './play-page.component.html',
-  styleUrl: './play-page.component.css',
+  styleUrl: './play-page.component.scss',
 })
 export class PlayPageComponent {}
