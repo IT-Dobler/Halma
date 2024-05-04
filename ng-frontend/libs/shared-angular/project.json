@@ -2,7 +2,7 @@
   "name": "shared-angular",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared-angular/src",
-  "prefix": "ng-frontend",
+  "prefix": "app",
   "tags": [],
   "projectType": "library",
   "targets": {}

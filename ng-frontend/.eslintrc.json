@@ -20,7 +20,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "ngFrontend",
+            "prefix": "app",
             "style": "camelCase"
           }
         ],
@@ -28,7 +28,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "ng-frontend",
+            "prefix": "app",
             "style": "kebab-case"
           }
         ]

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'ng-frontend-play',
+  selector: 'app-play',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './play-page.component.html',

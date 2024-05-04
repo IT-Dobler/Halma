@@ -4,6 +4,9 @@ export default {
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: './coverage/ng-frontend',
+  coverageReporters: [
+    'text'
+  ],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
@@ -21,6 +24,6 @@ export default {
   ],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
-    '<rootDir>/src/**/*(*.)@(spec|test).[jt]s?(x)',
+    '<rootDir>/libs/**/*(*.)@(spec|test).[jt]s?(x)',
   ],
 };

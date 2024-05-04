@@ -2,7 +2,7 @@
   "name": "ng-frontend",
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "ng-frontend",
+  "prefix": "app",
   "sourceRoot": "./src",
   "tags": [],
   "targets": {
@@ -68,6 +68,9 @@
         "buildTarget": "ng-frontend:build",
         "staticFilePath": "dist/ng-frontend/browser"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

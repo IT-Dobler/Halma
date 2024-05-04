@@ -64,5 +64,5 @@
       "changeDetection": "OnPush"
     }
   },
-  "defaultProject": "ng-frontend"
+  "neverConnectToCloud": true
 }
