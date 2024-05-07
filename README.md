@@ -14,11 +14,26 @@ professional application to play, practice, analyze and improve your Halma.
 
 ## Setup
 
-The Wiki describes how to setup a development environment. (TODO link)
+### Prerequisites
+
+- yarn
+
+### Start
+
+Run the following commands: 
+```shell
+cd .\ng-frontend\
+```
+```shell
+yarn install
+```
+```shell
+yarn start
+```
 
 ## Project Management
 
-The Project is organized using a [GitHub Project](https://github.com/orgs/dobler-it/projects/2)
+The Project is organized using a [GitHub Project](https://github.com/orgs/IT-Dobler/projects/2)
 
 ## CI/CD
 
