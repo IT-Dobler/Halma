@@ -4,8 +4,8 @@
     <facet type="django" name="Django">
       <configuration>
         <option name="rootFolder" value="$MODULE_DIR$/api" />
-        <option name="settingsModule" value="settings.py" />
-        <option name="manageScript" value="manage.py" />
+        <option name="settingsModule" value="" />
+        <option name="manageScript" value="" />
         <option name="environment" value="&lt;map/&gt;" />
         <option name="doNotUseTestRunner" value="false" />
         <option name="trackFilePattern" value="migrations" />
@@ -15,47 +15,10 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python (Halma)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.12 (backend)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
-    <option name="TEMPLATE_FOLDERS">
-      <list>
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/jinja2/django/forms" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/jinja2/django/forms/errors/dict" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/jinja2/django/forms/errors/list" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/jinja2/django/forms/widgets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/jinja2/django/forms/formsets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/templates/django/forms" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/templates/django/forms/errors/dict" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/templates/django/forms/errors/list" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/templates/django/forms/widgets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/forms/templates/django/forms/formsets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/views/templates" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/gis/templates/gis" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/auth/templates/auth/widgets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/templates/admin" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/templates/admin/auth/user" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/templates/admin/widgets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/templates/admin/includes" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/templates/admin/edit_inline" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/templates/registration" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/postgres/jinja2/postgres/widgets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/postgres/templates/postgres/widgets" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admindocs/templates/admin_doc" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/twisted/python/_pydoctortemplates" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/docs" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/docs/auth" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/docs/langs" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/admin" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/inline" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/filters" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/vertical" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/horizontal" />
-        <option value="$MODULE_DIR$/venv/lib/python3.12/site-packages/rest_framework/templates/rest_framework/pagination" />
-      </list>
-    </option>
   </component>
 </module>

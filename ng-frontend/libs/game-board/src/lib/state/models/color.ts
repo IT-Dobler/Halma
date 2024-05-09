@@ -6,6 +6,13 @@ export enum Color {
     NONE = 'NONE',
 }
 
+export const colorMap: Record<string, Color> = {
+    'Y': Color.YELLOW,
+    'B': Color.BLUE,
+    'R': Color.RED,
+    'G': Color.GREEN,
+}
+
 export const colorWheelInitialization = [
     Color.YELLOW,
     Color.RED,
