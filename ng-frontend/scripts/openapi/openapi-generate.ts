@@ -2,7 +2,7 @@ import type {PathLike} from 'fs';
 import * as fs from 'fs';
 
 import {exec} from 'child_process';
-import path, {join} from 'path';
+import {join} from 'path';
 
 const ngVersion = '17.1.0';
 
@@ -124,7 +124,7 @@ async function sleep(msec: number): Promise<unknown> {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     await sleep(100); // make sure timestamp ticks
 
-    const generatorPath = 'libs/generated-web-client/src/lib/generated';
+    const generatorPath = 'libs/generated-api-client/src/lib/generated';
 
     await generateOpenApi(generatorPath).catch((err) =>
         console.error('Error generating models', err)
