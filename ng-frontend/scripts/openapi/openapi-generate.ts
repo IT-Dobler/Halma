@@ -2,7 +2,7 @@ import type {PathLike} from 'fs';
 import * as fs from 'fs';
 
 import {exec} from 'child_process';
-import {join} from 'path';
+import path, {join} from 'path';
 
 const ngVersion = '17.1.0';
 
@@ -42,11 +42,11 @@ async function generateOpenApi(directory: string): Promise<unknown> {
     //   https://openapi-generator.tech/docs/globals
     //   https://openapi-generator.tech/docs/generators/typescript-angular/
 
-    const typesPath = '../types';
+    const typesPath = '../../types';
     const typeMap = [
         // [OpenApi-Name/Format, Typescript-Name, Import-Path]
         ['AnyType', 'object', undefined],
-        ['date', 'BackendLocalDate', `${typesPath}/backend-local-date`],
+        ['DateTime', 'BackendLocalDateTime', `${typesPath}/backend-local-date-time`],
     ] as const;
     const paths = typeMap
         .map(([_format, _modelName, importPath]) => importPath)
@@ -124,11 +124,12 @@ async function sleep(msec: number): Promise<unknown> {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     await sleep(100); // make sure timestamp ticks
 
-    const generatorPath = 'libs/halma-web-generated/src/lib/generated';
+    const generatorPath = 'libs/generated-web-client/src/lib/generated';
 
     await generateOpenApi(generatorPath).catch((err) =>
         console.error('Error generating models', err)
     );
 
-    deleteOldFiles(generatorPath, timestamp);
+    // TODO Figure out why we don't have permissions to delete these files
+    // deleteOldFiles(generatorPath, timestamp);
 })();

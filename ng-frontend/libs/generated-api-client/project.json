@@ -1,0 +1,9 @@
+{
+    "name": "generated-api-client",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/generated-api-client/src",
+    "prefix": "ng-frontend",
+    "tags": [],
+    "projectType": "library",
+    "targets": {}
+}
