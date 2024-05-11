@@ -25,7 +25,7 @@
             "@ng-frontend/generated-api-client": [
                 "libs/generated-api-client/src/index.ts"
             ],
-            "@ng-frontend/home": ["libs/home/src/index.ts"],
+            "@ng-frontend/pages/home": ["libs/pages/home/src/index.ts"],
             "@ng-frontend/play": ["libs/play/src/index.ts"],
             "@ng-frontend/shared-angular": ["libs/shared-angular/src/index.ts"]
         }
