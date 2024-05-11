@@ -1,9 +1,0 @@
-{
-  "name": "shared-angular",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared-angular/src",
-  "prefix": "app",
-  "tags": [],
-  "projectType": "library",
-  "targets": {}
-}
