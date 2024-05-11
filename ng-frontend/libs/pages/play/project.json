@@ -1,0 +1,9 @@
+{
+    "name": "pages-play",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/pages/play/src",
+    "prefix": "app",
+    "tags": [],
+    "projectType": "library",
+    "targets": {}
+}
