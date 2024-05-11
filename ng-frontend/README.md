@@ -12,6 +12,18 @@ Run `yarn install`
 
 Run `yarn start` to start the development server. Happy coding!
 
+# Organizaion
+
+Nx dictates the general folder structure, where everything is in the `/libs` folder.
+The following table describes the purpose of the sub-folders:
+
+| Name                 | Description                                                                                            |
+|----------------------|--------------------------------------------------------------------------------------------------------|
+| generated-api-client | Automatically generated API Client via `yarn run openapi`                                              |
+| pages                | Top-level pages, eg. "home", "play". Only place that contains routing information.                     |
+| shared-angular       | Components which require angular features (store, services etc.) but are re-used across multiple pages |
+| ui                   | Basic UI components                                                                                    |
+
 ## Build for production
 
 Run `yarn nx build ng-frontend` to build the application. The build artifacts are stored in the output directory (e.g. `dist/` or `build/`), ready to be deployed.
