@@ -1,12 +1,12 @@
 import { PlayDirection } from './models/play-direction';
-import {Position} from "./models/position";
-import {MoveType} from "./models/move-type";
-import {GameBounds} from "./models/game-bounds";
+import { Position } from './models/position';
+import { MoveType } from './models/move-type';
+import { GameBounds } from './models/game-bounds';
 
 export function toId(position: Position) {
     // It says it's impossible, but its javascript so it's not impossible!
-    if (typeof position.col !== "number" || typeof position.row !== "number" ) {
-        throw new TypeError("Position includes a not number!");
+    if (typeof position.col !== 'number' || typeof position.row !== 'number') {
+        throw new TypeError('Position includes a not number!');
     }
     return `${String.fromCharCode(65 + position.col)}:${position.row + 1}`;
 }
@@ -29,7 +29,10 @@ export function manhattanDistance(p1: Position, p2: Position): number {
     return Math.abs(rowDiff) + Math.abs(colDiff);
 }
 
-export function isWithinBounds(position: Position, bounds: GameBounds): boolean {
+export function isWithinBounds(
+    position: Position,
+    bounds: GameBounds
+): boolean {
     const { row, col } = position;
     return row >= 0 && col >= 0 && row < bounds.height && col < bounds.width;
 }

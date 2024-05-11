@@ -1,10 +1,10 @@
-import {GameConfig} from "./models/game-config";
-import {GameBounds} from "./models/game-bounds";
+import { GameConfig } from './models/game-config';
+import { GameBounds } from './models/game-bounds';
 
 export function emptyGameConfig(): GameConfig {
     return {
         bounds: emptyGameBounds(),
-        players: []
+        players: [],
     };
 }
 

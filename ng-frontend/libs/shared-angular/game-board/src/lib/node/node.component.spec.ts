@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NodeComponent } from './node.component';
-import {GameBoardStore} from "../state/game-board.store";
+import { GameBoardStore } from '../state/game-board.store';
 
 describe('NodeComponent', () => {
     let component: NodeComponent;
@@ -9,7 +9,7 @@ describe('NodeComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [NodeComponent],
-            providers: [GameBoardStore]
+            providers: [GameBoardStore],
         }).compileComponents();
 
         fixture = TestBed.createComponent(NodeComponent);

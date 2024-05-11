@@ -21,13 +21,15 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "paths": {
-            "@ng-frontend/game-board": ["libs/game-board/src/index.ts"],
             "@ng-frontend/generated-api-client": [
                 "libs/generated-api-client/src/index.ts"
             ],
             "@ng-frontend/pages/home": ["libs/pages/home/src/index.ts"],
             "@ng-frontend/pages/play": ["libs/pages/play/src/index.ts"],
-            "@ng-frontend/shared-angular": ["libs/shared-angular/src/index.ts"]
+            "@ng-frontend/shared-angular": ["libs/shared-angular/src/index.ts"],
+            "@ng-frontend/shared-angular/game-board": [
+                "libs/shared-angular/game-board/src/index.ts"
+            ]
         }
     },
     "exclude": ["node_modules", "tmp"],

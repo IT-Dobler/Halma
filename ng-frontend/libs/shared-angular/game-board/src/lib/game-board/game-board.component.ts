@@ -30,7 +30,7 @@ type GameSettings = FormGroup<{
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
     styleUrl: './game-board.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameBoardComponent {
     readonly store = inject(GameBoardStore);

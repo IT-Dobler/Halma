@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GameBoardComponent } from '@ng-frontend/game-board';
+import { GameBoardComponent } from '@ng-frontend/shared-angular/game-board';
 
 @Component({
     selector: 'app-play',

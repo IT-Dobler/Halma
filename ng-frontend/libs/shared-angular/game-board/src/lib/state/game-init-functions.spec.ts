@@ -1,8 +1,8 @@
 import { emptyGameConfig } from './game-config-functions';
 import { initGameBoard } from './game-init-functions';
-import {Color} from "./models/color";
-import {Node, NodeType} from "./models/node";
-import {PlayDirection} from "./models/play-direction";
+import { Color } from './models/color';
+import { Node, NodeType } from './models/node';
+import { PlayDirection } from './models/play-direction';
 
 describe('GameInitFunctions', () => {
     const gameConfig = emptyGameConfig();

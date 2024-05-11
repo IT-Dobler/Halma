@@ -1,7 +1,7 @@
-import {Color} from './color';
+import { Color } from './color';
 
-import {MoveType} from "./move-type";
-import {PlayDirection} from "./play-direction";
+import { MoveType } from './move-type';
+import { PlayDirection } from './play-direction';
 
 export interface CurrentMove {
     colorToMove: Color;

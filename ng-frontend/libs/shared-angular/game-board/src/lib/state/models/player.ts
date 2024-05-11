@@ -1,5 +1,5 @@
 import { Color } from './color';
-import {PlayDirection} from "./play-direction";
+import { PlayDirection } from './play-direction';
 
 export interface Player {
     id: string;

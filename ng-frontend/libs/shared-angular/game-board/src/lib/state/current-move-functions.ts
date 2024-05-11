@@ -1,8 +1,8 @@
-import {PlayDirection} from './models/play-direction';
-import {Color} from "./models/color";
+import { PlayDirection } from './models/play-direction';
+import { Color } from './models/color';
 
-import {CurrentMove} from "./models/current-move";
-import {MoveType} from "./models/move-type";
+import { CurrentMove } from './models/current-move';
+import { MoveType } from './models/move-type';
 
 export function emptyCurrentMove(): CurrentMove {
     return {
