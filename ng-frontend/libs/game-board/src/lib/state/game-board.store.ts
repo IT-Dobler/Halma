@@ -184,7 +184,10 @@ export class GameBoardStore extends signalStore(
         patchState(this, {
             currentMove: setMoveType(
                 this.currentMove(),
-                this.getMoveType(this.currentMove.selectedNodeId() ?? '', node.id)
+                this.getMoveType(
+                    this.currentMove.selectedNodeId() ?? '',
+                    node.id
+                )
             ),
         });
     }
@@ -216,13 +219,6 @@ export class GameBoardStore extends signalStore(
         return this.entityMap()[id];
     }
 
-    private canMoveToNode(node: Node): boolean {
-        return (
-            this.currentMove.selectedNodeId() !== undefined &&
-            node.type === NodeType.POSSIBLE_MOVE
-        );
-    }
-
     private canSelectNode(node: Node): boolean {
         return (
             node.color === this.currentMove.colorToMove() &&
@@ -244,29 +240,7 @@ export class GameBoardStore extends signalStore(
                     tapResponse({
                         next: (nodes) => {
                             patchState(this, setAllEntities(nodes));
-                            /*
-                            patchState(this, {
-                                currentMove: {
-                                    colorToMove: Color.YELLOW,
-                                    selectedNodeId: undefined,
-                                    moveType: undefined,
-                                    playDirection: PlayDirection.BOTTOM_TO_TOP,
-                                },
-                            });
-                            patchState(this.playerStore, {
-                                moveOrder: ['player1', 'player2'],
-                            });
-                            patchState(
-                                this.playerStore,
-                                addEntity({
-                                    id: 'player1',
-                                    color: Color.YELLOW,
-                                    playDirection: PlayDirection.BOTTOM_TO_TOP,
-                                    moveOrder: 1,
-                                })
-                            );
-
-                             */
+                            patchState(this, { config });
                         },
                         error: console.error,
                     })

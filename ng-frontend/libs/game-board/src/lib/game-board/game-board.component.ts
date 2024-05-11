@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBoardStore } from '../state/game-board.store';
 import { NodeComponent } from '../node/node.component';
@@ -11,8 +11,8 @@ import {
     Validators,
 } from '@angular/forms';
 import { colorWheelInitialization } from '../state/models/color';
-import {Player} from "../state/models/player";
-import {directionOfInit} from "../state/models/play-direction";
+import { Player } from '../state/models/player';
+import { directionOfInit } from '../state/models/play-direction';
 
 type GameSettings = FormGroup<{
     bounds: FormGroup<{
@@ -30,6 +30,7 @@ type GameSettings = FormGroup<{
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
     styleUrl: './game-board.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameBoardComponent {
     readonly store = inject(GameBoardStore);

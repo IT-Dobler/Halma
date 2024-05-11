@@ -13,6 +13,6 @@
 
 <pre>{{ form.value | json }}</pre>
 
-@for (node of store.entities(); track node.id; let i = $index) {
+@for (node of store.entities(); track node.id) {
     <app-node [nodeId]="node.id"></app-node>
 }
