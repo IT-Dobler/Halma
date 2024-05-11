@@ -1,3 +1,6 @@
+> # DEPRECATED
+> The React version of Halma42 is only here for historic purposes, it no longer gets maintained
+
 # Frontend
 
 ✨ **This project uses [Nx](https://nx.dev)** ✨
