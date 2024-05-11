@@ -83,8 +83,8 @@ async function generateOpenApi(directory: string): Promise<unknown> {
         ' -p enumPropertyNaming=UPPERCASE' +
         // sonst schneidet es bei einigen Enums den vordersten Teil einfach ab
         ' -p removeEnumValuePrefix=false' +
-        ' -p useSingleRequestParameter=true' +
-        ' -p useCustomPathParameterExpansion=true' +
+        // ' -p useSingleRequestParameter=true' +
+        // ' -p useCustomPathParameterExpansion=true' +
         // type-mappings also work for Format-Mappings (see: rest-includes)
         ` --type-mappings ${typeMappingsArg}` +
         ` --import-mappings ${importMappingsArg}` +

@@ -26,15 +26,11 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
-export interface ApiServiceGamesRetrieveRequestParams {
-    code: string;
-}
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class GameService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -167,15 +163,14 @@ export class ApiService {
     }
 
     /**
-     * @param requestParameters
+     * @param code 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public gamesRetrieve(requestParameters: ApiServiceGamesRetrieveRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Game>;
-    public gamesRetrieve(requestParameters: ApiServiceGamesRetrieveRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Game>>;
-    public gamesRetrieve(requestParameters: ApiServiceGamesRetrieveRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Game>>;
-    public gamesRetrieve(requestParameters: ApiServiceGamesRetrieveRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        const code = requestParameters.code;
+    public gamesRetrieve(code: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Game>;
+    public gamesRetrieve(code: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Game>>;
+    public gamesRetrieve(code: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Game>>;
+    public gamesRetrieve(code: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (code === null || code === undefined) {
             throw new Error('Required parameter code was null or undefined when calling gamesRetrieve.');
         }
