@@ -9,6 +9,6 @@ export const appRoutes: Route[] = [
     {
         path: '',
         loadChildren: () =>
-            import('@ng-frontend/play').then((m) => m.playRoutes),
+            import('@ng-frontend/pages/play').then((m) => m.playRoutes),
     },
 ];
