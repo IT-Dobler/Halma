@@ -36,13 +36,16 @@ export class GameBoardComponent {
 
     private formBuilder = inject(NonNullableFormBuilder);
 
+    // TODO chris
+    public boardRotation: number = 0;
+
     public form: GameSettings = this.formBuilder.group({
         bounds: this.formBuilder.group({
-            width: [0, [Validators.required]],
-            height: [0, [Validators.required]],
-            cornerSize: [0, [Validators.required]],
+            width: [10, [Validators.required]],
+            height: [10, [Validators.required]],
+            cornerSize: [2, [Validators.required]],
         }),
-        playerCount: [1, [Validators.required]],
+        playerCount: [2, [Validators.required]],
     });
 
     public createEmptyGame() {
@@ -62,5 +65,14 @@ export class GameBoardComponent {
             bounds: formValue.bounds,
             players,
         });
+    }
+
+     // chris
+    public rotateBoard(deg: number){
+        if(deg === 0){
+            this.boardRotation = 0;
+        }else{
+            this.boardRotation += (this.boardRotation === 270) ? -270 : (this.boardRotation === -270) ? 270 : deg;
+        }
     }
 }

@@ -25,7 +25,7 @@ export function setMoveType(
 
 export function setSelectedNodeId(
     currentMove: CurrentMove,
-    selectedNodeId: string
+    selectedNodeId: string | undefined
 ): CurrentMove {
     return {
         ...currentMove,

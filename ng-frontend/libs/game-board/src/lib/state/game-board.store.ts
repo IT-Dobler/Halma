@@ -49,10 +49,11 @@ export class GameBoardStore extends signalStore(
     private gameService = inject(GameMockService);
 
     public onClickNode(id: string): void {
+
         const node = this.getNode(id);
         switch (node.type) {
             case NodeType.SELECTED:
-                this.deselectNode(node);
+                this.deselectSelected();
                 this.deselectPossibleMoves();
                 break;
             case NodeType.POSSIBLE_MOVE: // TODO not only listen on this type, you want to be able to disable suggestions
@@ -60,9 +61,7 @@ export class GameBoardStore extends signalStore(
                 this.setMoveType(node);
 
                 // Deselect old node
-                this.deselectNode(
-                    this.getNode(this.currentMove.selectedNodeId() ?? '')
-                );
+                this.deselectSelected();
 
                 // Deselect suggestions
                 this.deselectPossibleMoves();
@@ -79,12 +78,29 @@ export class GameBoardStore extends signalStore(
 
                 break;
             case NodeType.PIECE:
+                this.deselectSelected();
                 this.selectNode(node);
                 // Highlight possible move nodes
                 this.highlightPossibleMoveNodes(node);
                 break;
             default:
                 break;
+        }
+    }
+
+    // chris
+    private deselectSelected() {
+        if(this.currentMove.selectedNodeId()){
+            patchState(
+                this,
+                updateEntity({
+                    id: this.currentMove.selectedNodeId() ?? '',
+                    changes: { type: NodeType.PIECE }
+                })
+            );
+            patchState(this, {
+                currentMove: setSelectedNodeId(this.currentMove(), undefined),
+            });
         }
     }
 
@@ -168,18 +184,6 @@ export class GameBoardStore extends signalStore(
         return this.entityMap()[id].type === NodeType.PIECE;
     }
 
-    private deselectNode(node: Node): void {
-        if (this.canDeselectNode(node)) {
-            patchState(
-                this,
-                updateEntity({
-                    id: node.id,
-                    changes: { type: NodeType.PIECE },
-                })
-            );
-        }
-    }
-
     private setMoveType(node: Node): void {
         patchState(this, {
             currentMove: setMoveType(
@@ -227,13 +231,6 @@ export class GameBoardStore extends signalStore(
         return (
             node.color === this.currentMove.colorToMove() &&
             node.type !== NodeType.SELECTED
-        );
-    }
-
-    private canDeselectNode(node: Node): boolean {
-        return (
-            node.color === this.currentMove.colorToMove() &&
-            node.type === NodeType.SELECTED
         );
     }
 
