@@ -29,7 +29,7 @@ type GameSettings = FormGroup<{
     imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule],
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
-    styleUrl: './game-board.component.css',
+    styleUrl: './game-board.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameBoardComponent {
