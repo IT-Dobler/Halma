@@ -12,7 +12,7 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-import api.routing
+import games.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Halma.settings')
 
@@ -20,5 +20,5 @@ asgi_application = get_asgi_application()
 
 application = ProtocolTypeRouter({
    "http": asgi_application,
-   "websocket": URLRouter(api.routing.websocket_urlpatterns)
+   "websocket": URLRouter(games.routing.websocket_urlpatterns)
 })

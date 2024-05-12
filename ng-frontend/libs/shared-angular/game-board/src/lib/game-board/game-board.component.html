@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="createEmptyGame()">
+    <div formGroupName="bounds">
+        <input
+            [formControl]="form.controls.bounds.controls.width"
+            type="number"
+        />
+        <input
+            [formControl]="form.controls.bounds.controls.height"
+            type="number"
+        />
+        <input
+            [formControl]="form.controls.bounds.controls.cornerSize"
+            type="number"
+        />
+        <input [formControl]="form.controls.playerCount" type="number" />
+    </div>
+
+    <button type="submit" (click)="createEmptyGame()">Create Game</button>
+</form>
+
+<pre>{{ form.value | json }}</pre>
+
+@for (node of store.entities(); track node.id) {
+<app-node [nodeId]="node.id"></app-node>
+}

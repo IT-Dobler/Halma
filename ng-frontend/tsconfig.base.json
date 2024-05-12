@@ -10,7 +10,10 @@
         "importHelpers": true,
         "target": "es2022",
         "module": "esnext",
-        "lib": ["es2020", "dom"],
+        "lib": [
+            "es2020",
+            "dom"
+        ],
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
@@ -21,13 +24,30 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "paths": {
-            "@ng-frontend/game-board": ["libs/game-board/src/index.ts"],
-            "@ng-frontend/home": ["libs/home/src/index.ts"],
-            "@ng-frontend/play": ["libs/play/src/index.ts"],
-            "@ng-frontend/shared-angular": ["libs/shared-angular/src/index.ts"]
+            "@ng-frontend/generated-api-client": [
+                "libs/generated-api-client/src/index.ts"
+            ],
+            "@ng-frontend/pages/home": [
+                "libs/pages/home/src/index.ts"
+            ],
+            "@ng-frontend/pages/play": [
+                "libs/pages/play/src/index.ts"
+            ],
+            "@ng-frontend/pages/playground-page": [
+                "libs/pages/playground/src/index.ts"
+            ],
+            "@ng-frontend/shared-angular": [
+                "libs/shared-angular/src/index.ts"
+            ],
+            "@ng-frontend/shared-angular/game-board": [
+                "libs/shared-angular/game-board/src/index.ts"
+            ]
         }
     },
-    "exclude": ["node_modules", "tmp"],
+    "exclude": [
+        "node_modules",
+        "tmp"
+    ],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"

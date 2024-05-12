@@ -1,0 +1,5 @@
+<button [routerLink]="['/']">Home</button>
+<div>Translations via directive: <span translate>hello-world</span></div>
+<div>Translations via pipe: <span>{{ 'hello-world' | translate }}</span></div>
+<div>Translations via method: <span>{{ getTranslatedValue() }}</span></div>
+<div>Unknown translation string: <span translate>some.unknown.translation.string</span></div>

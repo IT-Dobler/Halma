@@ -12,28 +12,14 @@ analysis boards to hone your skills as well as a plathora of statistics, various
 Step by step, completely opensource from the start this project aims to provide the Halma world with a user friendly,
 professional application to play, practice, analyze and improve your Halma.
 
-## Setup
+# Organization
 
-### Prerequisites
+- The Angular frontend can be found under `/ng-frontend`, read more [here](ng-frontend/README.md).
+- The django-rest-framework backend can be found under `/backend`, read more [here](backend/README.md).
+> The original game was developed using a React frontend: `/frontend`, read more [here](frontend/README.md).
 
-- yarn
+- The Project is organized using a [GitHub Project](https://github.com/orgs/IT-Dobler/projects/2)
 
-### Start
-
-Run the following commands: 
-```shell
-cd .\ng-frontend\
-```
-```shell
-yarn install
-```
-```shell
-yarn start
-```
-
-## Project Management
-
-The Project is organized using a [GitHub Project](https://github.com/orgs/IT-Dobler/projects/2)
 
 ## CI/CD
 

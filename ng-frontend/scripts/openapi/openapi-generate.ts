@@ -42,11 +42,11 @@ async function generateOpenApi(directory: string): Promise<unknown> {
     //   https://openapi-generator.tech/docs/globals
     //   https://openapi-generator.tech/docs/generators/typescript-angular/
 
-    const typesPath = '../types';
+    const typesPath = '../../types';
     const typeMap = [
         // [OpenApi-Name/Format, Typescript-Name, Import-Path]
         ['AnyType', 'object', undefined],
-        ['date', 'BackendLocalDate', `${typesPath}/backend-local-date`],
+        ['DateTime', 'BackendLocalDateTime', `${typesPath}/backend-local-date-time`],
     ] as const;
     const paths = typeMap
         .map(([_format, _modelName, importPath]) => importPath)
@@ -83,8 +83,8 @@ async function generateOpenApi(directory: string): Promise<unknown> {
         ' -p enumPropertyNaming=UPPERCASE' +
         // sonst schneidet es bei einigen Enums den vordersten Teil einfach ab
         ' -p removeEnumValuePrefix=false' +
-        ' -p useSingleRequestParameter=true' +
-        ' -p useCustomPathParameterExpansion=true' +
+        // ' -p useSingleRequestParameter=true' +
+        // ' -p useCustomPathParameterExpansion=true' +
         // type-mappings also work for Format-Mappings (see: rest-includes)
         ` --type-mappings ${typeMappingsArg}` +
         ` --import-mappings ${importMappingsArg}` +
@@ -124,11 +124,12 @@ async function sleep(msec: number): Promise<unknown> {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     await sleep(100); // make sure timestamp ticks
 
-    const generatorPath = 'libs/halma-web-generated/src/lib/generated';
+    const generatorPath = 'libs/generated-api-client/src/lib/generated';
 
     await generateOpenApi(generatorPath).catch((err) =>
         console.error('Error generating models', err)
     );
 
-    deleteOldFiles(generatorPath, timestamp);
+    // TODO Figure out why we don't have permissions to delete these files
+    // deleteOldFiles(generatorPath, timestamp);
 })();
