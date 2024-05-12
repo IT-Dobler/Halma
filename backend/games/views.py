@@ -1,8 +1,8 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 
-from api.models import Game
-from api.serializers import GameSerializer
+from games.models import Game
+from games.serializers import GameSerializer
 
 
 # Create your views here.
