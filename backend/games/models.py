@@ -38,7 +38,8 @@ class Move(AbstractUUIDModel):
     from_position = models.CharField(max_length=5)
     to_position = models.CharField(max_length=5)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['move_number', 'turn'], name='unique move number per turn')
-        ]
+    # TODO remove when game instances are created dynamically
+    # class Meta:
+    #    constraints = [
+    #        models.UniqueConstraint(fields=['move_number', 'turn'], name='unique move number per turn')
+    #    ]

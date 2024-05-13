@@ -15,7 +15,7 @@ export function emptyCurrentMove(): CurrentMove {
 
 export function setMoveType(
     currentMove: CurrentMove,
-    moveType: MoveType
+    moveType: MoveType | undefined
 ): CurrentMove {
     return {
         ...currentMove,

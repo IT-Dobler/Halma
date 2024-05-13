@@ -70,6 +70,7 @@ async function generateOpenApi(directory: string): Promise<unknown> {
         ` --global-property models,apis,supportingFiles` +
         ` -p ngVersion=${ngVersion}` +
         ' -p disallowAdditionalPropertiesIfNotPresent=false' +
+        ' -p stringEnums=true' +
         ' -p ensureUniqueParams=true' +
         ' -p removeOperationIdPrefix=true' +
         ' -p prefixParameterInterfaces=true' +

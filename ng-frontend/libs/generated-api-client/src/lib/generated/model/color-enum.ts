@@ -9,11 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Turn } from './turn';
 
 
-export interface Game { 
-    code: string;
-    turns: Array<Turn>;
+/**
+ * * `Y` - Yellow * `R` - Red * `B` - Blue * `G` - Green
+ */
+export enum ColorEnum {
+    Y = 'Y',
+    R = 'R',
+    B = 'B',
+    G = 'G'
 }
 

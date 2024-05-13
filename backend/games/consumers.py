@@ -16,6 +16,8 @@ class GameConsumer(WebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["game_code"]
         self.room_group_name = f"game_{self.room_name}"
 
+        print('Connected!')
+
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name, self.channel_name

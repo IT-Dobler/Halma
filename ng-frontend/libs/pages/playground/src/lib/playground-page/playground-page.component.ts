@@ -35,6 +35,7 @@ export class PlaygroundPageComponent {
 
     public connect() {
         this.liveGameService.joinGame('xyz');
+        this.foo$ = this.liveGameService.moves$();
     }
 
     public disconnect() {

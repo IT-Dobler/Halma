@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Turn } from './turn';
+import { Move } from './move';
+import { ColorEnum } from './color-enum';
 
 
-export interface Game { 
-    code: string;
-    turns: Array<Turn>;
+export interface Turn { 
+    color: ColorEnum;
+    moves?: Array<Move>;
 }
+
+
 

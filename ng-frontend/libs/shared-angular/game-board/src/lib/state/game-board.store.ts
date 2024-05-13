@@ -23,11 +23,12 @@ import { MoveType } from './models/move-type';
 import { Node, NodeType } from './models/node';
 import { Move } from '@ng-frontend/generated-api-client';
 import { Color } from './models/color';
+import { CreateMove } from './models/create-move';
 
 type GameBoardState = {
     currentMove: CurrentMove;
     config: GameConfig;
-    lastCompletedMove: Move;
+    lastCompletedMove: CreateMove;
 };
 
 const initialState: GameBoardState = {
@@ -67,28 +68,33 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
 
     public onClickNode(id: string): void {
         const node = this.getNode(id);
+
+        // Deselect suggestions
+        this.deselectPossibleMoves();
+
         switch (node.type) {
             case NodeType.SELECTED:
                 this.deselectSelected();
-                this.deselectPossibleMoves();
                 break;
             case NodeType.POSSIBLE_MOVE: // TODO not only listen on this type, you want to be able to disable suggestions
                 this.setCompletedMove(node);
                 // Calculate move type
                 this.setMoveType(node);
 
+                // Calculate move type
+                this.setMoveType(node);
+
                 // Deselect old node
                 this.clearNode();
 
-                // Deselect suggestions
-                this.deselectPossibleMoves();
+                // Select new node
+                this.selectNode(node);
 
                 if (this.isEndOfTurn()) {
                     // Next turn
-                } else {
-                    // Select new node
-                    this.selectNode(node);
 
+                    this.deselectSelected();
+                } else {
                     // Highlight possible move nodes
                     this.highlightPossibleMoveNodes(node);
                 }
@@ -103,6 +109,16 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             default:
                 break;
         }
+    }
+
+    public endTurn() {
+        // Deselect suggestions
+        this.deselectPossibleMoves();
+
+        this.deselectSelected();
+
+        // TODO Probably missing something
+        patchState(this, { currentMove: setMoveType(this.currentMove(), undefined) });
     }
 
     private setCompletedMove(node: Node) {
@@ -212,12 +228,14 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     private setMoveType(node: Node): void {
-        patchState(this, {
-            currentMove: setMoveType(
-                this.currentMove(),
-                this.getMoveType(this.currentMove.selectedNodeId() ?? '', node.id)
-            ),
-        });
+        if (this.currentMove.selectedNodeId()) {
+            patchState(this, {
+                currentMove: setMoveType(
+                    this.currentMove(),
+                    this.getMoveType(this.currentMove.selectedNodeId() ?? '', node.id)
+                ),
+            });
+        }
     }
 
     private getMoveType(startId: string, endId: string): MoveType {
