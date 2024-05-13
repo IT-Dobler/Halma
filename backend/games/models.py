@@ -1,19 +1,44 @@
-from django.db import models
+import uuid
+
 from django.contrib.auth.models import User
+from django.db import models
 
 
 # Create your models here.
 
-class Game(models.Model):
-    id = models.UUIDField(primary_key=True)
+class AbstractUUIDModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     timestamp_created = models.DateTimeField(auto_now_add=True)
     timestamp_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Game(AbstractUUIDModel):
     code = models.TextField()
     players = models.ManyToManyField(User)
 
 
-class Move(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="moves")
+class Color(models.TextChoices):
+    YELLOW = 'Y'
+    RED = 'R'
+    BLUE = 'B'
+    GREEN = 'G'
+
+
+class Turn(AbstractUUIDModel):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="turns")
+    color = models.CharField(max_length=1, choices=Color.choices)
+
+
+class Move(AbstractUUIDModel):
+    turn = models.ForeignKey(Turn, on_delete=models.CASCADE, related_name="turns")
     move_number = models.IntegerField()
     from_position = models.CharField(max_length=5)
     to_position = models.CharField(max_length=5)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['move_number', 'turn'], name='unique move number per turn')
+        ]

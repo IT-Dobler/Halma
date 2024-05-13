@@ -16,27 +16,31 @@
     .input {
       @apply bg-white text-gray-800 p-2 m-2 border-solid border border-gray-700 rounded-sm;
     }
-    
+
     .BLOCKED {
       @apply bg-gray-200 text-gray-200;
     }
-    
+
+    .POSSIBLE_MOVE {
+        @apply bg-purple-300;
+    }
+
     .R {
       @apply bg-red-500;
     }
-    
+
     .Y {
       @apply bg-yellow-400;
     }
-    
+
     .G {
       @apply bg-lime-500;
     }
-    
+
     .B {
       @apply bg-sky-500;
     }
-    
+
     .R.SELECTED {
       @apply bg-red-200;
     }
@@ -44,11 +48,11 @@
     .Y.SELECTED {
       @apply bg-yellow-200;
     }
-    
+
     .G.SELECTED {
       @apply bg-lime-200;
     }
-    
+
     .B.SELECTED {
       @apply bg-sky-200;
     }
