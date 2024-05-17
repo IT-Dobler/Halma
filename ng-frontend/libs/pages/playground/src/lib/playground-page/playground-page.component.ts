@@ -29,7 +29,7 @@ export class PlaygroundPageComponent {
 
     public foo$: Observable<Move> | undefined;
 
-    public getTranslatedValue(): string {
+    public getTranslatedValueHelloWorld(): string {
         return this.translateService.instant('hello-world');
     }
 

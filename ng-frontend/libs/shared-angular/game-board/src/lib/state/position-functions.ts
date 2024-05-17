@@ -1,4 +1,3 @@
-import { PlayDirection } from './models/play-direction';
 import { Position } from './models/position';
 import { MoveType } from './models/move-type';
 import { GameBounds } from './models/game-bounds';
@@ -37,24 +36,7 @@ export function isWithinBounds(
     return row >= 0 && col >= 0 && row < bounds.height && col < bounds.width;
 }
 
-export function filterShifts(
-    nodeId: string,
-    positions: Position[],
-    playDirection: PlayDirection
-): Position[] {
-    const { row, col } = toPosition(nodeId);
-    switch (playDirection) {
-        case PlayDirection.BOTTOM_TO_TOP: // No "down shift" allowed
-            return positions.filter((p) => p.row !== row - 1);
-        case PlayDirection.TOP_TO_BOTTOM: // No "up shift" moves allowed
-            return positions.filter((p) => p.row !== row + 1);
-        case PlayDirection.RIGHT_TO_LEFT: // No "right shift" allowed
-            return positions.filter((p) => p.col !== col + 1);
-        case PlayDirection.LEFT_TO_RIGHT: // No "left shift" allowed
-            return positions.filter((p) => p.col !== col - 1);
-    }
-}
-
+// TODO: redo filter shifts by color
 export function possibleDestinations(
     nodeId: string,
     moveType: MoveType | undefined

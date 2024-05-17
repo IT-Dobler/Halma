@@ -7,7 +7,6 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { emptyCurrentMove, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
-    filterShifts,
     inBetweenPosition,
     isWithinBounds,
     manhattanDistance,
@@ -28,12 +27,16 @@ import { CreateMove } from './models/create-move';
 type GameBoardState = {
     currentMove: CurrentMove;
     config: GameConfig;
+    boardRotation: number;
+    boardRotateNext: boolean;
     lastCompletedMove: CreateMove;
 };
 
 const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
     config: emptyGameConfig(),
+    boardRotation: 0,
+    boardRotateNext: true,
     lastCompletedMove: { move_number: 0, from_position: '', to_position: '', color: Color.NONE }, // TODO helper function
 };
 
@@ -92,6 +95,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
 
                 if (this.isEndOfTurn()) {
                     // Next turn
+                    // TODO: rotate board if this.boardRotateNext === true && players.length > 1
 
                     this.deselectSelected();
                 } else {
@@ -102,6 +106,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
                 break;
             case NodeType.PIECE:
                 this.deselectSelected();
+                this.deselectPossibleMoves();
                 this.selectNode(node);
                 // Highlight possible move nodes
                 this.highlightPossibleMoveNodes(node);
@@ -176,10 +181,6 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
 
     private highlightPossibleMoveNodes(node: Node): void {
         let possiblePositions = possibleDestinations(node.id, this.currentMove.moveType());
-
-        possiblePositions = filterShifts(node.id, possiblePositions, this.currentMove.playDirection());
-
-        // TODO filterShiftsIntoStartZones
 
         const validNodeIds = possiblePositions
             .filter((position) => this.isPossibleMove(position))
@@ -267,6 +268,27 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             (node.color === this.currentMove.colorToMove() && node.type !== NodeType.SELECTED) ||
             node.type === NodeType.POSSIBLE_MOVE
         );
+    }
+
+    public rotateBoard(deg: number) {
+        // TODO set next angle according the next player
+        if (this.boardRotateNext()) {
+            let rotation: number = 0;
+            if (deg === 0) {
+                rotation = 0;
+            } else {
+                rotation += rotation === 270 ? -270 : rotation === -270 ? 270 : deg;
+            }
+            patchState(this, {
+                boardRotation: rotation,
+            });
+        }
+    }
+
+    public setBoardRotateNext(next: boolean) {
+        patchState(this, {
+            boardRotateNext: next,
+        });
     }
 
     createGame = rxMethod<GameConfig>(

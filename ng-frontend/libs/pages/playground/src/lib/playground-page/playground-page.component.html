@@ -2,10 +2,10 @@
 <app-game-board [inputSocket]="foo$" (onMove)="onMove($event)"></app-game-board>
 </div>
 
-<button [routerLink]="['/']">Home</button>
+<button class="btn-primary" [routerLink]="['/']">Home</button>
 <div>Translations via directive: <span translate>hello-world</span></div>
 <div>Translations via pipe: <span>{{ 'hello-world' | translate }}</span></div>
-<div>Translations via method: <span>{{ getTranslatedValue() }}</span></div>
+<div>Translations via method: <span>{{ getTranslatedValueHelloWorld() }}</span></div>
 <div>Unknown translation string: <span translate>some.unknown.translation.string</span></div>
 <hr>
 

@@ -21,10 +21,6 @@
       @apply bg-gray-200 text-gray-200;
     }
 
-    .POSSIBLE_MOVE {
-        @apply bg-purple-300;
-    }
-
     .R {
       @apply bg-red-500;
     }
@@ -55,5 +51,9 @@
 
     .B.SELECTED {
       @apply bg-sky-200;
+    }
+
+    .NONE.POSSIBLE_MOVE {
+      @apply bg-violet-600;
     }
   }
