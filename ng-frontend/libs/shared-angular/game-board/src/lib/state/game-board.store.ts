@@ -16,7 +16,6 @@ import {
     setSelectedNodeId,
 } from './current-move-functions';
 import {
-    filterShifts,
     inBetweenPosition,
     isWithinBounds,
     manhattanDistance,
@@ -34,11 +33,15 @@ import { Node, NodeType } from './models/node';
 type GameBoardState = {
     currentMove: CurrentMove;
     config: GameConfig;
+    boardRotation: number;
+    boardRotateNext: boolean;
 };
 
 const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
     config: emptyGameConfig(),
+    boardRotation: 0,
+    boardRotateNext: true,
 };
 
 @Injectable()
@@ -68,6 +71,7 @@ export class GameBoardStore extends signalStore(
 
                 if (this.isEndOfTurn()) {
                     // Next turn
+                    // TODO: rotate board if this.boardRotateNext === true && players.length > 1
                 } else {
                     // Select new node
                     this.selectNode(node);
@@ -79,6 +83,7 @@ export class GameBoardStore extends signalStore(
                 break;
             case NodeType.PIECE:
                 this.deselectSelected();
+                this.deselectPossibleMoves();
                 this.selectNode(node);
                 // Highlight possible move nodes
                 this.highlightPossibleMoveNodes(node);
@@ -88,7 +93,6 @@ export class GameBoardStore extends signalStore(
         }
     }
 
-    // chris
     private deselectSelected() {
         if(this.currentMove.selectedNodeId()){
             patchState(
@@ -123,14 +127,6 @@ export class GameBoardStore extends signalStore(
             node.id,
             this.currentMove.moveType()
         );
-
-        possiblePositions = filterShifts(
-            node.id,
-            possiblePositions,
-            this.currentMove.playDirection()
-        );
-
-        // TODO filterShiftsIntoStartZones
 
         const validNodeIds = possiblePositions
             .filter((position) => this.isPossibleMove(position))
@@ -228,6 +224,26 @@ export class GameBoardStore extends signalStore(
             node.color === this.currentMove.colorToMove() &&
             node.type !== NodeType.SELECTED
         );
+    }
+
+    public rotateBoard(deg: number){ // TODO set next angle according the next player
+        if(this.boardRotateNext()){
+            let rotation: number = 0;
+            if(deg === 0){
+                rotation = 0;
+            }else{
+                rotation += (rotation === 270) ? -270 : (rotation === -270) ? 270 : deg;
+            }
+            patchState(this, {
+                boardRotation: rotation,
+            });
+        }
+    }
+
+    public setBoardRotateNext(next: boolean){
+        patchState(this, {
+            boardRotateNext: next,
+        });
     }
 
     createGame = rxMethod<GameConfig>(
