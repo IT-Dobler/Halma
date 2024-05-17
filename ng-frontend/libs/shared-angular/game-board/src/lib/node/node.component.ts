@@ -1,5 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, input, Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBoardStore } from '../state/game-board.store';
 import { Node } from '../state/models/node';

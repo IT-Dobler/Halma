@@ -37,9 +37,6 @@ export class GameBoardComponent {
 
     private formBuilder = inject(NonNullableFormBuilder);
 
-    // TODO chris
-    public boardRotation: number = 0;
-
     public form: GameSettings = this.formBuilder.group({
         bounds: this.formBuilder.group({
             width: [10, [Validators.required]],
@@ -66,14 +63,5 @@ export class GameBoardComponent {
             bounds: formValue.bounds,
             players,
         });
-    }
-
-     // chris
-    public rotateBoard(deg: number){
-        if(deg === 0){
-            this.boardRotation = 0;
-        }else{
-            this.boardRotation += (this.boardRotation === 270) ? -270 : (this.boardRotation === -270) ? 270 : deg;
-        }
     }
 }

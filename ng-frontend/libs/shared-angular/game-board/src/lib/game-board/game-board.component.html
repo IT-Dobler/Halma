@@ -7,11 +7,13 @@
             </div>
             <div class="basis-1/4 flex flex-col">
                 <label for="height" class="block p-2">Vertical Elements</label>
-                <input id="height" class="input block" [formControl]="form.controls.bounds.controls.height" type="number">
+                <input id="height" class="input block" [formControl]="form.controls.bounds.controls.height"
+                       type="number">
             </div>
             <div class="basis-1/4 flex flex-col">
                 <label for="corners" class="block p-2">Corners</label>
-                <input id="corners" class="input block" [formControl]="form.controls.bounds.controls.cornerSize" type="number">
+                <input id="corners" class="input block" [formControl]="form.controls.bounds.controls.cornerSize"
+                       type="number">
             </div>
             <div class="basis-1/4 flex flex-col">
                 <label for="players" class="block p-2">Players</label>
@@ -26,16 +28,16 @@
     <pre>{{ form.value | json }}</pre>
 </div>
 
-@if(store.entities().length > 0){
+@if (store.entities().length > 0) {
 
     <div class="container mx-auto my-4 flex flex-row justify-end">
-        <button (click)="rotateBoard(-90)" class="btn-default mr-2">Rotate: -90</button>
-        <button (click)="rotateBoard(0)" class="btn-default mr-2">Rotate: Reset</button>
-        <button (click)="rotateBoard(90)" class="btn-default">Rotate: +90</button>
+        <button (click)="store.rotateBoard(-90)" class="btn-default mr-2">Rotate: -90</button>
+        <button (click)="store.rotateBoard(0)" class="btn-default mr-2">Rotate: Reset</button>
+        <button (click)="store.rotateBoard(90)" class="btn-default">Rotate: +90</button>
     </div>
 
     <div class="container">
-        <div id="table" class="aspect-square bg-gray-100 p-6 rotate-{{boardRotation}}">
+        <div id="table" class="aspect-square bg-gray-100 p-6 rotate-{{store.boardRotation()}}">
             <div id="board" class="grid bg-amber-600 grid-cols-{{ form.value.bounds?.width }}">
                 @for (node of store.entities(); track node.id) {
                     <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
@@ -43,5 +45,4 @@
             </div>
         </div>
     </div>
-
 }
