@@ -25,3 +25,6 @@
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+# NX
+.nx

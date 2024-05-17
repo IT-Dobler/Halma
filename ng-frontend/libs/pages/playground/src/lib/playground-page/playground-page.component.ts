@@ -14,7 +14,7 @@ import {RouterLink} from "@angular/router";
 export class PlaygroundPageComponent {
     readonly translateService = inject(TranslateService);
 
-    public getTranslatedValue(): string {
+    public getTranslatedValueHelloWorld(): string {
         return this.translateService.instant('hello-world');
     }
 }

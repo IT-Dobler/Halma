@@ -29,7 +29,7 @@ type GameSettings = FormGroup<{
     imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule],
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
-    styleUrl: './game-board.component.css',
+    styleUrl: './game-board.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameBoardComponent {
@@ -39,11 +39,11 @@ export class GameBoardComponent {
 
     public form: GameSettings = this.formBuilder.group({
         bounds: this.formBuilder.group({
-            width: [0, [Validators.required]],
-            height: [0, [Validators.required]],
-            cornerSize: [0, [Validators.required]],
+            width: [10, [Validators.required]],
+            height: [10, [Validators.required]],
+            cornerSize: [2, [Validators.required]],
         }),
-        playerCount: [1, [Validators.required]],
+        playerCount: [2, [Validators.required]],
     });
 
     public createEmptyGame() {

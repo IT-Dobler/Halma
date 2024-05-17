@@ -1,22 +1,12 @@
 import { patchState, signalStore, withState } from '@ngrx/signals';
-import {
-    setAllEntities,
-    updateEntities,
-    updateEntity,
-    withEntities,
-} from '@ngrx/signals/entities';
+import { setAllEntities, updateEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { exhaustMap, pipe } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { GameMockService } from './game-mock.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
+import { emptyCurrentMove, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
-    emptyCurrentMove,
-    setMoveType,
-    setSelectedNodeId,
-} from './current-move-functions';
-import {
-    filterShifts,
     inBetweenPosition,
     isWithinBounds,
     manhattanDistance,
@@ -34,25 +24,26 @@ import { Node, NodeType } from './models/node';
 type GameBoardState = {
     currentMove: CurrentMove;
     config: GameConfig;
+    boardRotation: number;
+    boardRotateNext: boolean;
 };
 
 const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
     config: emptyGameConfig(),
+    boardRotation: 0,
+    boardRotateNext: true,
 };
 
 @Injectable()
-export class GameBoardStore extends signalStore(
-    withState(initialState),
-    withEntities<Node>()
-) {
+export class GameBoardStore extends signalStore(withState(initialState), withEntities<Node>()) {
     private gameService = inject(GameMockService);
 
     public onClickNode(id: string): void {
         const node = this.getNode(id);
         switch (node.type) {
             case NodeType.SELECTED:
-                this.deselectNode(node);
+                this.deselectSelected();
                 this.deselectPossibleMoves();
                 break;
             case NodeType.POSSIBLE_MOVE: // TODO not only listen on this type, you want to be able to disable suggestions
@@ -60,15 +51,14 @@ export class GameBoardStore extends signalStore(
                 this.setMoveType(node);
 
                 // Deselect old node
-                this.deselectNode(
-                    this.getNode(this.currentMove.selectedNodeId() ?? '')
-                );
+                this.deselectSelected();
 
                 // Deselect suggestions
                 this.deselectPossibleMoves();
 
                 if (this.isEndOfTurn()) {
                     // Next turn
+                    // TODO: rotate board if this.boardRotateNext === true && players.length > 1
                 } else {
                     // Select new node
                     this.selectNode(node);
@@ -79,12 +69,29 @@ export class GameBoardStore extends signalStore(
 
                 break;
             case NodeType.PIECE:
+                this.deselectSelected();
+                this.deselectPossibleMoves();
                 this.selectNode(node);
                 // Highlight possible move nodes
                 this.highlightPossibleMoveNodes(node);
                 break;
             default:
                 break;
+        }
+    }
+
+    private deselectSelected() {
+        if (this.currentMove.selectedNodeId()) {
+            patchState(
+                this,
+                updateEntity({
+                    id: this.currentMove.selectedNodeId() ?? '',
+                    changes: { type: NodeType.PIECE },
+                })
+            );
+            patchState(this, {
+                currentMove: setSelectedNodeId(this.currentMove(), undefined),
+            });
         }
     }
 
@@ -103,18 +110,7 @@ export class GameBoardStore extends signalStore(
     }
 
     private highlightPossibleMoveNodes(node: Node): void {
-        let possiblePositions = possibleDestinations(
-            node.id,
-            this.currentMove.moveType()
-        );
-
-        possiblePositions = filterShifts(
-            node.id,
-            possiblePositions,
-            this.currentMove.playDirection()
-        );
-
-        // TODO filterShiftsIntoStartZones
+        let possiblePositions = possibleDestinations(node.id, this.currentMove.moveType());
 
         const validNodeIds = possiblePositions
             .filter((position) => this.isPossibleMove(position))
@@ -139,16 +135,10 @@ export class GameBoardStore extends signalStore(
             return false;
         }
 
-        const distance = manhattanDistance(
-            toPosition(this.currentMove.selectedNodeId() ?? ''),
-            position
-        );
+        const distance = manhattanDistance(toPosition(this.currentMove.selectedNodeId() ?? ''), position);
 
         if (this.isJump(distance)) {
-            const betweenPosition = inBetweenPosition(
-                toPosition(this.currentMove.selectedNodeId() ?? ''),
-                position
-            );
+            const betweenPosition = inBetweenPosition(toPosition(this.currentMove.selectedNodeId() ?? ''), position);
             // TODO safeCorner
 
             if (this.isPieceOrUndefined(toId(betweenPosition))) {
@@ -168,35 +158,17 @@ export class GameBoardStore extends signalStore(
         return this.entityMap()[id].type === NodeType.PIECE;
     }
 
-    private deselectNode(node: Node): void {
-        if (this.canDeselectNode(node)) {
-            patchState(
-                this,
-                updateEntity({
-                    id: node.id,
-                    changes: { type: NodeType.PIECE },
-                })
-            );
-        }
-    }
-
     private setMoveType(node: Node): void {
         patchState(this, {
             currentMove: setMoveType(
                 this.currentMove(),
-                this.getMoveType(
-                    this.currentMove.selectedNodeId() ?? '',
-                    node.id
-                )
+                this.getMoveType(this.currentMove.selectedNodeId() ?? '', node.id)
             ),
         });
     }
 
     private getMoveType(startId: string, endId: string): MoveType {
-        const manhattenDistance = manhattanDistance(
-            toPosition(startId),
-            toPosition(endId)
-        );
+        const manhattenDistance = manhattanDistance(toPosition(startId), toPosition(endId));
         return manhattenDistance > 1 ? MoveType.JUMP : MoveType.SHIFT;
     }
 
@@ -220,17 +192,28 @@ export class GameBoardStore extends signalStore(
     }
 
     private canSelectNode(node: Node): boolean {
-        return (
-            node.color === this.currentMove.colorToMove() &&
-            node.type !== NodeType.SELECTED
-        );
+        return node.color === this.currentMove.colorToMove() && node.type !== NodeType.SELECTED;
     }
 
-    private canDeselectNode(node: Node): boolean {
-        return (
-            node.color === this.currentMove.colorToMove() &&
-            node.type === NodeType.SELECTED
-        );
+    public rotateBoard(deg: number) {
+        // TODO set next angle according the next player
+        if (this.boardRotateNext()) {
+            let rotation: number = 0;
+            if (deg === 0) {
+                rotation = 0;
+            } else {
+                rotation += rotation === 270 ? -270 : rotation === -270 ? 270 : deg;
+            }
+            patchState(this, {
+                boardRotation: rotation,
+            });
+        }
+    }
+
+    public setBoardRotateNext(next: boolean) {
+        patchState(this, {
+            boardRotateNext: next,
+        });
     }
 
     createGame = rxMethod<GameConfig>(

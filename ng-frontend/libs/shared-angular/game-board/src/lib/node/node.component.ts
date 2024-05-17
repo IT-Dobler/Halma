@@ -1,11 +1,7 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    inject,
-    Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBoardStore } from '../state/game-board.store';
+import { Node } from '../state/models/node';
 
 @Component({
     selector: 'app-node',
@@ -16,7 +12,7 @@ import { GameBoardStore } from '../state/game-board.store';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NodeComponent {
-    @Input() nodeId!: string;
+    @Input() node!: Node;
 
     readonly store = inject(GameBoardStore);
 }
