@@ -37,8 +37,11 @@ export class GameBoardComponent {
 
     private formBuilder = inject(NonNullableFormBuilder);
 
-    // TODO chris
-    public boardRotation: number = 0;
+    horizontalIndexNodes: string[] = [];
+    verticalIndexNodes: number[] = [];
+	boardCenterContainerGridTemplateColumns: string = '';
+	boardHorizontalContainerGridTemplateColumns: string = '';
+    middleContainerGridTemplateColumnsWidths: string = '';
 
     public form: GameSettings = this.formBuilder.group({
         bounds: this.formBuilder.group({
@@ -66,14 +69,39 @@ export class GameBoardComponent {
             bounds: formValue.bounds,
             players,
         });
+
+        this.createGameBoard();
     }
 
-     // chris
-    public rotateBoard(deg: number){
-        if(deg === 0){
-            this.boardRotation = 0;
-        }else{
-            this.boardRotation += (this.boardRotation === 270) ? -270 : (this.boardRotation === -270) ? 270 : deg;
+    private createGameBoard(): void {
+
+        const formValue = this.form.getRawValue();
+        const horizontalIndex: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        //const cols = formValue.bounds.width;
+        //const rows = formValue.bounds.height; // TODO: set vertical heights
+		const countNodes = formValue.bounds.width*formValue.bounds.height;
+		const countHorizontalIndex = formValue.bounds.width+2;
+		this.middleContainerGridTemplateColumnsWidths = (100/countHorizontalIndex)+'%'+' auto ' + (100/countHorizontalIndex)+'%';
+
+        this.boardCenterContainerGridTemplateColumns = '';
+        this.boardHorizontalContainerGridTemplateColumns = '';
+
+		for(let i = 0; i < countNodes; i++){
+			if(i < countHorizontalIndex){
+				if(i>0 && i<countHorizontalIndex-1){
+                    this.horizontalIndexNodes[i] = horizontalIndex[i-1];
+					this.boardCenterContainerGridTemplateColumns += 'auto ';
+				}else{
+                    this.horizontalIndexNodes[i] = '';
+				}
+				this.boardHorizontalContainerGridTemplateColumns += 'auto ';
+			}
+		}
+        for(let i = 0; i < formValue.bounds.height; i++){
+            this.verticalIndexNodes[i] = (i+1);
         }
+        console.log(this.store.currentMove());
+        //console.log(this.verticalIndexNodes);
     }
+
 }

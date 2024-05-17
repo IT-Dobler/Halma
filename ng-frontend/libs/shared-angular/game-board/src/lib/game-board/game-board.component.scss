@@ -1,3 +1,8 @@
+.horizontal-index div:first-child::before,
+.horizontal-index div:last-child::before {
+  content:"X";
+  opacity:0;
+}
 .rotate-0 {
     rotate: 0deg;
 }
@@ -18,49 +23,4 @@
 }
 .rotate--270 {
     rotate: -270deg;
-}
-.grid-cols-2 {
-    grid-template-columns: auto auto;
-}
-.grid-cols-3 {
-    grid-template-columns: auto auto auto;
-}
-.grid-cols-4 {
-    grid-template-columns: auto auto auto auto;
-}
-.grid-cols-5 {
-    grid-template-columns: auto auto auto auto auto;
-}
-.grid-cols-6 {
-    grid-template-columns: auto auto auto auto auto auto;
-}
-.grid-cols-7 {
-    grid-template-columns: auto auto auto auto auto auto auto;
-}
-.grid-cols-8 {
-    grid-template-columns: auto auto auto auto auto auto auto auto;
-}
-.grid-cols-9 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-10 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-11 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-12 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-13 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-14 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-15 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
-}
-.grid-cols-16 {
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
 }

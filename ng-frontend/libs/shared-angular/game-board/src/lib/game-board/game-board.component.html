@@ -28,18 +28,47 @@
 
 @if(store.entities().length > 0){
 
-    <div class="container mx-auto my-4 flex flex-row justify-end">
-        <button (click)="rotateBoard(-90)" class="btn-default mr-2">Rotate: -90</button>
-        <button (click)="rotateBoard(0)" class="btn-default mr-2">Rotate: Reset</button>
-        <button (click)="rotateBoard(90)" class="btn-default">Rotate: +90</button>
-    </div>
-
-    <div class="container">
-        <div id="table" class="aspect-square bg-gray-100 p-6 rotate-{{boardRotation}}">
-            <div id="board" class="grid bg-amber-600 grid-cols-{{ form.value.bounds?.width }}">
-                @for (node of store.entities(); track node.id) {
-                    <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
-                }
+   @if(store.config.players().length >1){ <!-- TODO: set rotate board after finish by expected angle -->
+        <div class="container mx-auto my-4 flex flex-row justify-end">
+            <div class="flex mr-4 items-center">
+                <label for="rotateBoardAfterFinish" class="mr-2">Rotate board after finish</label>
+                <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true" (ngModelChange)="store.setBoardRotateNext($event)">
+            </div>
+            <button (click)="store.rotateBoard(-90)" class="btn-default mr-2">Rotate: -90</button>
+            <button (click)="store.rotateBoard(0)" class="btn-default mr-2">Rotate: Reset</button>
+            <button (click)="store.rotateBoard(90)" class="btn-default">Rotate: +90</button>
+        </div>
+   }
+    <div class="container mx-auto">
+        <div id="table" class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.boardRotation()}}">
+            <div id="board-frame" class="flex flex-col justify-evenly h-full bg-amber-600 text-center text-white">
+                <div id="index-top" class="grid horizontal-index" [style.grid-template-columns]="boardHorizontalContainerGridTemplateColumns">
+                    @for(horizontalIndexNode of horizontalIndexNodes; track horizontalIndexNode){
+                        <div>{{ horizontalIndexNode }}</div>
+                    }
+                </div>
+                <div id="middle" class="grid" [style.grid-template-columns]="middleContainerGridTemplateColumnsWidths">
+                    <div id="index-left" class="grid vertical-index">
+                        @for(verticalIndexNode of verticalIndexNodes; track verticalIndexNode){
+                            <div class="aspect-square content-center">{{ verticalIndexNode }}</div>
+                        }
+                    </div>
+                    <div id="board-center" class="grid" [style.grid-template-columns]="boardCenterContainerGridTemplateColumns">
+                        @for (node of store.entities(); track node.id) {
+                            <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
+                        }
+                    </div>
+                    <div id="index-right" class="grid vertical-index">
+                        @for(verticalIndexNode of verticalIndexNodes; track verticalIndexNode){
+                            <div class="aspect-square content-center">{{ verticalIndexNode }}</div>
+                        }
+                    </div>
+                </div>
+                <div id="index-bottom" class="grid horizontal-index" [style.grid-template-columns]="boardHorizontalContainerGridTemplateColumns">
+                    @for(horizontalIndexNode of horizontalIndexNodes; track horizontalIndexNode){
+                        <div>{{ horizontalIndexNode }}</div>
+                    }
+                </div>
             </div>
         </div>
     </div>
