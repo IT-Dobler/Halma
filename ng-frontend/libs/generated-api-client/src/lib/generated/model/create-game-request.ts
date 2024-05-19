@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Move } from './move';
-import { ColorEnum } from './color-enum';
 
-export interface Turn {
-    color: ColorEnum;
-    moves?: Array<Move>;
+
+export interface CreateGameRequest {
+    width: number;
+    height: number;
+    corner_size: number;
+    max_players: number;
 }

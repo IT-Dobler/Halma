@@ -24,7 +24,9 @@ SECRET_KEY = 'django-insecure-pain1h!__bj5lt^qa=&u40y+-ah5l$($s$sg^s!ews9y&wuwxq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['localhost']
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:4200']
 
 # Application definition
 
@@ -63,7 +65,8 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
-    'PREPROCESSING_HOOKS': ['drf_spectacular.hooks.preprocess_exclude_path_format']
+    'PREPROCESSING_HOOKS': ['drf_spectacular.hooks.preprocess_exclude_path_format'],
+    'SCHEMA_PATH_PREFIX_INSERT': '/api' # Adds an "api" prefix to the openapi for the angular proxy config to pick up
 }
 
 CHANNEL_LAYERS = {

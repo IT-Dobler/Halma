@@ -39,8 +39,10 @@ class GameConsumer(WebsocketConsumer):
 
         # Find the game
         game = Game.objects.get(code=self.room_name)
-        # Based on the game and the color, find the turn
-        turn = Turn.objects.filter(game=game, color=color_data).get()
+
+        # Based on the game and the color, find or create the turn
+        # TODO Obviously needs enhancement to multiple turns
+        turn, created = Turn.objects.get_or_create(game=game, color=color_data)
 
         # Combine to create the move
         Move.objects.create(turn=turn, **text_data_json)

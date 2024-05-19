@@ -10,11 +10,12 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { colorWheelInitialization } from '../state/models/color';
+import { Color, colorWheelInitialization } from '../state/models/color';
 import { Player } from '../state/models/player';
 import { directionOfInit } from '../state/models/play-direction';
 import { Observable } from 'rxjs';
 import { Move } from '@ng-frontend/generated-api-client';
+import { Router } from '@angular/router';
 
 type GameSettings = FormGroup<{
     bounds: FormGroup<{
@@ -36,9 +37,18 @@ type GameSettings = FormGroup<{
 })
 export class GameBoardComponent {
     readonly store = inject(GameBoardStore);
+    readonly router = inject(Router);
 
     public inputSocket = input(undefined, {
         transform: (value: Observable<Move> | undefined) => value,
+    });
+
+    public initialHFEN = input(undefined, {
+        transform: (value: string | undefined) => value,
+    });
+
+    public ownColor = input(undefined, {
+        transform: (value: Color | undefined) => value,
     });
 
     @Output() onMove = new EventEmitter<Move>();
@@ -63,6 +73,22 @@ export class GameBoardComponent {
          *
          * This technique here allows a stream of inputs, which then gets forwarded to the store
          */
+
+        /**
+         * Here the initial value, as a FEN string
+         */
+        effect(
+            () => {
+                if (this.initialHFEN()) {
+                    this.store.createGameFromHFEN(this.initialHFEN() ?? '');
+                }
+            },
+            { allowSignalWrites: true }
+        );
+
+        /**
+         * And here the stream of input moves
+         */
         effect(() => {
             if (this.inputSocket()) {
                 this.inputSocket()?.subscribe({
@@ -76,15 +102,39 @@ export class GameBoardComponent {
          * a component level output
          */
         effect(() => {
-            this.onMove.emit(this.store.lastCompletedMove());
+            if (this.store.lastCompletedMove()) {
+                this.onMove.emit(this.store.lastCompletedMove());
+            }
+        });
+
+        /**
+         * Set owning color for this board, determines what pieces he may move.
+         * // TODO maybe this comes per Move from the server in the future?
+         */
+        effect(
+            () => {
+                this.store.setOwnColor(this.ownColor());
+                this.store.rotateBoard(0);
+            },
+            { allowSignalWrites: true }
+        );
+    }
+
+    // TODO Should move out of this component with time!
+    public createLocalGame() {
+        const formValue = this.form.getRawValue();
+
+        const players: Player[] = this.initPlayers(formValue.playerCount);
+
+        this.store.createGame({
+            bounds: formValue.bounds,
+            players,
         });
     }
 
-    public createEmptyGame() {
-        const formValue = this.form.getRawValue();
-
+    private initPlayers(playerCount: number) {
         const players: Player[] = [];
-        for (let i = 0; i < formValue.playerCount; i++) {
+        for (let i = 0; i < playerCount; i++) {
             players.push({
                 id: 'player' + i,
                 color: colorWheelInitialization[i],
@@ -92,10 +142,6 @@ export class GameBoardComponent {
                 moveOrder: i,
             });
         }
-
-        this.store.createGame({
-            bounds: formValue.bounds,
-            players,
-        });
+        return players;
     }
 }

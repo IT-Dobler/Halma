@@ -5,7 +5,7 @@ import { inject, Injectable } from '@angular/core';
 import { GameMockService } from './game-mock.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { emptyCurrentMove, setMoveType, setSelectedNodeId } from './current-move-functions';
+import { emptyCurrentMove, emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
     isWithinBounds,
@@ -23,30 +23,43 @@ import { Node, NodeType } from './models/node';
 import { Move } from '@ng-frontend/generated-api-client';
 import { Color } from './models/color';
 import { CreateMove } from './models/create-move';
+import { HFENtoGameSetup } from './halma-fen';
 
 type GameBoardState = {
     currentMove: CurrentMove;
+    ownColor: Color | undefined;
     config: GameConfig;
     boardRotation: number;
     boardRotateNext: boolean;
-    lastCompletedMove: CreateMove;
+    lastCompletedMove: CreateMove | undefined;
+    lastReceivedMove: Move | undefined;
 };
 
 const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
+    ownColor: undefined,
     config: emptyGameConfig(),
     boardRotation: 0,
     boardRotateNext: true,
-    lastCompletedMove: { move_number: 0, from_position: '', to_position: '', color: Color.NONE }, // TODO helper function
+    lastCompletedMove: undefined,
+    lastReceivedMove: undefined,
 };
 
 @Injectable()
 export class GameBoardStore extends signalStore(withState(initialState), withEntities<Node>()) {
-    private gameService = inject(GameMockService);
+    private readonly gameService = inject(GameMockService);
+
+    public createGameFromHFEN(hfenNotation: string): void {
+        const { nodes, currentMove } = HFENtoGameSetup(hfenNotation);
+        patchState(this, setAllEntities(nodes));
+        patchState(this, { currentMove });
+        // TODO pull this from FEN notation
+        patchState(this, { config: { players: [], bounds: { width: 5, height: 5, cornerSize: 2 } } });
+    }
 
     // TODO Far from complete, does not apply the state correctly, proof of concept
     public onMove(move: Move): void {
-        if (move.move_number === this.lastCompletedMove.move_number()) {
+        if (move.move_number === this.lastCompletedMove()?.move_number) {
             return; // Filter out our own moves
         }
 
@@ -67,16 +80,17 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
                 changes: { type: NodeType.PIECE, color: oldPiece.color },
             })
         );
+
+        patchState(this, { lastReceivedMove: move });
     }
 
     public onClickNode(id: string): void {
         const node = this.getNode(id);
 
-        // Deselect suggestions
-        this.deselectPossibleMoves();
-
         switch (node.type) {
             case NodeType.SELECTED:
+                // Deselect suggestions
+                this.deselectPossibleMoves();
                 this.deselectSelected();
                 break;
             case NodeType.POSSIBLE_MOVE: // TODO not only listen on this type, you want to be able to disable suggestions
@@ -86,6 +100,9 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
 
                 // Calculate move type
                 this.setMoveType(node);
+
+                // Deselect suggestions
+                this.deselectPossibleMoves();
 
                 // Deselect old node
                 this.clearNode();
@@ -116,6 +133,14 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
         }
     }
 
+    public setOwnColor(ownColor: Color | undefined) {
+        patchState(this, { ownColor });
+
+        if (ownColor) {
+            patchState(this, { currentMove: emptyCurrentMoveWithColor(ownColor) });
+        }
+    }
+
     public endTurn() {
         // Deselect suggestions
         this.deselectPossibleMoves();
@@ -130,14 +155,13 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
         patchState(this, {
             lastCompletedMove: {
                 color: this.currentMove.colorToMove(),
-                move_number: this.lastCompletedMove.move_number() + 1,
+                move_number: (this.lastReceivedMove()?.move_number ?? 0) + 1,
                 from_position: this.currentMove.selectedNodeId() ?? '',
                 to_position: node.id,
             },
         });
     }
 
-    // chris
     private deselectSelected() {
         if (this.currentMove.selectedNodeId()) {
             patchState(
@@ -180,6 +204,10 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     private highlightPossibleMoveNodes(node: Node): void {
+        if (!this.currentMove.selectedNodeId()) {
+            return;
+        }
+
         let possiblePositions = possibleDestinations(node.id, this.currentMove.moveType());
 
         const validNodeIds = possiblePositions
@@ -264,20 +292,26 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     private canSelectNode(node: Node): boolean {
-        return (
-            (node.color === this.currentMove.colorToMove() && node.type !== NodeType.SELECTED) ||
-            node.type === NodeType.POSSIBLE_MOVE
-        );
+        if (node.type === NodeType.POSSIBLE_MOVE) {
+            return true;
+        }
+
+        if (this.ownColor()) {
+            return node.color === this.ownColor() && node.type !== NodeType.SELECTED;
+        }
+
+        return node.color === this.currentMove.colorToMove() && node.type !== NodeType.SELECTED;
     }
 
     public rotateBoard(deg: number) {
         // TODO set next angle according the next player
-        if (this.boardRotateNext()) {
-            let rotation: number = 0;
-            if (deg === 0) {
+        // TODO Whole lot of hardcoded, not very useful code
+        if (this.ownColor()) {
+            let rotation;
+            if (this.ownColor() === 'Y') {
                 rotation = 0;
             } else {
-                rotation += rotation === 270 ? -270 : rotation === -270 ? 270 : deg;
+                rotation = 180;
             }
             patchState(this, {
                 boardRotation: rotation,

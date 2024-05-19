@@ -18,6 +18,11 @@ class AbstractUUIDModel(models.Model):
 class Game(AbstractUUIDModel):
     code = models.TextField()
     players = models.ManyToManyField(User)
+    width = models.IntegerField()
+    height = models.IntegerField()
+    corner_size = models.IntegerField()
+    player_count = models.IntegerField(default=0)
+    max_players = models.IntegerField()
 
 
 class Color(models.TextChoices):
@@ -28,7 +33,7 @@ class Color(models.TextChoices):
 
 
 class Turn(AbstractUUIDModel):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="turns")
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="games")
     color = models.CharField(max_length=1, choices=Color.choices)
 
 

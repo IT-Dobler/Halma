@@ -14,6 +14,7 @@ import { Turn } from './turn';
 
 export interface Game { 
     code: string;
-    turns: Array<Turn>;
+    turns?: Array<Turn>;
 }
+
 
