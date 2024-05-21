@@ -306,7 +306,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     public rotateBoard(deg: number) {
-        // TODO set next angle according the next player
+        // TODO: cleanup
         if (this.boardRotateNext()) {
             let rotationAngle: number = this.currentBoardRotationAngle();
             if (deg === 0) {
@@ -319,14 +319,14 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             });
         }
         if (this.ownColor()) {
-            let rotation;
+            let rotationAngle;
             if (this.ownColor() === 'Y') {
-                rotation = 0;
+                rotationAngle = 0;
             } else {
-                rotation = 180;
+                rotationAngle = 180;
             }
             patchState(this, {
-                currentBoardRotationAngle: rotation,
+                currentBoardRotationAngle: rotationAngle,
             });
         }
     }
