@@ -1,0 +1,6 @@
+<div id="index-bottom" class="grid horizontal-index"
+     [style.grid-template-columns]="boardHorizontalContainerGridTemplateColumns">
+    @for (horizontalIndexNode of horizontalIndexNodes; track horizontalIndexNode) {
+        <div>{{ horizontalIndexNode }}</div>
+    }
+</div>

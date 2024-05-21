@@ -7,11 +7,13 @@
             </div>
             <div class="basis-1/4 flex flex-col">
                 <label for="height" class="block p-2">Vertical Elements</label>
-                <input id="height" class="input block" [formControl]="form.controls.bounds.controls.height" type="number">
+                <input id="height" class="input block" [formControl]="form.controls.bounds.controls.height"
+                       type="number">
             </div>
             <div class="basis-1/4 flex flex-col">
                 <label for="corners" class="block p-2">Corners</label>
-                <input id="corners" class="input block" [formControl]="form.controls.bounds.controls.cornerSize" type="number">
+                <input id="corners" class="input block" [formControl]="form.controls.bounds.controls.cornerSize"
+                       type="number">
             </div>
             <div class="basis-1/4 flex flex-col">
                 <label for="players" class="block p-2">Players</label>
@@ -20,55 +22,55 @@
         </div>
         <button type="submit" class="btn-primary w-full">Create Game</button>
     </form>
+    <div class="p-2 m-2">
+        <input id="displayBoardIndex" type="checkbox" [ngModel]="true"
+               (ngModelChange)="store.setDisplayBoardIndex($event)">
+        <label for="displayBoardIndex" class="inline p-2">Display board index</label>
+    </div>
 </div>
 
 <div class="container hidden">
     <pre>{{ form.value | json }}</pre>
 </div>
 
-@if(store.entities().length > 0){
+@if (store.entities().length > 0) {
 
-   @if(store.config.players().length >1){ <!-- TODO: set rotate board after finish by expected angle -->
+    @if (store.config.players().length > 1) {
+        <!-- TODO: set rotate board after finish by expected angle -->
         <div class="container mx-auto my-4 flex flex-row justify-end">
             <div class="flex mr-4 items-center">
                 <label for="rotateBoardAfterFinish" class="mr-2">Rotate board after finish</label>
-                <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true" (ngModelChange)="store.setBoardRotateNext($event)">
+                <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true"
+                       (ngModelChange)="store.setBoardRotateNext($event)">
             </div>
             <button (click)="store.rotateBoard(-90)" class="btn-default mr-2">Rotate: -90</button>
             <button (click)="store.rotateBoard(0)" class="btn-default mr-2">Rotate: Reset</button>
             <button (click)="store.rotateBoard(90)" class="btn-default">Rotate: +90</button>
         </div>
-   }
+    }
     <div class="container mx-auto">
-        <div id="table" class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.boardRotation()}}">
+        <div id="table" class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.currentBoardRotationAngle()}}">
             <div id="board-frame" class="flex flex-col justify-evenly h-full bg-amber-600 text-center text-white">
-                <div id="index-top" class="grid horizontal-index" [style.grid-template-columns]="boardHorizontalContainerGridTemplateColumns">
-                    @for(horizontalIndexNode of horizontalIndexNodes; track horizontalIndexNode){
-                        <div>{{ horizontalIndexNode }}</div>
+                @if(store.displayBoardIndex()){
+                    <app-game-board-horizontal-index [horizontalIndexNodes]="horizontalIndexNodes" [boardHorizontalContainerGridTemplateColumns]="boardHorizontalContainerGridTemplateColumns"></app-game-board-horizontal-index>
+                }
+                <div id="middle" [ngClass]="store.displayBoardIndex() ? 'grid' : 'block'" [style.grid-template-columns]="middleContainerGridTemplateColumnsWidths">
+                    @if(store.displayBoardIndex()){
+                        <app-game-board-vertical-index [verticalIndexNodes]="verticalIndexNodes"></app-game-board-vertical-index>
                     }
-                </div>
-                <div id="middle" class="grid" [style.grid-template-columns]="middleContainerGridTemplateColumnsWidths">
-                    <div id="index-left" class="grid vertical-index">
-                        @for(verticalIndexNode of verticalIndexNodes; track verticalIndexNode){
-                            <div class="aspect-square content-center">{{ verticalIndexNode }}</div>
-                        }
-                    </div>
-                    <div id="board-center" class="grid" [style.grid-template-columns]="boardCenterContainerGridTemplateColumns">
+                    <div id="board-center" class="grid"
+                         [style.grid-template-columns]="boardCenterContainerGridTemplateColumns">
                         @for (node of store.entities(); track node.id) {
                             <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
                         }
                     </div>
-                    <div id="index-right" class="grid vertical-index">
-                        @for(verticalIndexNode of verticalIndexNodes; track verticalIndexNode){
-                            <div class="aspect-square content-center">{{ verticalIndexNode }}</div>
-                        }
-                    </div>
-                </div>
-                <div id="index-bottom" class="grid horizontal-index" [style.grid-template-columns]="boardHorizontalContainerGridTemplateColumns">
-                    @for(horizontalIndexNode of horizontalIndexNodes; track horizontalIndexNode){
-                        <div>{{ horizontalIndexNode }}</div>
+                    @if(store.displayBoardIndex()){
+                        <app-game-board-vertical-index [verticalIndexNodes]="verticalIndexNodes"></app-game-board-vertical-index>
                     }
                 </div>
+                @if(store.displayBoardIndex()){
+                    <app-game-board-horizontal-index [horizontalIndexNodes]="horizontalIndexNodes" [boardHorizontalContainerGridTemplateColumns]="boardHorizontalContainerGridTemplateColumns"></app-game-board-horizontal-index>
+                }
             </div>
         </div>
     </div>

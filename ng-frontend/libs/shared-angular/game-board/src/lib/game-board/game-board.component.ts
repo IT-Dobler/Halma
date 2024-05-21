@@ -13,6 +13,8 @@ import {
 import { colorWheelInitialization } from '../state/models/color';
 import { Player } from '../state/models/player';
 import { directionOfInit } from '../state/models/play-direction';
+import { GameBoardHorizontalIndexComponent } from '../game-board-horizontal-index/game-board-horizontal-index.component';
+import { GameBoardVerticalIndexComponent } from '../game-board-vertical-index/game-board-vertical-index.component';
 
 type GameSettings = FormGroup<{
     bounds: FormGroup<{
@@ -26,7 +28,14 @@ type GameSettings = FormGroup<{
 @Component({
     selector: 'app-game-board',
     standalone: true,
-    imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule],
+    imports: [
+        CommonModule,
+        NodeComponent,
+        ReactiveFormsModule,
+        FormsModule,
+        GameBoardHorizontalIndexComponent,
+        GameBoardVerticalIndexComponent,
+    ],
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
     styleUrl: './game-board.component.scss',
@@ -39,8 +48,8 @@ export class GameBoardComponent {
 
     horizontalIndexNodes: string[] = [];
     verticalIndexNodes: number[] = [];
-	boardCenterContainerGridTemplateColumns: string = '';
-	boardHorizontalContainerGridTemplateColumns: string = '';
+    boardCenterContainerGridTemplateColumns: string = '';
+    boardHorizontalContainerGridTemplateColumns: string = '';
     middleContainerGridTemplateColumnsWidths: string = '';
 
     public form: GameSettings = this.formBuilder.group({
@@ -74,34 +83,73 @@ export class GameBoardComponent {
     }
 
     private createGameBoard(): void {
-
         const formValue = this.form.getRawValue();
-        const horizontalIndex: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        const horizontalIndex: string[] = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+        ];
         //const cols = formValue.bounds.width;
         //const rows = formValue.bounds.height; // TODO: set vertical heights
-		const countNodes = formValue.bounds.width*formValue.bounds.height;
-		const countHorizontalIndex = formValue.bounds.width+2;
-		this.middleContainerGridTemplateColumnsWidths = (100/countHorizontalIndex)+'%'+' auto ' + (100/countHorizontalIndex)+'%';
-
+        const countNodes: number = formValue.bounds.width * formValue.bounds.height;
+        const countHorizontalIndex = formValue.bounds.width + 2;
+        const countVerticalIndex = formValue.bounds.height;
+        const indexWidth: number = 5; // 0: width of the gameboardnode, else board width in %
+        const hasIndexWidth: boolean = indexWidth === 0;
+        const indexWidthPercentage: number = hasIndexWidth ? 100 / countHorizontalIndex : indexWidth;
+        this.middleContainerGridTemplateColumnsWidths =
+            indexWidthPercentage + '%' + ' auto ' + indexWidthPercentage + '%';
+        this.boardHorizontalContainerGridTemplateColumns = hasIndexWidth ? '' : indexWidthPercentage + '% ';
         this.boardCenterContainerGridTemplateColumns = '';
-        this.boardHorizontalContainerGridTemplateColumns = '';
 
-		for(let i = 0; i < countNodes; i++){
-			if(i < countHorizontalIndex){
-				if(i>0 && i<countHorizontalIndex-1){
-                    this.horizontalIndexNodes[i] = horizontalIndex[i-1];
-					this.boardCenterContainerGridTemplateColumns += 'auto ';
-				}else{
+        for (let i = 0; i < countNodes; i++) {
+            if (i < countHorizontalIndex) {
+                if (i > 0 && i < countHorizontalIndex - 1) {
+                    this.horizontalIndexNodes[i] = horizontalIndex[i - 1];
+                    this.boardCenterContainerGridTemplateColumns += 'auto ';
+                    if (!hasIndexWidth) {
+                        this.boardHorizontalContainerGridTemplateColumns += 'auto ';
+                    }
+                } else {
                     this.horizontalIndexNodes[i] = '';
-				}
-				this.boardHorizontalContainerGridTemplateColumns += 'auto ';
-			}
-		}
-        for(let i = 0; i < formValue.bounds.height; i++){
-            this.verticalIndexNodes[i] = (i+1);
+                }
+                if (hasIndexWidth) {
+                    this.boardHorizontalContainerGridTemplateColumns += 'auto ';
+                }
+            }
         }
-        console.log(this.store.currentMove());
-        //console.log(this.verticalIndexNodes);
+        if (!hasIndexWidth) {
+            this.boardHorizontalContainerGridTemplateColumns += indexWidthPercentage + '%';
+        }
+        for (let i = 0; i < countVerticalIndex; i++) {
+            this.verticalIndexNodes[i] = i + 1;
+        }
+        //console.log(this.store.currentMove());
+        console.log(countVerticalIndex);
+        console.log(formValue.bounds.height);
+        console.log(this.verticalIndexNodes);
     }
-
 }
