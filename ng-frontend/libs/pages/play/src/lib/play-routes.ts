@@ -3,7 +3,7 @@ import { PlayPageComponent } from './play-page/play-page.component';
 
 export const playRoutes: Route[] = [
     {
-        path: ':gameId',
+        path: ':gameCode',
         title: 'play.browser-title',
         component: PlayPageComponent,
     },

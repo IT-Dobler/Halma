@@ -7,8 +7,13 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/color-enum.ts
+model/create-game-request.ts
+model/create-game-response.ts
 model/game.ts
+model/join-game-response.ts
 model/models.ts
 model/move.ts
+model/turn.ts
 param.ts
 variables.ts

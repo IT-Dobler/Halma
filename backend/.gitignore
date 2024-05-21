@@ -1,3 +1,5 @@
 venv
 .venv
 db.sqlite3
+
+games/__pycache__/

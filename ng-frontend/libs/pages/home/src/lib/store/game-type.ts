@@ -1,0 +1,6 @@
+export enum GameType {
+    TWO_PIECES = 'TWO_PIECES',
+    EIGHT_PIECES = 'EIGHT_PIECES',
+    TEN_PIECES = 'TEN_PIECES',
+    FOURTEEN_PIECES = 'FOURTEEN_PIECES',
+}

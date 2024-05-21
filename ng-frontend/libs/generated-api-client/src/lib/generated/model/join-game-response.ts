@@ -9,9 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ColorEnum } from './color-enum';
 
-export interface Move {
-    move_number: number;
-    from_position: string;
-    to_position: string;
+export interface JoinGameResponse {
+    color: ColorEnum;
 }

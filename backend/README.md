@@ -37,7 +37,23 @@ Start the application
 python manage.py runserver
 ```
 
+For the realtime gameplay, start the redis db like so:
+```shell
+docker run --rm -p 6379:6379 redis:7
+```
+
 After installing a new dependency
 ```shell
 pip freeze > requirements.txt
+```
+
+Reset migrations
+```shell
+python manage.py migrate your_app zero
+```
+
+Followed by the usual
+```shell
+python manage.py makemigrations your_app
+python manage.py migrate your_app
 ```

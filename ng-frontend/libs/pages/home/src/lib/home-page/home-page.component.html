@@ -1,3 +1,23 @@
-<button class="btn-primary mr-2" [routerLink]="['futureGameId']">Play</button>
+<button class="btn-primary mr-2" [routerLink]="['local']">Play</button>
 
 <button class="btn-primary" [routerLink]="['playground']">Playground</button>
+
+
+<br>
+
+<form class="mt-10" [formGroup]="form">
+    <div class="basis-1/4 flex flex-col">
+        <label for="game-types" class="block p-2">Game types</label>
+        <select id="game-types" class="input block" [formControl]="form.controls.gameType">
+            @for (type of gameTypes; track type) {
+                <option [ngValue]="type">{{ type }}</option>
+            }
+        </select>
+    </div>
+    <div class="basis-1/4 flex flex-col">
+        <label for="players" class="block p-2">Players</label>
+        <input id="players" class="input block" [formControl]="form.controls.playerCount" type="number">
+    </div>
+</form>
+<pre>{{ form.value | json }}</pre>
+<button class="btn-primary" (click)="createGame()">"Online Play"</button>

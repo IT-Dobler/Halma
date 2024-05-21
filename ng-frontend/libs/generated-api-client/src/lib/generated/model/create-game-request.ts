@@ -10,8 +10,10 @@
  * Do not edit the class manually.
  */
 
-export interface Move {
-    move_number: number;
-    from_position: string;
-    to_position: string;
+
+export interface CreateGameRequest {
+    width: number;
+    height: number;
+    corner_size: number;
+    max_players: number;
 }

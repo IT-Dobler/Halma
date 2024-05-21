@@ -64,12 +64,13 @@ async function generateOpenApi(directory: string): Promise<unknown> {
     // eslint-disable-next-line prefer-template
     const cmd =
         'npx @openapitools/openapi-generator-cli generate' +
-        ` -i http://localhost:8000/api/schema?format=json` +
+        ` -i http://localhost:8000/schema?format=json` +
         ' -g typescript-angular' +
         // ' --template-dir scripts/openapi/conf/openapi-templates' +
         ` --global-property models,apis,supportingFiles` +
         ` -p ngVersion=${ngVersion}` +
         ' -p disallowAdditionalPropertiesIfNotPresent=false' +
+        ' -p stringEnums=true' +
         ' -p ensureUniqueParams=true' +
         ' -p removeOperationIdPrefix=true' +
         ' -p prefixParameterInterfaces=true' +
