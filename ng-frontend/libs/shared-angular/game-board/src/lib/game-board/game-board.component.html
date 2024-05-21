@@ -1,5 +1,6 @@
-<div class="container mx-auto">
-    <form [formGroup]="form" (ngSubmit)="createEmptyGame()">
+@if (!initialHFEN()) {
+    <div class="container mx-auto">
+        <form [formGroup]="form" (ngSubmit)="createLocalGame()">
         <div formGroupName="bounds" class="flex flex-row">
             <div class="basis-1/4 flex flex-col">
                 <label for="width" class="block p-2">Horizontal Elements</label>
@@ -28,6 +29,7 @@
         <label for="displayBoardIndex" class="inline p-2">Display board index</label>
     </div>
 </div>
+}
 
 <div class="container hidden">
     <pre>{{ form.value | json }}</pre>
@@ -35,7 +37,7 @@
 
 @if (store.entities().length > 0) {
 
-    @if (store.config.players().length > 1) {
+    @if (store.config.players().length > 1 && !initialHFEN()) {
         <!-- TODO: set rotate board after finish by expected angle -->
         <div class="container mx-auto my-4 flex flex-row justify-end">
             <div class="flex mr-4 items-center">
@@ -75,4 +77,7 @@
         </div>
     </div>
 
+    <div class="container mx-auto my-4 flex flex-row justify-end">
+        <button (click)="store.endTurn()" class="btn-default mr-2">End Turn</button>
+    </div>
 }

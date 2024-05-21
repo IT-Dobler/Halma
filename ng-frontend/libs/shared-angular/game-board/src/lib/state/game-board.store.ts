@@ -5,7 +5,7 @@ import { inject, Injectable } from '@angular/core';
 import { GameMockService } from './game-mock.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { emptyCurrentMove, setMoveType, setSelectedNodeId } from './current-move-functions';
+import { emptyCurrentMove,emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
     isWithinBounds,
@@ -20,51 +20,104 @@ import { GameConfig } from './models/game-config';
 import { CurrentMove } from './models/current-move';
 import { MoveType } from './models/move-type';
 import { Node, NodeType } from './models/node';
+import { Move } from '@ng-frontend/generated-api-client';
+import { Color } from './models/color';
+import { CreateMove } from './models/create-move';
+import { HFENtoGameSetup } from './halma-fen';
 
 type GameBoardState = {
     currentMove: CurrentMove;
+    ownColor: Color | undefined;
     config: GameConfig;
     currentBoardRotationAngle: number;
     boardRotateNext: boolean;
     displayBoardIndex: boolean;
+    lastCompletedMove: CreateMove | undefined;
+    lastReceivedMove: Move | undefined;
 };
 
 const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
+    ownColor: undefined,
     config: emptyGameConfig(),
     currentBoardRotationAngle: 0,
     boardRotateNext: true,
     displayBoardIndex: true,
+    lastCompletedMove: undefined,
+    lastReceivedMove: undefined,
 };
 
 @Injectable()
 export class GameBoardStore extends signalStore(withState(initialState), withEntities<Node>()) {
-    private gameService = inject(GameMockService);
+    private readonly gameService = inject(GameMockService);
+
+    public createGameFromHFEN(hfenNotation: string): void {
+        const { nodes, currentMove } = HFENtoGameSetup(hfenNotation);
+        patchState(this, setAllEntities(nodes));
+        patchState(this, { currentMove });
+        // TODO pull this from FEN notation
+        patchState(this, { config: { players: [], bounds: { width: 5, height: 5, cornerSize: 2 } } });
+    }
+
+    // TODO Far from complete, does not apply the state correctly, proof of concept
+    public onMove(move: Move): void {
+        if (move.move_number === this.lastCompletedMove()?.move_number) {
+            return; // Filter out our own moves
+        }
+
+        const oldPiece = this.getNode(move.from_position);
+
+        patchState(
+            this,
+            updateEntity({
+                id: move.from_position,
+                changes: { type: NodeType.EMPTY, color: Color.NONE },
+            })
+        );
+
+        patchState(
+            this,
+            updateEntity({
+                id: move.to_position,
+                changes: { type: NodeType.PIECE, color: oldPiece.color },
+            })
+        );
+
+        patchState(this, { lastReceivedMove: move });
+    }
 
     public onClickNode(id: string): void {
         const node = this.getNode(id);
+
         switch (node.type) {
             case NodeType.SELECTED:
-                this.deselectSelected();
+                // Deselect suggestions
                 this.deselectPossibleMoves();
+                this.deselectSelected();
                 break;
             case NodeType.POSSIBLE_MOVE: // TODO not only listen on this type, you want to be able to disable suggestions
+                this.setCompletedMove(node);
                 // Calculate move type
                 this.setMoveType(node);
 
-                // Deselect old node
-                this.deselectSelected();
+                // Calculate move type
+                this.setMoveType(node);
 
                 // Deselect suggestions
                 this.deselectPossibleMoves();
 
+                // Deselect old node
+                this.clearNode();
+
+                // Select new node
+                this.selectNode(node);
+
                 if (this.isEndOfTurn()) {
                     // Next turn
                     // TODO: rotate board if this.boardRotateNext === true && players.length > 1
-                } else {
-                    // Select new node
-                    this.selectNode(node);
 
+                    this.deselectSelected();
+                } else {
                     // Highlight possible move nodes
                     this.highlightPossibleMoveNodes(node);
                 }
@@ -82,6 +135,35 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
         }
     }
 
+    public setOwnColor(ownColor: Color | undefined) {
+        patchState(this, { ownColor });
+
+        if (ownColor) {
+            patchState(this, { currentMove: emptyCurrentMoveWithColor(ownColor) });
+        }
+    }
+
+    public endTurn() {
+        // Deselect suggestions
+        this.deselectPossibleMoves();
+
+        this.deselectSelected();
+
+        // TODO Probably missing something
+        patchState(this, { currentMove: setMoveType(this.currentMove(), undefined) });
+    }
+
+    private setCompletedMove(node: Node) {
+        patchState(this, {
+            lastCompletedMove: {
+                color: this.currentMove.colorToMove(),
+                move_number: (this.lastReceivedMove()?.move_number ?? 0) + 1,
+                from_position: this.currentMove.selectedNodeId() ?? '',
+                to_position: node.id,
+            },
+        });
+    }
+
     private deselectSelected() {
         if (this.currentMove.selectedNodeId()) {
             patchState(
@@ -94,6 +176,18 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             patchState(this, {
                 currentMove: setSelectedNodeId(this.currentMove(), undefined),
             });
+        }
+    }
+
+    private clearNode() {
+        if (this.currentMove.selectedNodeId()) {
+            patchState(
+                this,
+                updateEntity({
+                    id: this.currentMove.selectedNodeId() ?? '',
+                    changes: { type: NodeType.EMPTY, color: Color.NONE },
+                })
+            );
         }
     }
 
@@ -112,6 +206,10 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     private highlightPossibleMoveNodes(node: Node): void {
+        if (!this.currentMove.selectedNodeId()) {
+            return;
+        }
+
         let possiblePositions = possibleDestinations(node.id, this.currentMove.moveType());
 
         const validNodeIds = possiblePositions
@@ -161,12 +259,14 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     private setMoveType(node: Node): void {
-        patchState(this, {
-            currentMove: setMoveType(
-                this.currentMove(),
-                this.getMoveType(this.currentMove.selectedNodeId() ?? '', node.id)
-            ),
-        });
+        if (this.currentMove.selectedNodeId()) {
+            patchState(this, {
+                currentMove: setMoveType(
+                    this.currentMove(),
+                    this.getMoveType(this.currentMove.selectedNodeId() ?? '', node.id)
+                ),
+            });
+        }
     }
 
     private getMoveType(startId: string, endId: string): MoveType {
@@ -180,7 +280,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
                 this,
                 updateEntity({
                     id: node.id,
-                    changes: { type: NodeType.SELECTED },
+                    changes: { type: NodeType.SELECTED, color: this.currentMove.colorToMove() },
                 })
             );
             patchState(this, {
@@ -194,6 +294,14 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     private canSelectNode(node: Node): boolean {
+        if (node.type === NodeType.POSSIBLE_MOVE) {
+            return true;
+        }
+
+        if (this.ownColor()) {
+            return node.color === this.ownColor() && node.type !== NodeType.SELECTED;
+        }
+
         return node.color === this.currentMove.colorToMove() && node.type !== NodeType.SELECTED;
     }
 
@@ -208,6 +316,17 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             }
             patchState(this, {
                 currentBoardRotationAngle: rotationAngle,
+            });
+        }
+        if (this.ownColor()) {
+            let rotation;
+            if (this.ownColor() === 'Y') {
+                rotation = 0;
+            } else {
+                rotation = 180;
+            }
+            patchState(this, {
+                currentBoardRotationAngle: rotation,
             });
         }
     }

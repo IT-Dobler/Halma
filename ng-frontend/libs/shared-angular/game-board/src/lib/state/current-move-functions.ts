@@ -11,20 +11,22 @@ export function emptyCurrentMove(): CurrentMove {
     };
 }
 
-export function setMoveType(
-    currentMove: CurrentMove,
-    moveType: MoveType
-): CurrentMove {
+export function emptyCurrentMoveWithColor(colorToMove: Color): CurrentMove {
+    return {
+        colorToMove,
+        selectedNodeId: undefined,
+        moveType: undefined,
+    };
+}
+
+export function setMoveType(currentMove: CurrentMove, moveType: MoveType | undefined): CurrentMove {
     return {
         ...currentMove,
         moveType,
     };
 }
 
-export function setSelectedNodeId(
-    currentMove: CurrentMove,
-    selectedNodeId: string | undefined
-): CurrentMove {
+export function setSelectedNodeId(currentMove: CurrentMove, selectedNodeId: string | undefined): CurrentMove {
     return {
         ...currentMove,
         selectedNodeId,

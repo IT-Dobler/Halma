@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlaygroundPageComponent } from './playground-page.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
 
 describe('PlaygroundPageComponent', () => {
     let component: PlaygroundPageComponent;
@@ -7,7 +9,8 @@ describe('PlaygroundPageComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [PlaygroundPageComponent],
+            imports: [PlaygroundPageComponent, TranslateModule.forRoot()],
+            providers: [provideRouter([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(PlaygroundPageComponent);

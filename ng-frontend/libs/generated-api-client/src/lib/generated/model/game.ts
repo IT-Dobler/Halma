@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Move } from './move';
-import { BackendLocalDateTime } from '../../types/backend-local-date-time';
+import { Turn } from './turn';
 
 
 export interface Game { 
-    id: string;
-    readonly timestamp_created: BackendLocalDateTime;
-    readonly timestamp_updated: BackendLocalDateTime;
     code: string;
-    players: Array<number>;
-    moves: Array<Move>;
+    turns?: Array<Turn>;
 }
 
 
