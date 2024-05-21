@@ -16,6 +16,7 @@ import { directionOfInit } from '../state/models/play-direction';
 import { Observable } from 'rxjs';
 import { Move } from '@ng-frontend/generated-api-client';
 import { Router } from '@angular/router';
+import {BoardIndexComponent} from "../board-index/board-index.component";
 
 type GameSettings = FormGroup<{
     bounds: FormGroup<{
@@ -29,7 +30,7 @@ type GameSettings = FormGroup<{
 @Component({
     selector: 'app-game-board',
     standalone: true,
-    imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule],
+    imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule, BoardIndexComponent],
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
     styleUrl: './game-board.component.scss',

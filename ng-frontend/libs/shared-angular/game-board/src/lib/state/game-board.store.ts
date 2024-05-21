@@ -316,6 +316,8 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             patchState(this, {
                 boardRotation: rotation,
             });
+        } else {
+            patchState(this, { boardRotation: this.boardRotation() + deg });
         }
     }
 

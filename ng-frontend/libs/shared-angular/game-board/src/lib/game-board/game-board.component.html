@@ -45,12 +45,15 @@
 
     <div class="container">
         <div id="table" class="aspect-square bg-gray-100 p-6 rotate-{{store.boardRotation()}}">
-            <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
-                @for (node of store.entities(); track node.id) {
-                    <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
-                }
-            </div>
+            <app-board-index [bounds]="store.config.bounds()">
+                <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
+                    @for (node of store.entities(); track node.id) {
+                        <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
+                    }
+                </div>
+            </app-board-index>
         </div>
+
     </div>
 
     <div class="container mx-auto my-4 flex flex-row justify-end">

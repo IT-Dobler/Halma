@@ -5,13 +5,13 @@ import { RouterLink } from '@angular/router';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LiveGameService } from '../live-game.service';
 import { Observable } from 'rxjs';
-import { GameBoardComponent } from '@ng-frontend/shared-angular/game-board';
+import { BoardIndexComponent, GameBoardComponent } from '@ng-frontend/shared-angular/game-board';
 import { Move } from '@ng-frontend/generated-api-client';
 
 @Component({
     selector: 'app-playground-page',
     standalone: true,
-    imports: [CommonModule, TranslateModule, RouterLink, ReactiveFormsModule, GameBoardComponent],
+    imports: [CommonModule, TranslateModule, RouterLink, ReactiveFormsModule, GameBoardComponent, BoardIndexComponent],
     templateUrl: './playground-page.component.html',
     styleUrl: './playground-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

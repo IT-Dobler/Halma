@@ -1,0 +1,49 @@
+<!--
+<div class="grid grid-cols-[50px_auto_50px] grid-rows-[50px_auto_50px]">
+    <div></div>
+    <div class="bg-amber-100 flex justify-around">
+        @for (char of files(); track char) {
+            <div>{{ char }}</div>
+        }
+    </div>
+    <div></div>
+    <div class="bg-amber-100 flex justify-around flex-col">
+        @for (char of rows(); track char) {
+            <div>{{ char }}</div>
+        }
+    </div>
+    <ng-content></ng-content>
+    <div class="bg-amber-100 flex justify-around flex-col">
+        @for (char of rows(); track char) {
+            <div>{{ char }}</div>
+        }
+    </div>
+    <div></div>
+    <div class="bg-amber-100 flex justify-around">
+        @for (char of files(); track char) {
+            <div>{{ char }}</div>
+        }
+    </div>
+    <div></div>
+</div>
+-->
+
+<div class="grid grid-cols-[auto_25px] grid-rows-[auto_25px]">
+    <ng-content></ng-content>
+    <div class="relative">
+        <div class="absolute left-[-20px] bottom-0 top-0">
+            <div class="flex justify-around flex-col-reverse h-full">
+                @for (char of rows(); track char) {
+                    <div class="h-full">{{ char }}</div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Row -->
+    <div class="bg-amber-100 flex justify-around">
+        @for (char of files(); track char) {
+            <div>{{ char }}</div>
+        }
+    </div>
+    <div></div>
+</div>
