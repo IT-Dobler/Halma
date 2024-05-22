@@ -19,6 +19,7 @@ export class PlayPageComponent {
     readonly activatedRoute = inject(ActivatedRoute);
 
     constructor() {
+        // TODO: define const for 'gameCode'
         const code = this.activatedRoute.snapshot.paramMap.get('gameCode');
 
         if (code && code !== 'local') {
