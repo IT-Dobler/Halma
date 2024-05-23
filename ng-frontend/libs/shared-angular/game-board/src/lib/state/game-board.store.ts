@@ -307,6 +307,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
 
     public rotateBoard(deg: number) {
         // TODO: cleanup
+        // TODO: fix bug board not rotating
         if (this.boardRotateNext()) {
             let rotationAngle: number = this.currentBoardRotationAngle();
             if (deg === 0) {
@@ -317,6 +318,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             patchState(this, {
                 currentBoardRotationAngle: rotationAngle,
             });
+            //console.log(rotationAngle);alert(rotationAngle);
         }
         if (this.ownColor()) {
             let rotationAngle;
@@ -358,4 +360,9 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             )
         )
     );
+
+    public stopGame(): void {
+        // TODO: clear all nodes to reset the game
+        patchState(this, initialState);
+    }
 }

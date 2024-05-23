@@ -18,6 +18,8 @@ import { Move } from '@ng-frontend/generated-api-client';
 import { Router } from '@angular/router';
 import { GameBoardHorizontalIndexComponent } from '../game-board-horizontal-index/game-board-horizontal-index.component';
 import { GameBoardVerticalIndexComponent } from '../game-board-vertical-index/game-board-vertical-index.component';
+import { GameSetupFormComponent } from "../game-setup-form/game-setup-form.component";
+import {RotateGameBoardComponent} from "../rotate-game-board/rotate-game-board.component";
 
 type GameSettings = FormGroup<{
     bounds: FormGroup<{
@@ -38,6 +40,8 @@ type GameSettings = FormGroup<{
         FormsModule,
         GameBoardHorizontalIndexComponent,
         GameBoardVerticalIndexComponent,
+        GameSetupFormComponent,
+        RotateGameBoardComponent,
     ],
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
@@ -69,6 +73,15 @@ export class GameBoardComponent {
     boardCenterContainerGridTemplateColumns: string = '';
     boardHorizontalContainerGridTemplateColumns: string = '';
     middleContainerGridTemplateColumnsWidths: string = '';
+
+    public gameSetupForm = FormGroup<{
+        bounds: FormGroup<{
+            width: FormControl<number>,
+            height: FormControl<number>,
+            cornerSize: FormControl<number>,
+        }>,
+        playerCount: FormControl<number>,
+    }>;
 
     public form: GameSettings = this.formBuilder.group({
         bounds: this.formBuilder.group({
@@ -147,6 +160,23 @@ export class GameBoardComponent {
         });
 
         this.createGameBoard();
+    }
+
+    public stopLocalGame(){
+        const players: Player[] = [];
+        const emptyGame = {
+            "bounds": {
+                "width": 0,
+                "height": 0,
+                "cornerSize": 0,
+            }
+        };
+        this.store.createGame({
+            bounds: emptyGame.bounds,
+            players,
+        });
+
+        this.store.stopGame();
     }
 
     private initPlayers(playerCount: number) {
@@ -228,8 +258,8 @@ export class GameBoardComponent {
             this.verticalIndexNodes[i] = i + 1;
         }
         //console.log(this.store.currentMove());
-        console.log(countVerticalIndex);
-        console.log(formValue.bounds.height);
-        console.log(this.verticalIndexNodes);
+        //console.log(countVerticalIndex);
+        //console.log(formValue.bounds.height);
+        //console.log(this.verticalIndexNodes);
     }
 }
