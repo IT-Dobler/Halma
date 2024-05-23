@@ -12,14 +12,20 @@ Lets do this: https://stackoverflow.com/questions/9586346/virtualenv-and-source-
 
 # Setup
 
+Navigate to /backend and follow the instructions below.
+
 Create a virtual env
 ```shell
-python -m venv myenv
+python -m venv venv
 ```
 
-Activate your virtual env
+Activate your virtual env in Windows
 ```shell
 ./venv/Scripts/activate
+```
+Activate your virtual env in linux or osx
+```shell
+source ./venv/bin/activate
 ```
 
 Install dependencies 
