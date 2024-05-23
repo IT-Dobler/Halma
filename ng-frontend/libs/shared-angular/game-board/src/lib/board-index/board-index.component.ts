@@ -11,6 +11,8 @@ import { GameBounds } from '../state/models/game-bounds';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardIndexComponent {
+    public active = input(true);
+
     public bounds = input.required({
         transform: (value: GameBounds) => value,
     });
