@@ -5,7 +5,7 @@ import { inject, Injectable } from '@angular/core';
 import { GameMockService } from './game-mock.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { emptyCurrentMove, emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
+import { emptyCurrentMove,emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
     isWithinBounds,
@@ -29,8 +29,9 @@ type GameBoardState = {
     currentMove: CurrentMove;
     ownColor: Color | undefined;
     config: GameConfig;
-    boardRotation: number;
+    currentBoardRotationAngle: number;
     boardRotateNext: boolean;
+    displayBoardIndex: boolean;
     lastCompletedMove: CreateMove | undefined;
     lastReceivedMove: Move | undefined;
 };
@@ -39,8 +40,9 @@ const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
     ownColor: undefined,
     config: emptyGameConfig(),
-    boardRotation: 0,
+    currentBoardRotationAngle: 0,
     boardRotateNext: true,
+    displayBoardIndex: true,
     lastCompletedMove: undefined,
     lastReceivedMove: undefined,
 };
@@ -304,17 +306,29 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     public rotateBoard(deg: number) {
-        // TODO set next angle according the next player
-        // TODO Whole lot of hardcoded, not very useful code
-        if (this.ownColor()) {
-            let rotation;
-            if (this.ownColor() === 'Y') {
-                rotation = 0;
+        // TODO: cleanup
+        // TODO: fix bug board not rotating
+        if (this.boardRotateNext()) {
+            let rotationAngle: number = this.currentBoardRotationAngle();
+            if (deg === 0) {
+                rotationAngle = 0;
             } else {
-                rotation = 180;
+                rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;
             }
             patchState(this, {
-                boardRotation: rotation,
+                currentBoardRotationAngle: rotationAngle,
+            });
+            //console.log(rotationAngle);alert(rotationAngle);
+        }
+        if (this.ownColor()) {
+            let rotationAngle;
+            if (this.ownColor() === 'Y') {
+                rotationAngle = 0;
+            } else {
+                rotationAngle = 180;
+            }
+            patchState(this, {
+                currentBoardRotationAngle: rotationAngle,
             });
         } else {
             patchState(this, { boardRotation: this.boardRotation() + deg });
@@ -324,6 +338,12 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     public setBoardRotateNext(next: boolean) {
         patchState(this, {
             boardRotateNext: next,
+        });
+    }
+
+    public setDisplayBoardIndex(display: boolean) : void {
+        patchState(this, {
+            displayBoardIndex: display,
         });
     }
 
@@ -342,4 +362,9 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             )
         )
     );
+
+    public stopGame(): void {
+        // TODO: clear all nodes to reset the game
+        patchState(this, initialState);
+    }
 }

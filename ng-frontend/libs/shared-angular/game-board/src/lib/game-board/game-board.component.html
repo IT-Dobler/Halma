@@ -1,32 +1,6 @@
 @if (!initialHFEN()) {
-    <div class="container mx-auto">
-        <form [formGroup]="form" (ngSubmit)="createLocalGame()">
-            <div formGroupName="bounds" class="flex flex-row">
-                <div class="basis-1/4 flex flex-col">
-                    <label for="width" class="block p-2">Horizontal Elements</label>
-                    <input id="width" class="input block" [formControl]="form.controls.bounds.controls.width"
-                           type="number">
-                </div>
-                <div class="basis-1/4 flex flex-col">
-                    <label for="height" class="block p-2">Vertical Elements</label>
-                    <input id="height" class="input block" [formControl]="form.controls.bounds.controls.height"
-                           type="number">
-                </div>
-                <div class="basis-1/4 flex flex-col">
-                    <label for="corners" class="block p-2">Corners</label>
-                    <input id="corners" class="input block" [formControl]="form.controls.bounds.controls.cornerSize"
-                           type="number">
-                </div>
-                <div class="basis-1/4 flex flex-col">
-                    <label for="players" class="block p-2">Players</label>
-                    <input id="players" class="input block" [formControl]="form.controls.playerCount" type="number">
-                </div>
-            </div>
-            <button type="submit" class="btn-primary w-full">Create Game</button>
-        </form>
-    </div>
+    <app-game-setup-form></app-game-setup-form>
 }
-
 
 <div class="container hidden">
     <pre>{{ form.value | json }}</pre>
@@ -34,12 +8,8 @@
 
 @if (store.entities().length > 0) {
 
-    @if (!initialHFEN()) {
-        <div class="container mx-auto my-4 flex flex-row justify-end">
-            <button (click)="store.rotateBoard(-90)" class="btn-default mr-2">Rotate: -90</button>
-            <button (click)="store.rotateBoard(0)" class="btn-default mr-2">Rotate: Reset</button>
-            <button (click)="store.rotateBoard(90)" class="btn-default">Rotate: +90</button>
-        </div>
+    @if (store.config.players().length > 1 && !initialHFEN()) {
+        <app-rotate-game-board></app-rotate-game-board>
     }
 
 
@@ -53,7 +23,6 @@
                 </div>
             </app-board-index>
         </div>
-
     </div>
 
     <div class="container mx-auto my-4 flex flex-row justify-end">

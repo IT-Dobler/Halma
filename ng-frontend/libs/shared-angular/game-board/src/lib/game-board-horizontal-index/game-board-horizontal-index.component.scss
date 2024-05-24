@@ -1,0 +1,5 @@
+.horizontal-index div:first-child::before,
+.horizontal-index div:last-child::before {
+    content:"X";
+    opacity:0;
+}

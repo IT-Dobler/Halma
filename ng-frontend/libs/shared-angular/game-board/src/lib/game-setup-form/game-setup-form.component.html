@@ -1,0 +1,49 @@
+<div class="container mx-auto">
+    @if (store.config.players().length === 0) {
+        <form [formGroup]="gameboard.form" (ngSubmit)="gameboard.createLocalGame()">
+            <div formGroupName="bounds" class="flex flex-row">
+                <div class="basis-1/4 flex flex-col">
+                    <label for="width" class="block p-2">Horizontal Elements</label>
+                    <input id="width" class="input block" [formControl]="gameboard.form.controls.bounds.controls.width"
+                           type="number">
+                </div>
+                <div class="basis-1/4 flex flex-col">
+                    <label for="height" class="block p-2">Vertical Elements</label>
+                    <input id="height" class="input block"
+                           [formControl]="gameboard.form.controls.bounds.controls.height"
+                           type="number">
+                </div>
+                <div class="basis-1/4 flex flex-col">
+                    <label for="corners" class="block p-2">Corners</label>
+                    <input id="corners" class="input block"
+                           [formControl]="gameboard.form.controls.bounds.controls.cornerSize"
+                           type="number">
+                </div>
+                <div class="basis-1/4 flex flex-col">
+                    <label for="players" class="block p-2">Players</label>
+                    <input id="players" class="input block" [formControl]="gameboard.form.controls.playerCount"
+                           type="number">
+                </div>
+            </div>
+            <button type="submit" class="btn-primary w-full">Start game</button>
+        </form>
+    } @else {
+        <button (click)="gameboard.stopLocalGame()" class="btn-alert w-full">Stop the game</button>
+    }
+</div>
+<div class="container mx-auto">
+    <div class="p-2 m-2">
+        <span class="mr-2">
+            <input id="displayBoardIndex" type="checkbox" [ngModel]="true"
+                   (ngModelChange)="store.setDisplayBoardIndex($event)">
+            <label for="displayBoardIndex" class="inline p-2">Display board index</label>
+        </span>
+        <span class="mr-2">
+            <!-- TODO: set rotate board after finish by expected angle -->
+            <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true"
+                   (ngModelChange)="store.setBoardRotateNext($event)"><label for="rotateBoardAfterFinish"
+                                                                             class="inline p-2">Rotate
+        board after finish</label>
+        </span>
+    </div>
+</div>
