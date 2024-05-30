@@ -16,9 +16,9 @@ import { directionOfInit } from '../state/models/play-direction';
 import { Observable } from 'rxjs';
 import { Move } from '@ng-frontend/generated-api-client';
 import { Router } from '@angular/router';
-import {BoardIndexComponent} from "../board-index/board-index.component";
-import { GameSetupFormComponent } from "../game-setup-form/game-setup-form.component";
-import {RotateGameBoardComponent} from "../rotate-game-board/rotate-game-board.component";
+import { BoardIndexComponent } from '../board-index/board-index.component';
+import { GameSetupFormComponent } from '../game-setup-form/game-setup-form.component';
+import { RotateGameBoardComponent } from '../rotate-game-board/rotate-game-board.component';
 
 type GameSettings = FormGroup<{
     bounds: FormGroup<{
@@ -32,12 +32,12 @@ type GameSettings = FormGroup<{
 @Component({
     selector: 'app-game-board',
     standalone: true,
-    imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule, BoardIndexComponent],
     imports: [
         CommonModule,
         NodeComponent,
         ReactiveFormsModule,
         FormsModule,
+        BoardIndexComponent,
         GameSetupFormComponent,
         RotateGameBoardComponent,
     ],
@@ -65,12 +65,6 @@ export class GameBoardComponent {
     @Output() onMove = new EventEmitter<Move>();
 
     private formBuilder = inject(NonNullableFormBuilder);
-
-    horizontalIndexNodes: string[] = [];
-    verticalIndexNodes: number[] = [];
-    boardCenterContainerGridTemplateColumns: string = '';
-    boardHorizontalContainerGridTemplateColumns: string = '';
-    middleContainerGridTemplateColumnsWidths: string = '';
 
     public gameSetupForm = FormGroup<{
         bounds: FormGroup<{
@@ -140,7 +134,6 @@ export class GameBoardComponent {
         effect(
             () => {
                 this.store.setOwnColor(this.ownColor());
-                this.store.rotateBoard(0);
             },
             { allowSignalWrites: true }
         );
@@ -149,15 +142,11 @@ export class GameBoardComponent {
     // TODO Should move out of this component with time!
     public createLocalGame() {
         const formValue = this.form.getRawValue();
-
         const players: Player[] = this.initPlayers(formValue.playerCount);
-
         this.store.createGame({
             bounds: formValue.bounds,
             players,
         });
-
-        this.createGameBoard();
     }
 
     public stopLocalGame(){
@@ -188,76 +177,5 @@ export class GameBoardComponent {
             });
         }
         return players;
-    }
-
-    private createGameBoard(): void {
-        const formValue = this.form.getRawValue();
-        const horizontalIndex: string[] = [
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-        ];
-        //const cols = formValue.bounds.width;
-        //const rows = formValue.bounds.height; // TODO: set vertical heights
-        const countNodes: number = formValue.bounds.width * formValue.bounds.height;
-        const countHorizontalIndex = formValue.bounds.width + 2;
-        const countVerticalIndex = formValue.bounds.height;
-        const indexWidth: number = 5; // 0: width of the gameboardnode, else board width in %
-        const hasIndexWidth: boolean = indexWidth === 0;
-        const indexWidthPercentage: number = hasIndexWidth ? 100 / countHorizontalIndex : indexWidth;
-        this.middleContainerGridTemplateColumnsWidths =
-            indexWidthPercentage + '%' + ' auto ' + indexWidthPercentage + '%';
-        this.boardHorizontalContainerGridTemplateColumns = hasIndexWidth ? '' : indexWidthPercentage + '% ';
-        this.boardCenterContainerGridTemplateColumns = '';
-
-        for (let i = 0; i < countNodes; i++) {
-            if (i < countHorizontalIndex) {
-                if (i > 0 && i < countHorizontalIndex - 1) {
-                    this.horizontalIndexNodes[i] = horizontalIndex[i - 1];
-                    this.boardCenterContainerGridTemplateColumns += 'auto ';
-                    if (!hasIndexWidth) {
-                        this.boardHorizontalContainerGridTemplateColumns += 'auto ';
-                    }
-                } else {
-                    this.horizontalIndexNodes[i] = '';
-                }
-                if (hasIndexWidth) {
-                    this.boardHorizontalContainerGridTemplateColumns += 'auto ';
-                }
-            }
-        }
-        if (!hasIndexWidth) {
-            this.boardHorizontalContainerGridTemplateColumns += indexWidthPercentage + '%';
-        }
-        for (let i = 0; i < countVerticalIndex; i++) {
-            this.verticalIndexNodes[i] = i + 1;
-        }
-        //console.log(this.store.currentMove());
-        //console.log(countVerticalIndex);
-        //console.log(formValue.bounds.height);
-        //console.log(this.verticalIndexNodes);
     }
 }

@@ -17,7 +17,6 @@ import { Move } from '@ng-frontend/generated-api-client';
 export class PlayPageComponent {
     readonly store = inject(PlayPageStore);
     readonly activatedRoute = inject(ActivatedRoute);
-
     constructor() {
         // TODO: define const for 'gameCode'
         const code = this.activatedRoute.snapshot.paramMap.get('gameCode');

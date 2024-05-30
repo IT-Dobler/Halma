@@ -12,10 +12,9 @@
         <app-rotate-game-board></app-rotate-game-board>
     }
 
-
-    <div class="container">
-        <div id="table" class="aspect-square bg-gray-100 p-6 rotate-{{store.boardRotation()}}">
-            <app-board-index [active]="true" [bounds]="store.config.bounds()">
+    <div class="container mx-auto">
+        <div id="table" class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.currentBoardRotationAngle()}}">
+            <app-board-index [active]="store.displayBoardIndex() == 'inside' || store.displayBoardIndex() == 'outside'" [bounds]="store.config.bounds()">
                 <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
                     @for (node of store.entities(); track node.id) {
                         <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>

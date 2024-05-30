@@ -13,6 +13,6 @@ import { GameBoardComponent } from "@ng-frontend/shared-angular/game-board";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameSetupFormComponent {
-    readonly store = inject(GameBoardStore);
     readonly gameboard: GameBoardComponent = inject(GameBoardComponent);
+    readonly store = inject(GameBoardStore);
 }

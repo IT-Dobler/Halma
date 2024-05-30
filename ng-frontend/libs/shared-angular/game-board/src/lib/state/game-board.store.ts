@@ -5,7 +5,7 @@ import { inject, Injectable } from '@angular/core';
 import { GameMockService } from './game-mock.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { emptyCurrentMove,emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
+import { emptyCurrentMove, emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
     isWithinBounds,
@@ -31,7 +31,8 @@ type GameBoardState = {
     config: GameConfig;
     currentBoardRotationAngle: number;
     boardRotateNext: boolean;
-    displayBoardIndex: boolean;
+    displayBoardIndex: string;
+    boardIndexRegion: string;
     lastCompletedMove: CreateMove | undefined;
     lastReceivedMove: Move | undefined;
 };
@@ -42,7 +43,8 @@ const initialState: GameBoardState = {
     config: emptyGameConfig(),
     currentBoardRotationAngle: 0,
     boardRotateNext: true,
-    displayBoardIndex: true,
+    displayBoardIndex: 'inside',
+    boardIndexRegion: 'rightbottom',
     lastCompletedMove: undefined,
     lastReceivedMove: undefined,
 };
@@ -307,32 +309,34 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
 
     public rotateBoard(deg: number) {
         // TODO: cleanup
-        // TODO: fix bug board not rotating
-        if (this.boardRotateNext()) {
-            let rotationAngle: number = this.currentBoardRotationAngle();
-            if (deg === 0) {
-                rotationAngle = 0;
+        // TODO: disable in online multiplayer mode
+        let rotationAngle: number = this.currentBoardRotationAngle();
+        if (this.boardRotateNext())
+            if (this.ownColor()) {
+                switch (this.ownColor()) {
+                    case 'B':
+                        rotationAngle = 90;
+                        break;
+                    case 'R':
+                        rotationAngle = 180;
+                        break;
+                    case 'G':
+                        rotationAngle = 270;
+                        break;
+                    default:
+                        rotationAngle = 0;
+                        break;
+                }
+                patchState(this, {
+                    currentBoardRotationAngle: rotationAngle,
+                });
             } else {
-                rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;
+                if (deg === 0) rotationAngle = 0;
+                else {
+                    rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;
+                }
+                patchState(this, { currentBoardRotationAngle: rotationAngle });
             }
-            patchState(this, {
-                currentBoardRotationAngle: rotationAngle,
-            });
-            //console.log(rotationAngle);alert(rotationAngle);
-        }
-        if (this.ownColor()) {
-            let rotationAngle;
-            if (this.ownColor() === 'Y') {
-                rotationAngle = 0;
-            } else {
-                rotationAngle = 180;
-            }
-            patchState(this, {
-                currentBoardRotationAngle: rotationAngle,
-            });
-        } else {
-            patchState(this, { boardRotation: this.boardRotation() + deg });
-        }
     }
 
     public setBoardRotateNext(next: boolean) {
@@ -341,9 +345,15 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
         });
     }
 
-    public setDisplayBoardIndex(display: boolean) : void {
+    public setDisplayBoardIndex(display: string): void {
         patchState(this, {
             displayBoardIndex: display,
+        });
+    }
+
+    public setBoardIndexRegion(region: string): void {
+        patchState(this, {
+            boardIndexRegion: region,
         });
     }
 
@@ -364,7 +374,10 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     );
 
     public stopGame(): void {
-        // TODO: clear all nodes to reset the game
-        patchState(this, initialState);
+        patchState(this, {
+            ...initialState,
+            displayBoardIndex: this.displayBoardIndex(),
+            boardRotateNext: this.boardRotateNext(),
+        });
     }
 }

@@ -32,18 +32,60 @@
     }
 </div>
 <div class="container mx-auto">
-    <div class="p-2 m-2">
-        <span class="mr-2">
-            <input id="displayBoardIndex" type="checkbox" [ngModel]="true"
-                   (ngModelChange)="store.setDisplayBoardIndex($event)">
-            <label for="displayBoardIndex" class="inline p-2">Display board index</label>
-        </span>
-        <span class="mr-2">
-            <!-- TODO: set rotate board after finish by expected angle -->
-            <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true"
-                   (ngModelChange)="store.setBoardRotateNext($event)"><label for="rotateBoardAfterFinish"
-                                                                             class="inline p-2">Rotate
-        board after finish</label>
-        </span>
+    <div [ngClass]="store.displayBoardIndex() === 'none' ? 'columns-3' : 'columns-3'" class="p-2 m-2">
+        <div class="block">
+            <h3>Display board index</h3>
+            <div>
+                <span class="mr-2">
+                    <input id="displayBoardIndexNone" name="displayBoardIndex" value="none" type="radio"
+                           [ngModel]="'none'"
+                           (ngModelChange)="store.setDisplayBoardIndex($event)">
+                    <label for="displayBoardIndexNone" class="inline p-2">none</label>
+                </span>
+                <span class="mr-2">
+                    <input id="displayBoardIndexOutside" name="displayBoardIndex" value="outside" type="radio"
+                           [ngModel]="'outside'"
+                           (ngModelChange)="store.setDisplayBoardIndex($event)">
+                    <label for="displayBoardIndexOutside" class="inline p-2">outside</label>
+                </span>
+                <span class="mr-2">
+                    <input id="displayBoardIndexInside" name="displayBoardIndex" type="radio" value="inside"
+                           [ngModel]="'inside'"
+                           (ngModelChange)="store.setDisplayBoardIndex($event)">
+                    <label for="displayBoardIndexInside" class="inline p-2">inside</label>
+                </span>
+            </div>
+        </div>
+        @if (store.displayBoardIndex() !== 'none') {
+            <div class="block">
+                <h3>Display position</h3>
+                <div>
+                    <span class="mr-2">
+                        <input id="boardIndexRegionAll" name="boardIndexRegion" value="allaround" type="radio"
+                               [ngModel]="'allaround'"
+                               (ngModelChange)="store.setBoardIndexRegion($event)">
+                        <label for="boardIndexRegionAll" class="inline p-2">all around</label>
+                    </span>
+                    <span class="mr-2">
+                        <input id="boardIndexRegionRightBottom" name="boardIndexRegion" value="rightbottom" type="radio"
+                               [ngModel]="'rightbottom'"
+                               (ngModelChange)="store.setBoardIndexRegion($event)">
+                        <label for="boardIndexRegionRightBottom" class="inline p-2">right and bottom</label>
+                    </span>
+                </div>
+            </div>
+        }
+        <div class="block">
+            <div>
+                <h3>Multiplayer</h3>
+                <span class="mr-2">
+                    <!-- TODO: set rotate board after finish by expected angle -->
+                    <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true"
+                           (ngModelChange)="store.setBoardRotateNext($event)"><label for="rotateBoardAfterFinish"
+                                                                                     class="inline p-2">Rotate
+                board after finish</label>
+                </span>
+            </div>
+        </div>
     </div>
 </div>

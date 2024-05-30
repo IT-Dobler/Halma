@@ -1,58 +1,46 @@
-<!--<div class="grid grid-cols-[50px_auto_50px] grid-rows-[50px_auto_50px]">-->
-<!--    &lt;!&ndash;   Top Row &ndash;&gt;-->
-<!--    <div></div>-->
-<!--    <div class="bg-amber-100 flex justify-around">-->
-<!--        @for (char of files(); track char) {-->
-<!--            <div>{{ char }}</div>-->
-<!--        }-->
-<!--    </div>-->
-<!--    <div></div>-->
-<!--    &lt;!&ndash;   Middle Row &ndash;&gt;-->
-<!--    <div class="bg-amber-100 flex justify-around flex-col">-->
-<!--        @for (char of rows(); track char) {-->
-<!--            <div>{{ char }}</div>-->
-<!--        }-->
-<!--    </div>-->
-<!--    <ng-content></ng-content>-->
-<!--    <div class="bg-amber-100 flex justify-around flex-col">-->
-<!--        @for (char of rows(); track char) {-->
-<!--            <div>{{ char }}</div>-->
-<!--        }-->
-<!--    </div>-->
-<!--    &lt;!&ndash;   Bottom Row &ndash;&gt;-->
-<!--    <div></div>-->
-<!--    <div class="bg-amber-100 flex justify-around">-->
-<!--        @for (char of files(); track char) {-->
-<!--            <div>{{ char }}</div>-->
-<!--        }-->
-<!--    </div>-->
-<!--    <div></div>-->
-<!--</div>-->
-
-
 <ng-template #unwrapped>
     <ng-content></ng-content>
 </ng-template>
 
 @if (active()) {
-    <div class="grid grid-cols-[auto_25px] grid-rows-[auto_5vw]">
-        <ng-container *ngTemplateOutlet="unwrapped"></ng-container>
+    <div class="grid grid-cols-[auto] grid-rows-[auto] text-sm text-center">
         <div class="relative">
-            <div class="absolute left-[-20px] bottom-0 top-0">
-                <div class="flex justify-around flex-col-reverse h-full">
+
+            <!-- board row -->
+            <ng-container *ngTemplateOutlet="unwrapped"></ng-container>
+
+            <!-- index rows -->
+            @if(store.boardIndexRegion() === 'allaround'){
+                <!-- left index row -->
+                <div [ngClass]="store.displayBoardIndex() === 'inside' ? 'left-0' : '-left-7'" class="absolute top-0 bottom-0">
+                    <div class="flex justify-around flex-col-reverse h-full text-black/[.33] ml-2">
+                        @for (char of rows(); track char) {
+                            <div class="h-full content-center">{{ char }}</div>
+                        }
+                    </div>
+                </div>
+                <!-- top index row -->
+                <div [ngClass]="(store.displayBoardIndex() === 'inside') ? 'top-0' : '-top-7'" class="absolute pt-2 flex justify-around right-0 left-0 text-black/[.33]">
+                    @for (char of files(); track char) {
+                        <div class="w-full text-center content-center">{{ char }}</div>
+                    }
+                </div>
+            }
+            <!-- right index row -->
+            <div [ngClass]="store.displayBoardIndex() === 'inside' ? 'right-0' : '-right-7'" class="absolute top-0 bottom-0">
+                <div class="flex justify-around flex-col-reverse h-full text-black/[.33] mr-2">
                     @for (char of rows(); track char) {
-                        <div class="h-full">{{ char }}</div>
+                        <div class="h-full content-center">{{ char }}</div>
                     }
                 </div>
             </div>
+            <!-- bottom index row -->
+            <div [ngClass]="store.displayBoardIndex() === 'inside' ? 'bottom-0' : '-bottom-7'" class="absolute pb-2 flex justify-around right-0 left-0 text-black/[.33]">
+                @for (char of files(); track char) {
+                    <div class="w-full text-center content-center">{{ char }}</div>
+                }
+            </div>
         </div>
-        <!-- Bottom Row -->
-        <div class="bg-amber-100 flex justify-around">
-            @for (char of files(); track char) {
-                <div class="w-full text-center">{{ char }}</div>
-            }
-        </div>
-        <div></div>
     </div>
 } @else {
     <ng-container *ngTemplateOutlet="unwrapped"></ng-container>

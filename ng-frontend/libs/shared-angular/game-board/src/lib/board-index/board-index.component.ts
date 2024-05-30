@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBounds } from '../state/models/game-bounds';
+import {GameBoardStore} from "../state/game-board.store";
 
 @Component({
     selector: 'app-board-index',
@@ -12,6 +13,7 @@ import { GameBounds } from '../state/models/game-bounds';
 })
 export class BoardIndexComponent {
     public active = input(true);
+    readonly store = inject(GameBoardStore);
 
     public bounds = input.required({
         transform: (value: GameBounds) => value,

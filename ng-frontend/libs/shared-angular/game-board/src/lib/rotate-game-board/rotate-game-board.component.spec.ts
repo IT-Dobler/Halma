@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RotateGameBoardComponent } from './rotate-game-board.component';
+import {GameBoardStore} from "../state/game-board.store";
 
 describe('RotateGameBoardComponent', () => {
     let component: RotateGameBoardComponent;
@@ -8,6 +9,7 @@ describe('RotateGameBoardComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [RotateGameBoardComponent],
+            providers: [GameBoardStore]
         }).compileComponents();
 
         fixture = TestBed.createComponent(RotateGameBoardComponent);
