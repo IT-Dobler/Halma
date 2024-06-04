@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="getting-started.integrationTest" target="17" />
+      <module name="getting-started.main" target="17" />
+      <module name="getting-started.native-test" target="17" />
+      <module name="getting-started.quarkus-generated-sources" target="17" />
+      <module name="getting-started.quarkus-test-generated-sources" target="17" />
+      <module name="getting-started.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  database:
+    container_name: database
+    image: postgres:latest
+    env_file:
+      - quarkus-backend/.env
+    deploy:
+      resources:
+        limits:
+          memory: 2G
