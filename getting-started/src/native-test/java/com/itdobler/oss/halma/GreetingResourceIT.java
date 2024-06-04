@@ -1,4 +1,4 @@
-package org.acme;
+package com.itdobler.oss.halma;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
