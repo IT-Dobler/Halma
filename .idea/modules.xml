@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/Halma.iml" filepath="$PROJECT_DIR$/Halma.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/ng-frontend/ng-frontend.iml" filepath="$PROJECT_DIR$/ng-frontend/ng-frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/quarkus-backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/quarkus-backend.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/quarkus-backend.test.iml" filepath="$PROJECT_DIR$/.idea/modules/quarkus-backend.test.iml" />
     </modules>
   </component>
 </project>

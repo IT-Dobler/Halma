@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="snapshotDb" value="false" />
+    <option name="snapshotModelValue" value="Default" />
+    <option name="sourceModelValue" value="Default" />
+    <option name="updateChangeLogPath" value="quarkus-backend/src/main/resources/db/changeLog.yml" />
+    <option name="updateDbConnectionName" value="26c5d81a-ebd1-4de9-8ecb-5eca2f4727ef" />
+  </component>
+</project>
