@@ -24,6 +24,7 @@ dependencies {
     implementation("io.quarkus:quarkus-arc")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
+    compileOnly("org.jetbrains:annotations:25.0.0")
 }
 
 group = "org.acme"

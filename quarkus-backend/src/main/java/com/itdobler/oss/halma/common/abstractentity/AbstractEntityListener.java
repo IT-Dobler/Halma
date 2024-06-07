@@ -1,4 +1,4 @@
-package com.itdobler.oss.halma.common.entity;
+package com.itdobler.oss.halma.common.abstractentity;
 
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;

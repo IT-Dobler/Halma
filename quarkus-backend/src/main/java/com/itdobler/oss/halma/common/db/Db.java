@@ -1,6 +1,6 @@
 package com.itdobler.oss.halma.common.db;
 
-import com.itdobler.oss.halma.common.entity.AbstractEntity;
+import com.itdobler.oss.halma.common.abstractentity.AbstractEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 
