@@ -36,6 +36,7 @@ dependencies {
     // Jakarta EE
     annotationProcessor("jakarta.annotation:jakarta.annotation-api:2.1.1")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api:3.2.0")
+    implementation("jakarta.validation:jakarta.validation-api:3.1.0")   // Specifically for Entity validation
 
     // @NotNull / @Nullable annotations
     compileOnly("org.jetbrains:annotations")
