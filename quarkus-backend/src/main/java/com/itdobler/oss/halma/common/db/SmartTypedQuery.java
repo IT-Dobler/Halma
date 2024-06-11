@@ -13,6 +13,7 @@ import static java.util.Objects.requireNonNull;
  * The primary usage of this method is future proofing the codebase against changes in the JPA API.
  * Also adds lots of null-safety checks.
  */
+@SuppressWarnings({ "unused" })
 public class SmartTypedQuery<X> implements TypedQuery<X> {
 
     private final TypedQuery<X> delegate;

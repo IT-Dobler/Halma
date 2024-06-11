@@ -19,9 +19,9 @@ import static java.util.Optional.ofNullable;
  * Wraps an EntityManager and provides convenience methods.
  * The primary usage of this method is future proofing the codebase against changes in the JPA API.
  * Whatever changes come along, we only need to change a single class instead of all the places where EntityManager is used.
- *
  * Also adds lots of null-safety checks.
  */
+@SuppressWarnings({ "unused" })
 public class SmartEntityManager {
     private final EntityManager delegate;
 
@@ -147,6 +147,7 @@ public class SmartEntityManager {
         return delegate.getProperties();
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public Query createQuery(String qlString) {
         return delegate.createQuery(qlString);
     }
@@ -163,6 +164,7 @@ public class SmartEntityManager {
         return delegate.createQuery(deleteQuery);
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public <T> SmartTypedQuery<T> createQuery(String qlString, Class<T> resultClass) {
         return new SmartTypedQuery<>(delegate.createQuery(qlString, resultClass));
     }
@@ -175,14 +177,17 @@ public class SmartEntityManager {
         return new SmartTypedQuery<>(delegate.createNamedQuery(name, resultClass));
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public Query createNativeQuery(String sqlString) {
         return delegate.createNativeQuery(sqlString);
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public Query createNativeQuery(String sqlString, Class<?> resultClass) {
         return delegate.createNativeQuery(sqlString, resultClass);
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow")
     public Query createNativeQuery(String sqlString, String resultSetMapping) {
         return delegate.createNativeQuery(sqlString, resultSetMapping);
     }
