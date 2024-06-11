@@ -13,7 +13,4 @@ public class GameRepo {
         db.persist(game);
     }
 
-//    public Game findById(Long id) {
-//        return db.find(Game.class, id);
-//    }
 }

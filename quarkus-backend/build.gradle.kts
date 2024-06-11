@@ -1,7 +1,6 @@
 plugins {
     java
     id("io.quarkus")
-    id("io.freefair.lombok") version "8.6"
 }
 
 repositories {
@@ -14,6 +13,7 @@ val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
 
 dependencies {
+    // Quarkus
     implementation("io.quarkus:quarkus-rest-jackson")
     implementation("io.quarkus:quarkus-smallrye-openapi")
     implementation("io.quarkus:quarkus-hibernate-orm")
@@ -24,7 +24,21 @@ dependencies {
     implementation("io.quarkus:quarkus-arc")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
-    compileOnly("org.jetbrains:annotations:25.0.0")
+
+    // QueryDSL
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    // Jakarta EE
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api:2.1.1")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api:3.2.0")
+
+    // @NotNull / @Nullable annotations
+    compileOnly("org.jetbrains:annotations")
 }
 
 group = "org.acme"
