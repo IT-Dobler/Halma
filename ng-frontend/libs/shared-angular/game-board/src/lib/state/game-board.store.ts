@@ -1,10 +1,7 @@
 import { patchState, signalStore, withState } from '@ngrx/signals';
 import { setAllEntities, updateEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
-import { exhaustMap, pipe } from 'rxjs';
-import { inject, Injectable } from '@angular/core';
+import {inject, Injectable, untracked} from '@angular/core';
 import { GameMockService } from './game-mock.service';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { tapResponse } from '@ngrx/operators';
 import { emptyCurrentMove, emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
@@ -24,6 +21,7 @@ import { Move } from '@ng-frontend/generated-api-client';
 import { Color } from './models/color';
 import { CreateMove } from './models/create-move';
 import { HFENtoGameSetup } from './halma-fen';
+import { GameDisplayConfig } from './models/game-display-config';
 
 type GameBoardState = {
     currentMove: CurrentMove;
@@ -35,6 +33,7 @@ type GameBoardState = {
     boardIndexRegion: string;
     lastCompletedMove: CreateMove | undefined;
     lastReceivedMove: Move | undefined;
+    gameDisplayConfig: GameDisplayConfig | undefined;
 };
 
 const initialState: GameBoardState = {
@@ -47,6 +46,11 @@ const initialState: GameBoardState = {
     boardIndexRegion: 'rightbottom',
     lastCompletedMove: undefined,
     lastReceivedMove: undefined,
+    gameDisplayConfig: {
+        boardRotateNext: false,
+        displayBoardIndex: 'inside',
+        boardIndexRegion: 'rightbottom',
+    },
 };
 
 @Injectable()
@@ -54,11 +58,14 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     private readonly gameService = inject(GameMockService);
 
     public createGameFromHFEN(hfenNotation: string): void {
-        const { nodes, currentMove } = HFENtoGameSetup(hfenNotation);
+        const { nodes, currentMove, config } = HFENtoGameSetup(hfenNotation);
         patchState(this, setAllEntities(nodes));
         patchState(this, { currentMove });
-        // TODO pull this from FEN notation
-        patchState(this, { config: { players: [], bounds: { width: 5, height: 5, cornerSize: 2 } } });
+        patchState(this, { config });
+    }
+
+    public setGameConfig(gameConfig: GameConfig) {
+        patchState(this, { config: gameConfig });
     }
 
     // TODO Far from complete, does not apply the state correctly, proof of concept
@@ -311,7 +318,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
         // TODO: cleanup
         // TODO: disable in online multiplayer mode
         let rotationAngle: number = this.currentBoardRotationAngle();
-        if (this.boardRotateNext())
+        if (this.gameDisplayConfig()?.boardRotateNext) {
             if (this.ownColor()) {
                 switch (this.ownColor()) {
                     case 'B':
@@ -327,36 +334,31 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
                         rotationAngle = 0;
                         break;
                 }
-                patchState(this, {
-                    currentBoardRotationAngle: rotationAngle,
-                });
-            } else {
-                if (deg === 0) rotationAngle = 0;
-                else {
-                    rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;
-                }
-                patchState(this, { currentBoardRotationAngle: rotationAngle });
             }
+            patchState(this, {
+                currentBoardRotationAngle: rotationAngle,
+            });
+        }
     }
 
-    public setBoardRotateNext(next: boolean) {
+    public setGameBoardRotationAngle(deg: number) {
+       let rotationAngle = this.currentBoardRotationAngle();
+        if (deg === 0) rotationAngle = 0;
+        else {
+            rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;
+        }
         patchState(this, {
-            boardRotateNext: next,
+            currentBoardRotationAngle: rotationAngle,
         });
     }
 
-    public setDisplayBoardIndex(display: string): void {
+    public setGameDisplayConfig(gameDisplayConfig: GameDisplayConfig) {
         patchState(this, {
-            displayBoardIndex: display,
+            gameDisplayConfig: { ...gameDisplayConfig },
         });
     }
 
-    public setBoardIndexRegion(region: string): void {
-        patchState(this, {
-            boardIndexRegion: region,
-        });
-    }
-
+    /*
     createGame = rxMethod<GameConfig>(
         pipe(
             exhaustMap((config) =>
@@ -372,12 +374,5 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             )
         )
     );
-
-    public stopGame(): void {
-        patchState(this, {
-            ...initialState,
-            displayBoardIndex: this.displayBoardIndex(),
-            boardRotateNext: this.boardRotateNext(),
-        });
-    }
+    */
 }

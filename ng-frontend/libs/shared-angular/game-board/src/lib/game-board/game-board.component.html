@@ -1,30 +1,23 @@
-@if (!initialHFEN()) {
-    <app-game-setup-form></app-game-setup-form>
-}
-
-<div class="container hidden">
-    <pre>{{ form.value | json }}</pre>
-</div>
-
-@if (store.entities().length > 0) {
-
-    @if (store.config.players().length > 1 && !initialHFEN()) {
-        <app-rotate-game-board></app-rotate-game-board>
-    }
-
-    <div class="container mx-auto">
-        <div id="table" class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.currentBoardRotationAngle()}}">
-            <app-board-index [active]="store.displayBoardIndex() == 'inside' || store.displayBoardIndex() == 'outside'" [bounds]="store.config.bounds()">
-                <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
-                    @for (node of store.entities(); track node.id) {
-                        <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
-                    }
-                </div>
-            </app-board-index>
+@if (initialHFEN()) {
+    @if (store.entities().length > 0) {
+        <app-rotate-game-board (gameBoardRotationAngle)="setGameBoardRotationAngle($event)"></app-rotate-game-board>
+        <div class="container mx-auto">
+            <div id="table"
+                 class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.currentBoardRotationAngle()}}">
+                <app-board-index
+                    [active]="store.gameDisplayConfig()?.displayBoardIndex == 'inside' || store.gameDisplayConfig()?.displayBoardIndex == 'outside'"
+                    [bounds]="store.config.bounds()">
+                    <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
+                        @for (node of store.entities(); track node.id) {
+                            <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
+                        }
+                    </div>
+                </app-board-index>
+            </div>
         </div>
-    </div>
 
-    <div class="container mx-auto my-4 flex flex-row justify-end">
-        <button (click)="store.endTurn()" class="btn-default mr-2">End Turn</button>
-    </div>
+        <div class="container mx-auto my-4 flex flex-row justify-end">
+            <button (click)="store.endTurn()" class="btn-default mr-2">End Turn</button>
+        </div>
+    }
 }

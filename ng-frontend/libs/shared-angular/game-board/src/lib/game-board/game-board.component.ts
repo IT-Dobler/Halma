@@ -1,33 +1,24 @@
-import { ChangeDetectionStrategy, Component, effect, EventEmitter, inject, input, Output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    effect,
+    EventEmitter,
+    inject,
+    input,
+    Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBoardStore } from '../state/game-board.store';
 import { NodeComponent } from '../node/node.component';
-import {
-    FormControl,
-    FormGroup,
-    FormsModule,
-    NonNullableFormBuilder,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
-import { Color, colorWheelInitialization } from '../state/models/color';
-import { Player } from '../state/models/player';
-import { directionOfInit } from '../state/models/play-direction';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Color } from '../state/models/color';
 import { Observable } from 'rxjs';
 import { Move } from '@ng-frontend/generated-api-client';
 import { Router } from '@angular/router';
 import { BoardIndexComponent } from '../board-index/board-index.component';
-import { GameSetupFormComponent } from '../game-setup-form/game-setup-form.component';
-import { RotateGameBoardComponent } from '../rotate-game-board/rotate-game-board.component';
-
-type GameSettings = FormGroup<{
-    bounds: FormGroup<{
-        width: FormControl<number>;
-        height: FormControl<number>;
-        cornerSize: FormControl<number>;
-    }>;
-    playerCount: FormControl<number>;
-}>;
+import { RotateGameBoardComponent } from '../../../../../pages/play/src/lib/rotate-game-board/rotate-game-board.component';
+import { GameSetupFormComponent } from '../../../../../pages/play/src/lib/game-setup-form/game-setup-form.component';
+import { GameDisplayConfig } from '../state/models/game-display-config';
 
 @Component({
     selector: 'app-game-board',
@@ -36,9 +27,9 @@ type GameSettings = FormGroup<{
         CommonModule,
         NodeComponent,
         ReactiveFormsModule,
+        GameSetupFormComponent,
         FormsModule,
         BoardIndexComponent,
-        GameSetupFormComponent,
         RotateGameBoardComponent,
     ],
     providers: [GameBoardStore],
@@ -62,27 +53,11 @@ export class GameBoardComponent {
         transform: (value: Color | undefined) => value,
     });
 
-    @Output() onMove = new EventEmitter<Move>();
-
-    private formBuilder = inject(NonNullableFormBuilder);
-
-    public gameSetupForm = FormGroup<{
-        bounds: FormGroup<{
-            width: FormControl<number>,
-            height: FormControl<number>,
-            cornerSize: FormControl<number>,
-        }>,
-        playerCount: FormControl<number>,
-    }>;
-
-    public form: GameSettings = this.formBuilder.group({
-        bounds: this.formBuilder.group({
-            width: [10, [Validators.required]],
-            height: [10, [Validators.required]],
-            cornerSize: [2, [Validators.required]],
-        }),
-        playerCount: [2, [Validators.required]],
+    public gameDisplayConfig = input(undefined, {
+        transform: (value: GameDisplayConfig) => value,
     });
+
+    @Output() onMove = new EventEmitter<Move>();
 
     constructor() {
         /**
@@ -137,45 +112,22 @@ export class GameBoardComponent {
             },
             { allowSignalWrites: true }
         );
+
+        effect(
+            () => {
+                const gameDisplayConfig = this.gameDisplayConfig();
+                this.store.setGameDisplayConfig({
+                    boardRotateNext: gameDisplayConfig?.boardRotateNext ?? false,
+                    displayBoardIndex: gameDisplayConfig?.displayBoardIndex ?? '',
+                    boardIndexRegion: gameDisplayConfig?.boardIndexRegion ?? '',
+                });
+            },
+            { allowSignalWrites: true }
+        );
     }
 
-    // TODO Should move out of this component with time!
-    public createLocalGame() {
-        const formValue = this.form.getRawValue();
-        const players: Player[] = this.initPlayers(formValue.playerCount);
-        this.store.createGame({
-            bounds: formValue.bounds,
-            players,
-        });
+    setGameBoardRotationAngle(deg: number) {
+        this.store.setGameBoardRotationAngle(deg);
     }
 
-    public stopLocalGame(){
-        const players: Player[] = [];
-        const emptyGame = {
-            "bounds": {
-                "width": 0,
-                "height": 0,
-                "cornerSize": 0,
-            }
-        };
-        this.store.createGame({
-            bounds: emptyGame.bounds,
-            players,
-        });
-
-        this.store.stopGame();
-    }
-
-    private initPlayers(playerCount: number) {
-        const players: Player[] = [];
-        for (let i = 0; i < playerCount; i++) {
-            players.push({
-                id: 'player' + i,
-                color: colorWheelInitialization[i],
-                playDirection: directionOfInit[i],
-                moveOrder: i,
-            });
-        }
-        return players;
-    }
 }

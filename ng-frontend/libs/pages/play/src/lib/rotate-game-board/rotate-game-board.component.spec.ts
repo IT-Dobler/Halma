@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RotateGameBoardComponent } from './rotate-game-board.component';
-import {GameBoardStore} from "../state/game-board.store";
+import {GameBoardStore} from "../../../../../shared-angular/game-board/src/lib/state/game-board.store";
 
 describe('RotateGameBoardComponent', () => {
     let component: RotateGameBoardComponent;

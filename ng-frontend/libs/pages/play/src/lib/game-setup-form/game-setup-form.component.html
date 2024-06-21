@@ -1,75 +1,75 @@
 <div class="container mx-auto">
-    @if (store.config.players().length === 0) {
-        <form [formGroup]="gameboard.form" (ngSubmit)="gameboard.createLocalGame()">
+    @if (!initialHFEN) {
+        <form [formGroup]="form" (ngSubmit)="createLocalGame()">
             <div formGroupName="bounds" class="flex flex-row">
                 <div class="basis-1/4 flex flex-col">
-                    <label for="width" class="block p-2">Horizontal Elements</label>
-                    <input id="width" class="input block" [formControl]="gameboard.form.controls.bounds.controls.width"
+                    <label for="width" class="block p-2">Horizontal Elements (max 99)</label>
+                    <input id="width" class="input block" [formControl]="form.controls.bounds.controls.width"
                            type="number">
                 </div>
                 <div class="basis-1/4 flex flex-col">
                     <label for="height" class="block p-2">Vertical Elements</label>
                     <input id="height" class="input block"
-                           [formControl]="gameboard.form.controls.bounds.controls.height"
+                           [formControl]="form.controls.bounds.controls.height"
                            type="number">
                 </div>
                 <div class="basis-1/4 flex flex-col">
                     <label for="corners" class="block p-2">Corners</label>
                     <input id="corners" class="input block"
-                           [formControl]="gameboard.form.controls.bounds.controls.cornerSize"
+                           [formControl]="form.controls.bounds.controls.cornerSize"
                            type="number">
                 </div>
                 <div class="basis-1/4 flex flex-col">
                     <label for="players" class="block p-2">Players</label>
-                    <input id="players" class="input block" [formControl]="gameboard.form.controls.playerCount"
+                    <input id="players" class="input block" [formControl]="form.controls.playerCount"
                            type="number">
                 </div>
             </div>
             <button type="submit" class="btn-primary w-full">Start game</button>
         </form>
     } @else {
-        <button (click)="gameboard.stopLocalGame()" class="btn-alert w-full">Stop the game</button>
+        <button (click)="stopLocalGame()" class="btn-alert w-full">Stop the game</button>
     }
 </div>
-<div class="container mx-auto">
-    <div [ngClass]="store.displayBoardIndex() === 'none' ? 'columns-3' : 'columns-3'" class="p-2 m-2">
+<div class="container mx-auto" [formGroup]="gameDisplayConfigForm">
+    <div
+        [ngClass]="gameDisplayConfigForm.get('displayBoardIndex.displayBoardIndex')?.value === 'none' ? 'columns-3' : 'columns-3'"
+        class="p-2 m-2">
         <div class="block">
             <h3>Display board index</h3>
-            <div>
+            <div formGroupName="displayBoardIndex">
                 <span class="mr-2">
                     <input id="displayBoardIndexNone" name="displayBoardIndex" value="none" type="radio"
-                           [ngModel]="'none'"
-                           (ngModelChange)="store.setDisplayBoardIndex($event)">
+                           formControlName="displayBoardIndex" (change)="onChangeGameDisplayForm()"
+                    >
                     <label for="displayBoardIndexNone" class="inline p-2">none</label>
                 </span>
                 <span class="mr-2">
                     <input id="displayBoardIndexOutside" name="displayBoardIndex" value="outside" type="radio"
-                           [ngModel]="'outside'"
-                           (ngModelChange)="store.setDisplayBoardIndex($event)">
+                           formControlName="displayBoardIndex" (change)="onChangeGameDisplayForm()">
                     <label for="displayBoardIndexOutside" class="inline p-2">outside</label>
                 </span>
                 <span class="mr-2">
                     <input id="displayBoardIndexInside" name="displayBoardIndex" type="radio" value="inside"
-                           [ngModel]="'inside'"
-                           (ngModelChange)="store.setDisplayBoardIndex($event)">
+                           formControlName="displayBoardIndex" (change)="onChangeGameDisplayForm()">
                     <label for="displayBoardIndexInside" class="inline p-2">inside</label>
                 </span>
             </div>
         </div>
-        @if (store.displayBoardIndex() !== 'none') {
+        @if (gameDisplayConfigForm.get('displayBoardIndex.displayBoardIndex')?.value !== 'none') {
             <div class="block">
                 <h3>Display position</h3>
-                <div>
+                <div formGroupName="boardIndexRegion">
                     <span class="mr-2">
                         <input id="boardIndexRegionAll" name="boardIndexRegion" value="allaround" type="radio"
-                               [ngModel]="'allaround'"
-                               (ngModelChange)="store.setBoardIndexRegion($event)">
+                               formControlName="boardIndexRegion" (change)="onChangeGameDisplayForm()"
+                        >
                         <label for="boardIndexRegionAll" class="inline p-2">all around</label>
                     </span>
                     <span class="mr-2">
                         <input id="boardIndexRegionRightBottom" name="boardIndexRegion" value="rightbottom" type="radio"
-                               [ngModel]="'rightbottom'"
-                               (ngModelChange)="store.setBoardIndexRegion($event)">
+                               formControlName="boardIndexRegion" (change)="onChangeGameDisplayForm()"
+                        >
                         <label for="boardIndexRegionRightBottom" class="inline p-2">right and bottom</label>
                     </span>
                 </div>
@@ -80,12 +80,21 @@
                 <h3>Multiplayer</h3>
                 <span class="mr-2">
                     <!-- TODO: set rotate board after finish by expected angle -->
-                    <input id="rotateBoardAfterFinish" type="checkbox" [ngModel]="true"
-                           (ngModelChange)="store.setBoardRotateNext($event)"><label for="rotateBoardAfterFinish"
-                                                                                     class="inline p-2">Rotate
+                    <input id="rotateBoardAfterFinish" type="checkbox" value="true"
+                           formControlName="boardRotateNext" (change)="onChangeGameDisplayForm()"
+                    ><label for="rotateBoardAfterFinish"
+                            class="inline p-2">Rotate
                 board after finish</label>
                 </span>
             </div>
         </div>
     </div>
 </div>
+<div class="container mx-auto hidden">
+    <pre>{{ form.value | json }}</pre>
+</div>
+@if (initialHFEN) {
+    <div class="container mx-auto hidden">
+        <pre>{{ initialHFEN }}</pre>
+    </div>
+}
