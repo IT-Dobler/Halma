@@ -1,5 +1,6 @@
 package com.itdobler.oss.halma.common.abstractentity;
 
+import com.itdobler.oss.halma.common.types.id.ID;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -15,10 +16,14 @@ import java.time.OffsetDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class AbstractEntity<Id> implements Serializable {
+public abstract class AbstractEntity<Entity extends AbstractEntity<Entity>> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -8605349806917752700L;
+
+    public abstract ID<Entity> getId();
+
+    public abstract Entity setId(ID<Entity> id);
 
     @Version
     @Column(nullable = false)

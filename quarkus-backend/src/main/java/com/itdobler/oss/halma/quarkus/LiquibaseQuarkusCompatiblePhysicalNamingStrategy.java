@@ -5,6 +5,9 @@ import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
+/**
+ * Hasn't become required, yet...
+ */
 public class LiquibaseQuarkusCompatiblePhysicalNamingStrategy implements PhysicalNamingStrategy {
     private static @Nullable Identifier allLowerCase(@Nullable Identifier name) {
         if (name == null) {
