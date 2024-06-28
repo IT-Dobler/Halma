@@ -1,12 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    effect,
-    EventEmitter,
-    inject,
-    input,
-    Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, inject, input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBoardStore } from '../state/game-board.store';
 import { NodeComponent } from '../node/node.component';
@@ -18,7 +10,7 @@ import { Router } from '@angular/router';
 import { BoardIndexComponent } from '../board-index/board-index.component';
 import { RotateGameBoardComponent } from '../../../../../pages/play/src/lib/rotate-game-board/rotate-game-board.component';
 import { GameSetupFormComponent } from '../../../../../pages/play/src/lib/game-setup-form/game-setup-form.component';
-import { GameDisplayConfig } from '../state/models/game-display-config';
+import { DisplayBoardIndex, GameDisplayConfig } from '../state';
 
 @Component({
     selector: 'app-game-board',
@@ -38,7 +30,9 @@ import { GameDisplayConfig } from '../state/models/game-display-config';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameBoardComponent {
+    protected readonly DisplayBoardIndex = DisplayBoardIndex;
     readonly store = inject(GameBoardStore);
+
     readonly router = inject(Router);
 
     public inputSocket = input(undefined, {
@@ -53,7 +47,7 @@ export class GameBoardComponent {
         transform: (value: Color | undefined) => value,
     });
 
-    public gameDisplayConfig = input(undefined, {
+    public gameDisplayConfig = input.required({
         transform: (value: GameDisplayConfig) => value,
     });
 
@@ -116,11 +110,7 @@ export class GameBoardComponent {
         effect(
             () => {
                 const gameDisplayConfig = this.gameDisplayConfig();
-                this.store.setGameDisplayConfig({
-                    boardRotateNext: gameDisplayConfig?.boardRotateNext ?? false,
-                    displayBoardIndex: gameDisplayConfig?.displayBoardIndex ?? '',
-                    boardIndexRegion: gameDisplayConfig?.boardIndexRegion ?? '',
-                });
+                this.store.setGameDisplayConfig(gameDisplayConfig);
             },
             { allowSignalWrites: true }
         );
@@ -129,5 +119,4 @@ export class GameBoardComponent {
     setGameBoardRotationAngle(deg: number) {
         this.store.setGameBoardRotationAngle(deg);
     }
-
 }

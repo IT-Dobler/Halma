@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameBounds } from '../state/models/game-bounds';
-import {GameBoardStore} from "../state/game-board.store";
+import { GameBoardStore } from '../state/game-board.store';
+import { BoardIndexRegion, DisplayBoardIndex } from '../state';
 
 @Component({
     selector: 'app-board-index',
@@ -12,6 +13,9 @@ import {GameBoardStore} from "../state/game-board.store";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardIndexComponent {
+    protected readonly DisplayBoardIndex = DisplayBoardIndex;
+    protected readonly BoardIndexRegion = BoardIndexRegion;
+
     public active = input(true);
     readonly store = inject(GameBoardStore);
 

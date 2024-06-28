@@ -7,7 +7,11 @@ import { tapResponse } from '@ngrx/operators';
 import { LiveGameService } from '../../../../playground/src/lib/live-game.service';
 import { Color, colorMap } from '../../../../../shared-angular/game-board/src/lib/state/models/color';
 import { GameConfig } from '../../../../../shared-angular/game-board/src/lib/state/models/game-config';
-import { GameDisplayConfig } from '../../../../../shared-angular/game-board/src/lib/state/models/game-display-config';
+import {
+    BoardIndexRegion,
+    DisplayBoardIndex,
+    GameDisplayConfig,
+} from '@ng-frontend/shared-angular/game-board';
 
 type PlayPageState = {
     hfenNotation: string | undefined;
@@ -23,7 +27,11 @@ const initialState: PlayPageState = {
     moves$: undefined,
     localColor: undefined,
     gameConfig: { bounds: { width: 0, height: 0, cornerSize: 0 }, players: [] },
-    gameDisplayConfig: { boardRotateNext: false, displayBoardIndex: 'inside', boardIndexRegion: 'rightbottom' },
+    gameDisplayConfig: {
+        boardRotateNext: false,
+        displayBoardIndex: DisplayBoardIndex.INSIDE,
+        boardIndexRegion: BoardIndexRegion.RIGHT_BOTTOM,
+    },
     gameBoardRotationAngle: 0,
 };
 
@@ -70,10 +78,6 @@ export class PlayPageStore extends signalStore(withState(initialState)) {
     }
 
     public setGameDisplayConfig(gameDisplayConfig: GameDisplayConfig) {
-        patchState(this, { gameDisplayConfig: { ...gameDisplayConfig } });
-    }
-
-    public setGameBoardRotationAngle(deg: number) {
-        patchState(this, { gameBoardRotationAngle: deg });
+        patchState(this, { gameDisplayConfig });
     }
 }

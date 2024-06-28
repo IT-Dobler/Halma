@@ -5,17 +5,15 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PlayPageStore } from '../store/play-store.store';
 import { Move } from '@ng-frontend/generated-api-client';
 import { GameSetupFormComponent } from '../game-setup-form/game-setup-form.component';
-import { GameBoardStore } from '../../../../../shared-angular/game-board/src/lib/state/game-board.store';
-import { GameDisplayConfig } from '../../../../../shared-angular/game-board/src/lib/state/models/game-display-config';
-import { RotateGameBoardComponent } from '../rotate-game-board/rotate-game-board.component';
+import { GameDisplayConfig } from '@ng-frontend/shared-angular/game-board';
 import { colorMap } from '../../../../../shared-angular/game-board/src/lib/state/models/color';
 import { getColorFromHfen } from '../../../../../shared-angular/game-board/src/lib/state/halma-fen';
 
 @Component({
     selector: 'app-play',
     standalone: true,
-    imports: [CommonModule, GameBoardComponent, RouterLink, GameSetupFormComponent, RotateGameBoardComponent],
-    providers: [PlayPageStore, GameBoardStore],
+    imports: [CommonModule, GameBoardComponent, RouterLink, GameSetupFormComponent],
+    providers: [PlayPageStore],
     templateUrl: './play-page.component.html',
     styleUrl: './play-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

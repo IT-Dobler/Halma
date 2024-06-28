@@ -1,7 +1,6 @@
 import { patchState, signalStore, withState } from '@ngrx/signals';
 import { setAllEntities, updateEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
-import {inject, Injectable, untracked} from '@angular/core';
-import { GameMockService } from './game-mock.service';
+import { Injectable } from '@angular/core';
 import { emptyCurrentMove, emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
@@ -21,7 +20,7 @@ import { Move } from '@ng-frontend/generated-api-client';
 import { Color } from './models/color';
 import { CreateMove } from './models/create-move';
 import { HFENtoGameSetup } from './halma-fen';
-import { GameDisplayConfig } from './models/game-display-config';
+import { BoardIndexRegion, DisplayBoardIndex, GameDisplayConfig } from './models';
 
 type GameBoardState = {
     currentMove: CurrentMove;
@@ -29,8 +28,6 @@ type GameBoardState = {
     config: GameConfig;
     currentBoardRotationAngle: number;
     boardRotateNext: boolean;
-    displayBoardIndex: string;
-    boardIndexRegion: string;
     lastCompletedMove: CreateMove | undefined;
     lastReceivedMove: Move | undefined;
     gameDisplayConfig: GameDisplayConfig | undefined;
@@ -42,21 +39,17 @@ const initialState: GameBoardState = {
     config: emptyGameConfig(),
     currentBoardRotationAngle: 0,
     boardRotateNext: true,
-    displayBoardIndex: 'inside',
-    boardIndexRegion: 'rightbottom',
     lastCompletedMove: undefined,
     lastReceivedMove: undefined,
     gameDisplayConfig: {
         boardRotateNext: false,
-        displayBoardIndex: 'inside',
-        boardIndexRegion: 'rightbottom',
+        displayBoardIndex: DisplayBoardIndex.INSIDE,
+        boardIndexRegion: BoardIndexRegion.RIGHT_BOTTOM,
     },
 };
 
 @Injectable()
 export class GameBoardStore extends signalStore(withState(initialState), withEntities<Node>()) {
-    private readonly gameService = inject(GameMockService);
-
     public createGameFromHFEN(hfenNotation: string): void {
         const { nodes, currentMove, config } = HFENtoGameSetup(hfenNotation);
         patchState(this, setAllEntities(nodes));
@@ -342,7 +335,7 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     public setGameBoardRotationAngle(deg: number) {
-       let rotationAngle = this.currentBoardRotationAngle();
+        let rotationAngle = this.currentBoardRotationAngle();
         if (deg === 0) rotationAngle = 0;
         else {
             rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;

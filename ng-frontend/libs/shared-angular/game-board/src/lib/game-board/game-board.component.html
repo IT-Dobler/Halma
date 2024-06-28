@@ -5,7 +5,7 @@
             <div id="table"
                  class="aspect-square bg-gray-100 p-6 transition-all rotate-{{store.currentBoardRotationAngle()}}">
                 <app-board-index
-                    [active]="store.gameDisplayConfig()?.displayBoardIndex == 'inside' || store.gameDisplayConfig()?.displayBoardIndex == 'outside'"
+                    [active]="store.gameDisplayConfig()?.displayBoardIndex !== DisplayBoardIndex.NONE"
                     [bounds]="store.config.bounds()">
                     <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
                         @for (node of store.entities(); track node.id) {

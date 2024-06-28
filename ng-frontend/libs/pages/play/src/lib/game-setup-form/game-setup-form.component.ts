@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -8,11 +8,11 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { Player } from '../../../../../shared-angular/game-board/src/lib/state/models/player';
+import { BoardIndexRegion, DisplayBoardIndex, GameDisplayConfig, Player } from '@ng-frontend/shared-angular/game-board';
 import { colorWheelInitialization } from '../../../../../shared-angular/game-board/src/lib/state/models/color';
 import { directionOfInit } from '../../../../../shared-angular/game-board/src/lib/state/models/play-direction';
 import { HFENFromGameConfig } from '../../../../../shared-angular/game-board/src/lib/state/halma-fen';
-import { GameDisplayConfig } from '../../../../../shared-angular/game-board/src/lib/state/models/game-display-config';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 type GameSettingsFormType = FormGroup<{
     bounds: FormGroup<{
@@ -21,6 +21,12 @@ type GameSettingsFormType = FormGroup<{
         cornerSize: FormControl<number>;
     }>;
     playerCount: FormControl<number>;
+}>;
+
+type GameDisplayConfigFormType = FormGroup<{
+    boardRotateNext: FormControl<boolean>;
+    displayBoardIndex: FormControl<DisplayBoardIndex>;
+    boardIndexRegion: FormControl<BoardIndexRegion>;
 }>;
 
 @Component({
@@ -33,13 +39,15 @@ type GameSettingsFormType = FormGroup<{
     providers: [],
 })
 export class GameSetupFormComponent {
-    private formBuilder = inject(NonNullableFormBuilder);
+    protected readonly BoardIndexRegion = BoardIndexRegion;
+    protected readonly DisplayBoardIndex = DisplayBoardIndex;
+    #formBuilder = inject(NonNullableFormBuilder);
     @Output() hfen: EventEmitter<string> = new EventEmitter<string>();
     @Output() gameDisplayConfig: EventEmitter<GameDisplayConfig> = new EventEmitter<GameDisplayConfig>();
     initialHFEN: string = '';
 
-    public form: GameSettingsFormType = this.formBuilder.group({
-        bounds: this.formBuilder.group({
+    public form: GameSettingsFormType = this.#formBuilder.group({
+        bounds: this.#formBuilder.group({
             width: [10, [Validators.required]],
             height: [10, [Validators.required]],
             cornerSize: [2, [Validators.required]],
@@ -47,15 +55,23 @@ export class GameSetupFormComponent {
         playerCount: [2, [Validators.required]],
     });
 
-    public gameDisplayConfigForm = this.formBuilder.group({
+    public gameDisplayConfigForm: GameDisplayConfigFormType = this.#formBuilder.group({
         boardRotateNext: [true],
-        displayBoardIndex: this.formBuilder.group({
-            displayBoardIndex: ['inside', Validators.required],
-        }),
-        boardIndexRegion: this.formBuilder.group({
-            boardIndexRegion: ['rightbottom', Validators.required],
-        }),
+        displayBoardIndex: [DisplayBoardIndex.INSIDE, Validators.required],
+        boardIndexRegion: [BoardIndexRegion.RIGHT_BOTTOM, Validators.required],
     });
+
+    formSig = toSignal(this.gameDisplayConfigForm.valueChanges);
+
+    constructor() {
+        effect(
+            () => {
+                this.formSig();
+                this.onChangeGameDisplayForm();
+            },
+            { allowSignalWrites: true }
+        );
+    }
 
     public createLocalGame() {
         const formValue = this.form.getRawValue();
@@ -70,11 +86,7 @@ export class GameSetupFormComponent {
 
     public onChangeGameDisplayForm() {
         const gameDisplayFormValue = this.gameDisplayConfigForm.getRawValue();
-        this.gameDisplayConfig.emit({
-            boardRotateNext: gameDisplayFormValue.boardRotateNext,
-            displayBoardIndex: gameDisplayFormValue.displayBoardIndex.displayBoardIndex,
-            boardIndexRegion: gameDisplayFormValue.boardIndexRegion.boardIndexRegion,
-        });
+        this.gameDisplayConfig.emit(gameDisplayFormValue);
     }
 
     public stopLocalGame() {
