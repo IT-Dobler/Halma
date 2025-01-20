@@ -7,7 +7,7 @@
                 <app-board-index
                     [active]="store.gameDisplayConfig()?.displayBoardIndex !== DisplayBoardIndex.NONE"
                     [bounds]="store.config.bounds()">
-                    <div id="board" class="grid bg-amber-600 grid-cols-{{ store.config.bounds.width() }}">
+                    <div id="board" class="grid grid-cols-{{ store.config.bounds.width() }}">
                         @for (node of store.entities(); track node.id) {
                             <app-node [node]="node" class="aspect-square border-solid border border-white"></app-node>
                         }

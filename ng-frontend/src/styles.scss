@@ -20,6 +20,10 @@
       @apply bg-white text-gray-800 p-2 m-2 border-solid border border-gray-700 rounded-sm;
     }
 
+    .EMPTY {
+        @apply bg-amber-600;
+    }
+
     .BLOCKED {
       @apply bg-gray-200 text-gray-200;
     }
