@@ -28,3 +28,7 @@
 
 # NX
 .nx
+
+/quarkus-backend/build
+/quarkus-backend/.gradle
+/quarkus-backend/.env

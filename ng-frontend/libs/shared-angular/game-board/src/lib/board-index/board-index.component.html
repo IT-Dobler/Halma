@@ -1,0 +1,56 @@
+<ng-template #unwrapped>
+    <ng-content></ng-content>
+</ng-template>
+
+@if (active()) {
+    <div class="grid grid-cols-[auto] grid-rows-[auto] text-sm text-center">
+        <div class="relative">
+
+            <!-- board row -->
+            <ng-container *ngTemplateOutlet="unwrapped"></ng-container>
+
+            <!-- index rows -->
+            @if (store.gameDisplayConfig()?.boardIndexRegion === BoardIndexRegion.ALL_AROUND) {
+                <!-- left index row -->
+                <div
+                    [ngClass]="store.gameDisplayConfig()?.displayBoardIndex === DisplayBoardIndex.INSIDE ? 'left-0' : '-left-7'"
+                    class="absolute top-0 bottom-0">
+                    <div class="flex justify-around flex-col-reverse h-full text-black/[.33] ml-2">
+                        @for (char of rows(); track char) {
+                            <div class="h-full content-center">{{ char }}</div>
+                        }
+                    </div>
+                </div>
+                <!-- top index row -->
+                <div
+                    [ngClass]="(store.gameDisplayConfig()?.displayBoardIndex === DisplayBoardIndex.INSIDE) ? 'top-0' : '-top-7'"
+                    class="absolute pt-2 flex justify-around right-0 left-0 text-black/[.33]">
+                    @for (char of files(); track char) {
+                        <div class="w-full text-center content-center">{{ char }}</div>
+                    }
+                </div>
+            }
+            <!-- right index row -->
+            <div
+                [ngClass]="store.gameDisplayConfig()?.displayBoardIndex === DisplayBoardIndex.INSIDE ? 'right-0' : '-right-7'"
+                class="absolute top-0 bottom-0">
+                <div class="flex justify-around flex-col-reverse h-full text-black/[.33] mr-2">
+                    @for (char of rows(); track char) {
+                        <div class="h-full content-center">{{ char }}</div>
+                    }
+                </div>
+            </div>
+            <!-- bottom index row -->
+            <div
+                [ngClass]="store.gameDisplayConfig()?.displayBoardIndex === DisplayBoardIndex.INSIDE ? 'bottom-0' : '-bottom-7'"
+                class="absolute pb-2 flex justify-around right-0 left-0 text-black/[.33]">
+                @for (char of files(); track char) {
+                    <div class="w-full text-center content-center">{{ char }}</div>
+                }
+            </div>
+        </div>
+    </div>
+} @else {
+    <ng-container *ngTemplateOutlet="unwrapped"></ng-container>
+}
+

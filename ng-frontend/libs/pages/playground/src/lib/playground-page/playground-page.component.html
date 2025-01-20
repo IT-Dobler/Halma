@@ -1,6 +1,6 @@
-<div style="display: flex;">
-<app-game-board [inputSocket]="foo$" (onMove)="onMove($event)"></app-game-board>
-</div>
+<app-game-setup-form></app-game-setup-form>
+
+<!--<app-game-board></app-game-board>-->
 
 <button class="btn-primary" [routerLink]="['/']">Home</button>
 <div>Translations via directive: <span translate>hello-world</span></div>
@@ -12,4 +12,4 @@
 <button class="btn-default mr-2" (click)="connect()">Connect</button>
 <button class="btn-default mr-2" (click)="disconnect()">Close</button>
 
-<pre>{{moves | json}}</pre>
+<pre>{{ moves | json }}</pre>

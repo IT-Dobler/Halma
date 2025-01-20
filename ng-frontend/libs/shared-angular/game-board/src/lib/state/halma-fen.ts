@@ -26,7 +26,7 @@
  *      A capital letter indicates the player has
  */
 import { toId, toPosition } from './position-functions';
-import { Color, colorMap } from './models/color';
+import { Color, colorMap, colorWheelInitialization } from './models/color';
 import { GameConfig } from './models/game-config';
 import { CurrentMove } from './models/current-move';
 import { Node, NodeType } from './models/node';
@@ -34,34 +34,42 @@ import { emptyCurrentMove } from './current-move-functions';
 
 const BLOCKED_NODE_CHAR = 'x';
 const SINGLE_EMPTY_NODE_CHAR = '1';
+const ROW_SEPARATOR_CHAR = '/';
+const SECTION_SEPARATOR_CHAR = ' ';
+const EMPTY_SECTION_CHAR = '-';
 
 export function HFENtoGameSetup(hfenNotation: string): {
     nodes: Node[];
     currentMove: CurrentMove;
+    config: GameConfig;
 } {
-    const splits = hfenNotation.split(' ');
-
+    const splits = hfenNotation.split(SECTION_SEPARATOR_CHAR);
     const nodes: Node[] = [];
-    const rowsString = splits[0].split('/').reverse();
-
+    const rowsString = splits[0].split(ROW_SEPARATOR_CHAR).reverse();
+    let cornerSize = 0;
     // Run over backwards to start "top-left", so the largest row.
     for (let i = rowsString.length - 1; i >= 0; i--) {
         const row = rowsString[i];
         let expandedRowString = '';
-
         for (let j = 0; j < row.length; j++) {
             const char = row[j];
-            if (isNaN(Number(char)) || char === '1') {
+            if (isNaN(Number(char))) {
                 expandedRowString += char;
             } else {
-                expandedRowString += expandedRowString.padEnd(
-                    expandedRowString.length + Number(char),
-                    SINGLE_EMPTY_NODE_CHAR
-                );
+                // max = 99
+                let emptyFields = row[j];
+                const nextChar = row[j + 1];
+                if (!isNaN(Number(nextChar))) {
+                    emptyFields += parseInt(nextChar);
+                    j++;
+                }
+                for (let jj = 0; jj < Number(emptyFields); jj++) {
+                    expandedRowString += SINGLE_EMPTY_NODE_CHAR;
+                }
             }
         }
-
         // Iterate over normally to add the columns left-to-right
+
         for (let j = 0; j < expandedRowString.length; j++) {
             const char = expandedRowString[j];
             const id = toId({ row: i, col: j });
@@ -72,13 +80,21 @@ export function HFENtoGameSetup(hfenNotation: string): {
                 type,
                 color: color,
             });
+            cornerSize += i === 0 && type === NodeType.BLOCKED ? 1 : 0;
         }
     }
-
+    const config: GameConfig = {
+        bounds: {
+            width: rowsString[0].length,
+            height: rowsString.length,
+            cornerSize: cornerSize / 2,
+        },
+        players: [],
+    };
     const currentMove = emptyCurrentMove();
-    currentMove.colorToMove = splits[1] === '-' ? Color.NONE : colorMap[splits[1].toUpperCase()];
+    currentMove.colorToMove = splits[1] === EMPTY_SECTION_CHAR ? Color.NONE : colorMap[splits[1].toUpperCase()];
 
-    return { nodes, currentMove };
+    return { nodes, currentMove, config };
 }
 
 export function toHFEN(nodes: Node[], config: GameConfig, currentMove: CurrentMove): string {
@@ -113,9 +129,9 @@ export function toHFEN(nodes: Node[], config: GameConfig, currentMove: CurrentMo
         hfenString['rowStrings'] = Object.values(rowStrings).reverse().map(consolidateEmptyNodesToNumber()).join('/');
     }
 
-    hfenString['turn'] = currentMove.colorToMove === Color.NONE ? '-' : currentMove.colorToMove;
+    hfenString['turn'] = currentMove.colorToMove === Color.NONE ? EMPTY_SECTION_CHAR : currentMove.colorToMove;
 
-    return Object.values(hfenString).join(' ').toLowerCase();
+    return Object.values(hfenString).join(SECTION_SEPARATOR_CHAR).toLowerCase();
 }
 
 function chunkArray<T>(array: T[], size: number): T[][] {
@@ -158,4 +174,74 @@ function consolidateEmptyNodesToNumber() {
 
         return newChar;
     };
+}
+
+export function HFENFromGameConfig(gameConfig: GameConfig) {
+    const cornerSize: number = gameConfig.bounds.cornerSize;
+    const width: number = gameConfig.bounds.width;
+    const height: number = gameConfig.bounds.height;
+    const playerCount: number = gameConfig.players.length;
+
+    let hfen: string = '';
+
+    if (width - 2 * cornerSize > 0) {
+        for (let h: number = 1, c: number = cornerSize; h <= height; h++) {
+            if (cornerSize > 0 && (h > 1 || h >= height - cornerSize)) {
+                if (h > height - cornerSize) {
+                    c++;
+                } else if (h <= cornerSize + 1) {
+                    c--;
+                }
+            }
+            let sum: number = 0;
+            for (let w: number = 1; w <= width; w++) {
+                if (cornerSize > 0 && (h <= cornerSize || h >= height - cornerSize) && (w <= c || w >= width - c + 1)) {
+                    if (w <= c || w >= width - c + 1) {
+                        hfen += sum > 0 ? sum : '';
+                        sum = 0;
+                        hfen += BLOCKED_NODE_CHAR;
+                    } else {
+                        sum++;
+                    }
+                } else if (h < 3 || h >= height - 1) {
+                    // colors red & yellow
+                    hfen +=
+                        h >= height - 1 && w > cornerSize && w < width - cornerSize + 1
+                            ? colorWheelInitialization[0].toLowerCase()
+                            : h < 3 && playerCount > 1 && w > cornerSize && w < width - cornerSize + 1
+                            ? colorWheelInitialization[1].toLowerCase()
+                            : SINGLE_EMPTY_NODE_CHAR;
+                } else if (playerCount < 3) {
+                    // free
+                    if (w < width) {
+                        sum++;
+                    } else {
+                        hfen += sum > 0 ? sum + 1 : '';
+                    }
+                } else {
+                    if (playerCount > 3 && w <= 2 && h > cornerSize && h <= height - cornerSize) {
+                        // color green
+                        hfen += colorWheelInitialization[3].toLowerCase();
+                        hfen += sum > 0 ? sum : '';
+                        sum = 0;
+                    } else if (w > width - 2 && h > cornerSize && h <= height - cornerSize) {
+                        // color blue
+                        hfen += sum > 0 ? sum : '';
+                        sum = 0;
+                        hfen += colorWheelInitialization[2].toLowerCase();
+                    } else {
+                        sum++;
+                    }
+                }
+            }
+            hfen +=
+                h < height ? ROW_SEPARATOR_CHAR : SECTION_SEPARATOR_CHAR + colorWheelInitialization[0].toLowerCase();
+        }
+    }
+    return hfen;
+}
+
+export function getColorFromHfen(hfenNotation: string) {
+    const splits = hfenNotation.split(SECTION_SEPARATOR_CHAR).reverse();
+    return splits[0];
 }

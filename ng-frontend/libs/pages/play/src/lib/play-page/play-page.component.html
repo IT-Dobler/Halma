@@ -1,3 +1,7 @@
 <button class="btn-primary" [routerLink]="['/']">Home</button>
+<app-game-setup-form (hfen)="setHFENFromGameSetupForm($event)"
+                     (gameDisplayConfig)="setGameDisplayConfig($event)"></app-game-setup-form>
+
 <app-game-board [ownColor]="store.localColor()" [initialHFEN]="store.hfenNotation()" [inputSocket]="store.moves$()"
-                (onMove)="onMove($event)"></app-game-board>
+                (onMove)="onMove($event)" [gameDisplayConfig]="store.gameDisplayConfig()"></app-game-board>
+

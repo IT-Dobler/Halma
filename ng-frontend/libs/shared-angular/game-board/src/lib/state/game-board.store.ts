@@ -1,10 +1,6 @@
 import { patchState, signalStore, withState } from '@ngrx/signals';
 import { setAllEntities, updateEntities, updateEntity, withEntities } from '@ngrx/signals/entities';
-import { exhaustMap, pipe } from 'rxjs';
-import { inject, Injectable } from '@angular/core';
-import { GameMockService } from './game-mock.service';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { tapResponse } from '@ngrx/operators';
+import { Injectable } from '@angular/core';
 import { emptyCurrentMove, emptyCurrentMoveWithColor, setMoveType, setSelectedNodeId } from './current-move-functions';
 import {
     inBetweenPosition,
@@ -24,37 +20,45 @@ import { Move } from '@ng-frontend/generated-api-client';
 import { Color } from './models/color';
 import { CreateMove } from './models/create-move';
 import { HFENtoGameSetup } from './halma-fen';
+import { BoardIndexRegion, DisplayBoardIndex, GameDisplayConfig } from './models';
 
 type GameBoardState = {
     currentMove: CurrentMove;
     ownColor: Color | undefined;
     config: GameConfig;
-    boardRotation: number;
+    currentBoardRotationAngle: number;
     boardRotateNext: boolean;
     lastCompletedMove: CreateMove | undefined;
     lastReceivedMove: Move | undefined;
+    gameDisplayConfig: GameDisplayConfig | undefined;
 };
 
 const initialState: GameBoardState = {
     currentMove: emptyCurrentMove(),
     ownColor: undefined,
     config: emptyGameConfig(),
-    boardRotation: 0,
+    currentBoardRotationAngle: 0,
     boardRotateNext: true,
     lastCompletedMove: undefined,
     lastReceivedMove: undefined,
+    gameDisplayConfig: {
+        boardRotateNext: false,
+        displayBoardIndex: DisplayBoardIndex.INSIDE,
+        boardIndexRegion: BoardIndexRegion.RIGHT_BOTTOM,
+    },
 };
 
 @Injectable()
 export class GameBoardStore extends signalStore(withState(initialState), withEntities<Node>()) {
-    private readonly gameService = inject(GameMockService);
-
     public createGameFromHFEN(hfenNotation: string): void {
-        const { nodes, currentMove } = HFENtoGameSetup(hfenNotation);
+        const { nodes, currentMove, config } = HFENtoGameSetup(hfenNotation);
         patchState(this, setAllEntities(nodes));
         patchState(this, { currentMove });
-        // TODO pull this from FEN notation
-        patchState(this, { config: { players: [], bounds: { width: 5, height: 5, cornerSize: 2 } } });
+        patchState(this, { config });
+    }
+
+    public setGameConfig(gameConfig: GameConfig) {
+        patchState(this, { config: gameConfig });
     }
 
     // TODO Far from complete, does not apply the state correctly, proof of concept
@@ -304,27 +308,50 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
     }
 
     public rotateBoard(deg: number) {
-        // TODO set next angle according the next player
-        // TODO Whole lot of hardcoded, not very useful code
-        if (this.ownColor()) {
-            let rotation;
-            if (this.ownColor() === 'Y') {
-                rotation = 0;
-            } else {
-                rotation = 180;
+        // TODO: cleanup
+        // TODO: disable in online multiplayer mode
+        let rotationAngle: number = this.currentBoardRotationAngle();
+        if (this.gameDisplayConfig()?.boardRotateNext) {
+            if (this.ownColor()) {
+                switch (this.ownColor()) {
+                    case 'B':
+                        rotationAngle = 90;
+                        break;
+                    case 'R':
+                        rotationAngle = 180;
+                        break;
+                    case 'G':
+                        rotationAngle = 270;
+                        break;
+                    default:
+                        rotationAngle = 0;
+                        break;
+                }
             }
             patchState(this, {
-                boardRotation: rotation,
+                currentBoardRotationAngle: rotationAngle,
             });
         }
     }
 
-    public setBoardRotateNext(next: boolean) {
+    public setGameBoardRotationAngle(deg: number) {
+        let rotationAngle = this.currentBoardRotationAngle();
+        if (deg === 0) rotationAngle = 0;
+        else {
+            rotationAngle += rotationAngle === 270 ? -270 : rotationAngle === -270 ? 270 : deg;
+        }
         patchState(this, {
-            boardRotateNext: next,
+            currentBoardRotationAngle: rotationAngle,
         });
     }
 
+    public setGameDisplayConfig(gameDisplayConfig: GameDisplayConfig) {
+        patchState(this, {
+            gameDisplayConfig: { ...gameDisplayConfig },
+        });
+    }
+
+    /*
     createGame = rxMethod<GameConfig>(
         pipe(
             exhaustMap((config) =>
@@ -340,4 +367,5 @@ export class GameBoardStore extends signalStore(withState(initialState), withEnt
             )
         )
     );
+    */
 }

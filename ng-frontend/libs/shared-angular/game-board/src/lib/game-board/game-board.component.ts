@@ -2,41 +2,37 @@ import { ChangeDetectionStrategy, Component, effect, EventEmitter, inject, input
 import { CommonModule } from '@angular/common';
 import { GameBoardStore } from '../state/game-board.store';
 import { NodeComponent } from '../node/node.component';
-import {
-    FormControl,
-    FormGroup,
-    FormsModule,
-    NonNullableFormBuilder,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
-import { Color, colorWheelInitialization } from '../state/models/color';
-import { Player } from '../state/models/player';
-import { directionOfInit } from '../state/models/play-direction';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Color } from '../state/models/color';
 import { Observable } from 'rxjs';
 import { Move } from '@ng-frontend/generated-api-client';
 import { Router } from '@angular/router';
-
-type GameSettings = FormGroup<{
-    bounds: FormGroup<{
-        width: FormControl<number>;
-        height: FormControl<number>;
-        cornerSize: FormControl<number>;
-    }>;
-    playerCount: FormControl<number>;
-}>;
+import { BoardIndexComponent } from '../board-index/board-index.component';
+import { RotateGameBoardComponent } from '../../../../../pages/play/src/lib/rotate-game-board/rotate-game-board.component';
+import { GameSetupFormComponent } from '../../../../../pages/play/src/lib/game-setup-form/game-setup-form.component';
+import { DisplayBoardIndex, GameDisplayConfig } from '../state';
 
 @Component({
     selector: 'app-game-board',
     standalone: true,
-    imports: [CommonModule, NodeComponent, ReactiveFormsModule, FormsModule],
+    imports: [
+        CommonModule,
+        NodeComponent,
+        ReactiveFormsModule,
+        GameSetupFormComponent,
+        FormsModule,
+        BoardIndexComponent,
+        RotateGameBoardComponent,
+    ],
     providers: [GameBoardStore],
     templateUrl: './game-board.component.html',
     styleUrl: './game-board.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameBoardComponent {
+    protected readonly DisplayBoardIndex = DisplayBoardIndex;
     readonly store = inject(GameBoardStore);
+
     readonly router = inject(Router);
 
     public inputSocket = input(undefined, {
@@ -51,18 +47,11 @@ export class GameBoardComponent {
         transform: (value: Color | undefined) => value,
     });
 
-    @Output() onMove = new EventEmitter<Move>();
-
-    private formBuilder = inject(NonNullableFormBuilder);
-
-    public form: GameSettings = this.formBuilder.group({
-        bounds: this.formBuilder.group({
-            width: [10, [Validators.required]],
-            height: [10, [Validators.required]],
-            cornerSize: [2, [Validators.required]],
-        }),
-        playerCount: [2, [Validators.required]],
+    public gameDisplayConfig = input.required({
+        transform: (value: GameDisplayConfig) => value,
     });
+
+    @Output() onMove = new EventEmitter<Move>();
 
     constructor() {
         /**
@@ -114,34 +103,20 @@ export class GameBoardComponent {
         effect(
             () => {
                 this.store.setOwnColor(this.ownColor());
-                this.store.rotateBoard(0);
+            },
+            { allowSignalWrites: true }
+        );
+
+        effect(
+            () => {
+                const gameDisplayConfig = this.gameDisplayConfig();
+                this.store.setGameDisplayConfig(gameDisplayConfig);
             },
             { allowSignalWrites: true }
         );
     }
 
-    // TODO Should move out of this component with time!
-    public createLocalGame() {
-        const formValue = this.form.getRawValue();
-
-        const players: Player[] = this.initPlayers(formValue.playerCount);
-
-        this.store.createGame({
-            bounds: formValue.bounds,
-            players,
-        });
-    }
-
-    private initPlayers(playerCount: number) {
-        const players: Player[] = [];
-        for (let i = 0; i < playerCount; i++) {
-            players.push({
-                id: 'player' + i,
-                color: colorWheelInitialization[i],
-                playDirection: directionOfInit[i],
-                moveOrder: i,
-            });
-        }
-        return players;
+    setGameBoardRotationAngle(deg: number) {
+        this.store.setGameBoardRotationAngle(deg);
     }
 }

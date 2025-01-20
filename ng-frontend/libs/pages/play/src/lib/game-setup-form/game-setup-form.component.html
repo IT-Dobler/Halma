@@ -1,0 +1,99 @@
+<div class="container mx-auto">
+    @if (!initialHFEN) {
+        <form [formGroup]="form" (ngSubmit)="createLocalGame()">
+            <div formGroupName="bounds" class="flex flex-row">
+                <div class="basis-1/4 flex flex-col">
+                    <label for="width" class="block p-2">Horizontal Elements (max 99)</label>
+                    <input id="width" class="input block" [formControl]="form.controls.bounds.controls.width"
+                           type="number">
+                </div>
+                <div class="basis-1/4 flex flex-col">
+                    <label for="height" class="block p-2">Vertical Elements</label>
+                    <input id="height" class="input block"
+                           [formControl]="form.controls.bounds.controls.height"
+                           type="number">
+                </div>
+                <div class="basis-1/4 flex flex-col">
+                    <label for="corners" class="block p-2">Corners</label>
+                    <input id="corners" class="input block"
+                           [formControl]="form.controls.bounds.controls.cornerSize"
+                           type="number">
+                </div>
+                <div class="basis-1/4 flex flex-col">
+                    <label for="players" class="block p-2">Players</label>
+                    <input id="players" class="input block" [formControl]="form.controls.playerCount"
+                           type="number">
+                </div>
+            </div>
+            <button type="submit" class="btn-primary w-full">Start game</button>
+        </form>
+    } @else {
+        <button (click)="stopLocalGame()" class="btn-alert w-full">Stop the game</button>
+    }
+</div>
+<div class="container mx-auto" [formGroup]="gameDisplayConfigForm">
+    <div class="p-2 m-2 columns-3">
+        <div class="block">
+            <h3>Display board index</h3>
+            <span class="mr-2">
+                    <input id="displayBoardIndexNone" name="displayBoardIndex" [value]="DisplayBoardIndex.NONE"
+                           type="radio"
+                           formControlName="displayBoardIndex"
+                    >
+                    <label for="displayBoardIndexNone" class="inline p-2">none</label>
+                </span>
+            <span class="mr-2">
+                    <input id="displayBoardIndexOutside" name="displayBoardIndex" [value]="DisplayBoardIndex.OUTSIDE"
+                           type="radio"
+                           formControlName="displayBoardIndex">
+                    <label for="displayBoardIndexOutside" class="inline p-2">outside</label>
+                </span>
+            <span class="mr-2">
+                    <input id="displayBoardIndexInside" name="displayBoardIndex" [value]="DisplayBoardIndex.INSIDE"
+                           type="radio"
+                           formControlName="displayBoardIndex">
+                    <label for="displayBoardIndexInside" class="inline p-2">inside</label>
+                </span>
+        </div>
+        @if (gameDisplayConfigForm.controls.displayBoardIndex.value !== DisplayBoardIndex.NONE) {
+            <div class="block">
+                <h3>Display position</h3>
+                <span class="mr-2">
+                        <input id="boardIndexRegionAll" name="boardIndexRegion" [value]="BoardIndexRegion.ALL_AROUND"
+                               type="radio"
+                               formControlName="boardIndexRegion"
+                        >
+                        <label for="boardIndexRegionAll" class="inline p-2">all around</label>
+                    </span>
+                <span class="mr-2">
+                        <input id="boardIndexRegionRightBottom" name="boardIndexRegion"
+                               [value]="BoardIndexRegion.RIGHT_BOTTOM" type="radio"
+                               formControlName="boardIndexRegion"
+                        >
+                        <label for="boardIndexRegionRightBottom" class="inline p-2">right and bottom</label>
+                    </span>
+            </div>
+        }
+        <div class="block">
+            <div>
+                <h3>Multiplayer</h3>
+                <span class="mr-2">
+                    <!-- TODO: set rotate board after finish by expected angle -->
+                    <input id="rotateBoardAfterFinish" type="checkbox" value="true"
+                           formControlName="boardRotateNext"
+                    ><label for="rotateBoardAfterFinish"
+                            class="inline p-2">Rotate
+                board after finish</label>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mx-auto hidden">
+    <pre>{{ form.value | json }}</pre>
+</div>
+@if (initialHFEN) {
+    <div class="container mx-auto hidden">
+        <pre>{{ initialHFEN }}</pre>
+    </div>
+}

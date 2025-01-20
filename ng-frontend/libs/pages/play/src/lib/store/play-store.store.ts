@@ -6,17 +6,33 @@ import { GameService, Move } from '@ng-frontend/generated-api-client';
 import { tapResponse } from '@ngrx/operators';
 import { LiveGameService } from '../../../../playground/src/lib/live-game.service';
 import { Color, colorMap } from '../../../../../shared-angular/game-board/src/lib/state/models/color';
+import { GameConfig } from '../../../../../shared-angular/game-board/src/lib/state/models/game-config';
+import {
+    BoardIndexRegion,
+    DisplayBoardIndex,
+    GameDisplayConfig,
+} from '@ng-frontend/shared-angular/game-board';
 
 type PlayPageState = {
     hfenNotation: string | undefined;
     moves$: Observable<Move> | undefined;
     localColor: Color | undefined;
+    gameConfig: GameConfig;
+    gameDisplayConfig: GameDisplayConfig;
+    gameBoardRotationAngle: number;
 };
 
 const initialState: PlayPageState = {
     hfenNotation: undefined,
     moves$: undefined,
     localColor: undefined,
+    gameConfig: { bounds: { width: 0, height: 0, cornerSize: 0 }, players: [] },
+    gameDisplayConfig: {
+        boardRotateNext: false,
+        displayBoardIndex: DisplayBoardIndex.INSIDE,
+        boardIndexRegion: BoardIndexRegion.RIGHT_BOTTOM,
+    },
+    gameBoardRotationAngle: 0,
 };
 
 @Injectable()
@@ -41,7 +57,7 @@ export class PlayPageStore extends signalStore(withState(initialState)) {
                             patchState(this, { localColor: colorMap[response.color] });
                             this.connect(code);
                         },
-                        error: console.error,   // TODO Error handling when the game is already full
+                        error: console.error, // TODO Error handling when the game is already full
                     })
                 )
             )
@@ -51,5 +67,17 @@ export class PlayPageStore extends signalStore(withState(initialState)) {
     private connect(code: string) {
         this.liveGameService.joinGame(code);
         patchState(this, { moves$: this.liveGameService.moves$() });
+    }
+
+    public setHFEN(hfen: string) {
+        patchState(this, { hfenNotation: hfen });
+    }
+
+    public setLocalColor(color: Color) {
+        patchState(this, { localColor: color });
+    }
+
+    public setGameDisplayConfig(gameDisplayConfig: GameDisplayConfig) {
+        patchState(this, { gameDisplayConfig });
     }
 }
