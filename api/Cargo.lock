@@ -31,6 +31,7 @@ dependencies = [
  "axum",
  "httpc-test",
  "serde",
+ "serde_json",
  "tokio",
  "tower-http",
 ]
