@@ -2,6 +2,7 @@
 
 pub use self::error::{Error, Result};
 
+use crate::model::ModelController;
 use axum::extract::{Path, Query};
 use axum::response::{Html, IntoResponse, Response};
 use axum::routing::{get, get_service, Route};
@@ -12,8 +13,8 @@ use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
-use crate::model::ModelController;
 
+mod ctx;
 mod error;
 mod model;
 mod web;
@@ -31,6 +32,10 @@ async fn main() -> Result<()> {
         .merge(web::routes_login::routes())
         .nest("/api", routes_api)
         .layer(middleware::map_response(main_response_mapper))
+        .layer(middleware::from_fn_with_state(
+            mc.clone(),
+            web::mw_auth::mw_ctx_resolver,
+        ))
         .layer(CookieManagerLayer::new())
         .fallback_service(routes_static());
 
