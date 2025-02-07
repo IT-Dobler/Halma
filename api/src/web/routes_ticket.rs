@@ -5,6 +5,13 @@ use axum::routing::{delete, post};
 use axum::{Json, Router};
 use crate::ctx::Ctx;
 
+pub fn routes(mc: ModelController) -> Router {
+    Router::new()
+        .route("/tickets", post(create_ticket).get(list_tickets))
+        .route("/tickets/{id}", delete(delete_ticket))
+        .with_state(mc)
+}
+
 async fn create_ticket(
     State(mc): State<ModelController>,
     ctx: Ctx,
@@ -35,11 +42,4 @@ async fn delete_ticket(
     let ticket = mc.delete_ticket(ctx, id).await?;
 
     Ok(Json(ticket))
-}
-
-pub fn routes(mc: ModelController) -> Router {
-    Router::new()
-        .route("/tickets", post(create_ticket).get(list_tickets))
-        .route("/tickets/{id}", delete(delete_ticket))
-        .with_state(mc)
 }

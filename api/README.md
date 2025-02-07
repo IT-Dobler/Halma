@@ -2,4 +2,4 @@
 
 Run backend with hot reload: `cargo watch -q -c -w src/ -x run`
 
-Run frontend with hot reload: `cargo watch -q -c -w tests/ -x "test -q quick_dev -- --nocapture"`
+Run frontend with hot reload: `cargo watch -q -c -w examples/ -x "run --example quick_dev"`
