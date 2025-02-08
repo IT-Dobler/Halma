@@ -14,6 +14,9 @@ tower-cookies = "0.11"
 strum_macros = "0.26"
 uuid = {version = "1", features = ["v4", "fast-rng"]}
 
+# -- Tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"]}
 
 lazy-regex = "3"
 async-trait = "0.1"

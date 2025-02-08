@@ -1,12 +1,16 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use serde::Serialize;
+use tracing::debug;
 
 pub type Result<T> = core::result::Result<T, Error>;
 
 #[derive(Debug, Clone, Serialize, strum_macros::AsRefStr)]
 #[serde(tag = "type", content = "data")]
 pub enum Error {
+    // -- Config
+    ConfigMissingEnv(&'static str),
+
     LoginFail,
 
     // -- Auth errors.
@@ -28,7 +32,7 @@ impl std::error::Error for Error {}
 
 impl IntoResponse for Error {
     fn into_response(self) -> Response {
-        println!("->> {:<12} - {self:?}", "INTO_RES");
+        debug!("{:<12} - {self:?}", "INTO_RES");
 
         // Create a placeholder Axum response
         let mut response = StatusCode::INTERNAL_SERVER_ERROR.into_response();
