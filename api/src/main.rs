@@ -8,6 +8,7 @@ mod error;
 mod log;
 mod model;
 mod web;
+pub mod _dev_utilities;
 
 pub use self::error::{Error, Result};
 pub use config::config; // Allows "use crate::config"
@@ -38,6 +39,9 @@ async fn main() -> Result<()> {
         .with_target(false) // Maybe remove?
         .with_env_filter(EnvFilter::from_default_env())
         .init();
+
+    // -- FOR DEV ONLY
+    _dev_utilities::init_dev().await;
 
     // Initialize ModelController.
     let mc = ModelController::new().await?;

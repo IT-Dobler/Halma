@@ -14,6 +14,10 @@ tower-cookies = "0.11"
 strum_macros = "0.26"
 uuid = {version = "1", features = ["v4", "fast-rng"]}
 
+
+# -- Data
+sqlx = { version = "0.8", features = ["postgres", "uuid", "time", "runtime-tokio-rustls"]}
+
 # -- Tracing
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"]}
