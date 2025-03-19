@@ -17,16 +17,14 @@ export function Home() {
                 GitHub
               </a>
             </div>
+
             <div
-              className="tooltip btn-block max-w-lg mt-40"
-              data-tip="Coming Soon!"
+              className="tooltip btn-wide max-w-lg mt-40"
+              data-tip="Finally here!"
             >
-              <button
-                className="btn btn-outline btn-block max-w-lg"
-                disabled={true}
-              >
-                DONATE
-              </button>
+              <a href="https://www.buymeacoffee.com/halma42" target={'_blank'}>
+                <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=halma42&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" />
+              </a>
             </div>
           </div>
           <div className="flex items-center flex-col justify-between">

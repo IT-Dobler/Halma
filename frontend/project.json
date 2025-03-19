@@ -24,7 +24,13 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "frontend:build"
+        "buildTarget": "frontend:build",
+        "host": "halma42.localhost",
+        "port": 4200,
+        "https": {
+          "cert": "../developer-local-settings/config/certs/halma42.localhost.pem",
+          "key": "../developer-local-settings/config/certs/halma42.localhost.key"
+        }
       },
       "configurations": {
         "development": {

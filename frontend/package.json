@@ -78,8 +78,8 @@
     ]
   },
   "engines": {
-    "npm": "please-use-yarn",
-    "yarn": ">= 1.22.19",
-    "node": ">= 18.17.0"
+    "npm": ">=10.9.0 <11.0.0",
+    "yarn": "please use npm",
+    "node": ">=22.10.0 <23.0.0"
   }
 }
